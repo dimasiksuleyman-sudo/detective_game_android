@@ -108,6 +108,7 @@ describe('правила партии', () => {
     expect(player(s).facts).toContain('f-door-key');
     s = run(s, { type: 'END_TURN' });
     expect(s.current).toBe(1);
+    expect(s.message).toBe('');
     expect(player(s).facts).toEqual([]);
     s = run(s, { type: 'BEGIN_TURN' });
     if (s.players[0]) s.players[0].eliminated = true;

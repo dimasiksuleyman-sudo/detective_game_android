@@ -87,6 +87,7 @@ function begin(c: CaseFile, s: GameState) {
   const p = s.players[s.current];
   if (!p) return;
   s.action = null;
+  s.message = '';
   p.turns++;
   for (const suspect of c.suspects) {
     const until = p.blocked[suspect.id];

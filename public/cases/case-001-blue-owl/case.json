@@ -348,7 +348,16 @@
           "confession": "Брал в долг через свою фирму; Собирался вернуть."
         }
       ],
-      "clueReactions": [],
+      "clueReactions": [
+        {
+          "clueId": "c-statuette",
+          "reaction": "Аркадий гордился этой наградой. Ужасно."
+        },
+        {
+          "clueId": "c-train-ticket",
+          "reaction": "Ольга была в городе? Интересно… Наследница, между прочим."
+        }
+      ],
       "offlineQA": [
         {
           "id": "q-gleb-1",
@@ -438,7 +447,12 @@
           "confession": "Я должна денег очень неприятным людям; Просила аванс, он отказал; Уходя, слышала: «Возвращайся, Глеб; Разговор не окончен»."
         }
       ],
-      "clueReactions": [],
+      "clueReactions": [
+        {
+          "clueId": "c-poster",
+          "reaction": "Видишь? В полдвенадцатого я уже пела. Алиби, дорогуша."
+        }
+      ],
       "offlineQA": [
         {
           "id": "q-vera-1",
@@ -514,7 +528,12 @@
           "confession": "Вернулся за ящиками в 23:40; Видел седан Глеба, свет в кабинете, слышал два мужских голоса; Бросил ящик и сбежал."
         }
       ],
-      "clueReactions": [],
+      "clueReactions": [
+        {
+          "clueId": "c-dismissal",
+          "reaction": "Ну да, уволил. И ключи забрал. Так что я туда даже зайти не мог."
+        }
+      ],
       "offlineQA": [
         {
           "id": "q-timur-1",
@@ -592,7 +611,12 @@
           "ignoreStress": true
         }
       ],
-      "clueReactions": [],
+      "clueReactions": [
+        {
+          "clueId": "c-diary",
+          "reaction": "Его почерк. Он всё записывал, сколько я его помню."
+        }
+      ],
       "offlineQA": [
         {
           "id": "q-olga-1",
@@ -730,7 +754,7 @@
         {
           "id": "h-safe",
           "label": "Сейф",
-          "text": "Стальной сейф. Требует `f-safe-code`; закрыто: «Кодовый замок, четыре цифры».",
+          "text": "Сейф открыт кодом из ежедневника. Внутри — тайная бухгалтерия.",
           "rect": {
             "x": 0.08,
             "y": 0.37,
@@ -832,7 +856,7 @@
       "id": "c-statuette",
       "name": "Бронзовая статуэтка",
       "kind": "object",
-      "description": "`clues/c-statuette.webp`",
+      "description": "Орудие — бронзовая статуэтка саксофониста из кабинета. Её стёрли, на мраморной подставке свежий скол.",
       "revealsFactIds": ["f-statuette-weapon"],
       "isKey": true,
       "image": "images/clues/c-statuette.webp"
@@ -841,7 +865,7 @@
       "id": "c-diary",
       "name": "Ежедневник Аркадия",
       "kind": "object",
-      "description": "картинка + страницы: «Пн 10:00 — юрист. По Г. — вскрыть всё», «Сейф: 1408 (д.р. Совы)», «Вера — аванс? НЕТ»",
+      "description": "В ежедневнике Аркадия: «Пн, 10:00 — юрист. По Г. — вскрыть всё». В ежедневнике записан код сейфа: 1408 («день рождения Совы»). В ежедневнике: «Вера — аванс? НЕТ».",
       "revealsFactIds": ["f-lawyer-meeting", "f-safe-code", "f-vera-advance"],
       "isKey": true,
       "image": "images/clues/c-diary.webp",
@@ -861,7 +885,7 @@
       "id": "c-ledger",
       "name": "Тайная бухгалтерия",
       "kind": "object",
-      "description": "4–5 строк переводов «Норд-Транзит», подпись «Г. Соколов»",
+      "description": "В сейфе — вторая, тайная бухгалтерия: переводы на фирму «Норд-Транзит» за подписью Г. Соколова.",
       "revealsFactIds": ["f-double-books"],
       "isKey": true,
       "image": "images/clues/c-ledger.webp",
@@ -879,7 +903,7 @@
       "id": "c-photo",
       "name": "Фото с открытия",
       "kind": "photo",
-      "description": "`clues/c-photo.webp`; оборот: «Глеб и его ласточка. В742КС. 14.08.2014»",
+      "description": "На обороте фото с открытия бара: «Глеб и его ласточка. В742КС. 14.08.2014».",
       "revealsFactIds": ["f-gleb-car-plate"],
       "isKey": false,
       "image": "images/clues/c-photo.webp",
@@ -897,7 +921,7 @@
       "id": "c-poster",
       "name": "Афиша «Ржавого якоря»",
       "kind": "document",
-      "description": "«Пятница. 23:30. Вера Орлова. Джаз до утра»",
+      "description": "Вера выступала в клубе «Ржавый якорь» с 23:30 до 01:00 — это подтвердит весь зал.",
       "revealsFactIds": ["f-vera-alibi"],
       "isKey": false,
       "document": {
@@ -914,7 +938,7 @@
       "id": "c-dismissal",
       "name": "Приказ об увольнении",
       "kind": "document",
-      "description": "«Галиев Т. уволен 21:00. Ключи (вход, чёрный ход) сданы. Ключи от чёрного хода: Лебедев А., Соколов Г.»",
+      "description": "Тимура уволили в 21:00 за недостачу. Уходя, он крикнул: «Ты пожалеешь!» Ключи от чёрного хода были только у Лебедева и Соколова. Тимур сдал свой ключ в 21:00 при увольнении.",
       "revealsFactIds": ["f-timur-fired", "f-keys-holders"],
       "isKey": true,
       "document": {
@@ -932,7 +956,7 @@
       "id": "c-train-ticket",
       "name": "Билет на поезд",
       "kind": "document",
-      "description": "«Северск → Ветрогорск, пт, прибытие 22:10, пассажир: Лебедева О. В.»",
+      "description": "Ольга приехала в Ветрогорск поездом в 22:10 — хотя говорила, что весь вечер была дома в Северске.",
       "revealsFactIds": ["f-olga-in-town"],
       "isKey": false,
       "document": {
@@ -949,7 +973,7 @@
       "id": "c-whisky-crate",
       "name": "Ящик виски",
       "kind": "object",
-      "description": "`clues/c-whisky-crate.webp`",
+      "description": "За мусорным баком в переулке спрятан ящик виски из бара.",
       "revealsFactIds": ["f-timur-crate"],
       "isKey": false,
       "image": "images/clues/c-whisky-crate.webp"
@@ -958,7 +982,7 @@
       "id": "c-parking-stub",
       "name": "Парковочный талон",
       "kind": "document",
-      "description": "«Парковка Портовая, 12 · Авто В742КС · Въезд 23:31»",
+      "description": "Талон парковки на Портовой, 12 (минута ходьбы от бара): машина В742КС, въезд 23:31.",
       "revealsFactIds": ["f-parking-2331"],
       "isKey": true,
       "document": {

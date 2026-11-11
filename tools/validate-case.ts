@@ -1,5 +1,5 @@
 /** CLI: формат, ссылки, достижимость и физические ресурсы встроенного дела. */
-import { readFile, access } from 'node:fs/promises';
+import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 import { caseSchema } from '../src/content/schema';
@@ -33,8 +33,13 @@ for (const a of [c.victim, ...c.suspects])
     'sad',
     'smug',
     'broken',
-  ])
-    await access(`public/troupe/${a.actorId}/${emotion}.webp`);
+  ]) {
+    const m = await sharp(
+      `public/troupe/${a.actorId}/${emotion}.webp`,
+    ).metadata();
+    if (m.width !== 768 || m.height !== 1152 || m.format !== 'webp')
+      report.errors.push('actor image ' + a.actorId);
+  }
 console.log(
   report.errors.length
     ? report.errors

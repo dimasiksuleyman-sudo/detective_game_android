@@ -28,7 +28,9 @@ jobs:
       - name: Проверка типов
         run: npm run typecheck
       - name: Unit-тесты
-        run: npm test
+        run: npm run test:coverage
+      - name: Валидация пилотного дела
+        run: npm run case:validate
       - name: Сборка web
         run: npm run build
       - name: Браузер Chromium
@@ -42,7 +44,7 @@ jobs:
           path: |
             playwright-report/
             test-results/
-            docs/devlog/assets/m0/
+            docs/devlog/assets/
       - uses: actions/setup-java@v4
         with:
           distribution: temurin

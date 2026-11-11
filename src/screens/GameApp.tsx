@@ -33,6 +33,7 @@ export default function GameApp() {
     [location, setLocation] = useState(''),
     [suspect, setSuspect] = useState(''),
     [clue, setClue] = useState(''),
+    [closeup, setCloseup] = useState(''),
     [tab, setTab] = useState('clues'),
     [note, setNote] = useState(''),
     [tone, setTone] = useState<Tone>('neutral'),
@@ -316,6 +317,7 @@ export default function GameApp() {
                                   p.facts.includes(h.requiresFactId)
                                 ) {
                                   setClue(h.clueId ?? '');
+                                  setCloseup(h.closeup ?? '');
                                   go('s09');
                                 }
                               }}
@@ -337,6 +339,7 @@ export default function GameApp() {
           {effective === 's09' && g && p && (
             <>
               <h2>{t.found}</h2>
+              {closeup && <Art src={closeup} label={g.message} />}
               {c.clues
                 .filter((x) => x.id === clue && p.clues.includes(x.id))
                 .map((cl) => (
@@ -691,7 +694,7 @@ export default function GameApp() {
           )}
         </main>
       </fieldset>
-      {g?.message && personal && effective !== 's06' && (
+      {g?.message && ['s08', 's09', 's10', 's13'].includes(effective) && (
         <p role="status">{g.message}</p>
       )}
       {effective !== 's06' &&

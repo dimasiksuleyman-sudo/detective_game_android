@@ -1,10 +1,11 @@
 /** Единая строгая Zod-схема формата дела v1. */
 import { z } from 'zod';
 const text = z.string().min(1);
-const ids = z.array(text);
-const option = z.object({ id: text, label: text });
+const identifier = z.string().regex(/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/);
+const ids = z.array(identifier);
+const option = z.object({ id: identifier, label: text });
 const fact = z.object({
-  id: text,
+  id: identifier,
   text,
   time: text.optional(),
   importance: z.enum(['key', 'supporting', 'red_herring', 'flavor']),
@@ -26,16 +27,16 @@ const document = z.object({
   fields: z.record(z.string(), z.union([z.string(), z.array(z.string())])),
 });
 const question = z.object({
-  id: text,
+  id: identifier,
   question: text,
   answer: text,
   revealsFactIds: ids,
-  requiresClueId: text.optional(),
-  requiresFactId: text.optional(),
+  requiresClueId: identifier.optional(),
+  requiresFactId: identifier.optional(),
   stressDelta: z.number().int().min(-1).max(2).optional(),
 });
 const breakpoint = z.object({
-  clueId: text,
+  clueId: identifier,
   requiresFactIds: ids.optional(),
   ignoreStress: z.boolean().optional(),
   unlocksTruthIds: ids,
@@ -44,7 +45,7 @@ const breakpoint = z.object({
 });
 export const caseSchema = z.object({
   schemaVersion: z.literal(1),
-  id: text,
+  id: identifier,
   version: z.number().int().positive(),
   minAppVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
   title: text,
@@ -67,7 +68,7 @@ export const caseSchema = z.object({
     name: text,
     age: z.number().int().positive(),
     occupation: text,
-    actorId: text,
+    actorId: identifier,
     bio: text,
     causeOfDeath: text,
     foundAt: text,
@@ -76,9 +77,9 @@ export const caseSchema = z.object({
   motives: z.array(option).min(4).max(6),
   methods: z.array(option).min(3).max(5),
   solution: z.object({
-    culpritId: text,
-    motiveId: text,
-    methodId: text,
+    culpritId: identifier,
+    motiveId: identifier,
+    methodId: identifier,
     keyEvidence: ids.min(1),
     explanation: text,
     reconstruction: z
@@ -90,8 +91,8 @@ export const caseSchema = z.object({
   facts: z.array(fact),
   suspects: z.array(
     z.object({
-      id: text,
-      actorId: text,
+      id: identifier,
+      actorId: identifier,
       name: text,
       age: z.number().int().positive(),
       occupation: text,
@@ -100,28 +101,28 @@ export const caseSchema = z.object({
       personality: text,
       speechStyle: text,
       coverStory: text,
-      sensitiveTopics: ids,
+      sensitiveTopics: z.array(text),
       shareableFactIds: ids,
       hiddenTruths: z.array(
-        z.object({ id: text, topic: text, lie: text, truth: text }),
+        z.object({ id: identifier, topic: text, lie: text, truth: text }),
       ),
       breakThreshold: z.number().int().min(0).max(10),
       breakpoints: z.array(breakpoint).min(1).max(2),
-      clueReactions: z.array(z.object({ clueId: text, reaction: text })),
+      clueReactions: z.array(z.object({ clueId: identifier, reaction: text })),
       offlineQA: z.array(question).min(6).max(10),
       isCulprit: z.boolean(),
     }),
   ),
   locations: z.array(
     z.object({
-      id: text,
+      id: identifier,
       name: text,
       description: text,
       image: text,
       hotspots: z
         .array(
           z.object({
-            id: text,
+            id: identifier,
             label: text,
             rect: z.object({
               x: z.number().min(0).max(1),
@@ -131,9 +132,9 @@ export const caseSchema = z.object({
             }),
             closeup: text.optional(),
             text,
-            clueId: text.optional(),
+            clueId: identifier.optional(),
             revealsFactIds: ids.optional(),
-            requiresFactId: text.optional(),
+            requiresFactId: identifier.optional(),
             lockedText: text.optional(),
             minigame: z.enum(['dust', 'uv', 'tilt', 'blow']).optional(),
           }),
@@ -144,7 +145,7 @@ export const caseSchema = z.object({
   ),
   clues: z.array(
     z.object({
-      id: text,
+      id: identifier,
       name: text,
       kind: z.enum(['object', 'document', 'photo', 'message']),
       image: text.optional(),
@@ -157,7 +158,7 @@ export const caseSchema = z.object({
   hints: z.array(
     z.object({
       afterRound: z.number().int().positive(),
-      unlessAnyPlayerHas: text,
+      unlessAnyPlayerHas: identifier,
       text,
     }),
   ),
