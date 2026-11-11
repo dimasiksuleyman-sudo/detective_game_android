@@ -18,6 +18,7 @@ Capacitor 8.6.0 генерирует minSdk 24 и versionName 1.0. План тр
 - Android versionCode 1 / versionName 0.0.1 соответствует package.json. appId остаётся временным по ADR-004.
 - В manifest сразу фиксируются портретная ориентация и запрет cleartext; разрешение только INTERNET, без микрофона и датчиков на M0.
 - GitHub Actions выполняет npm ci → lint → typecheck → unit → build web → Playwright → cap sync → assembleDebug в одном job с правами contents:read. APK и браузерные результаты доступны отдельными артефактами. Секреты не нужны.
+- В setup-android явно задавать `packages: platform-tools`: значение по умолчанию включает снятый с публикации пакет `tools` и ломает установку (подтверждено первым CI). Полные тексты SDK-лицензий не печатать в лог CI.
 - Использовать build-tools 35.0.0 (ожидается AGP 8.13), platform android-36. Android SDK локально хранится вне git; local.properties игнорируется.
 
 ## Последствия
