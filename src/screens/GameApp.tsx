@@ -1,3 +1,4 @@
+import styles from './GameApp.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { pilot as c } from '../content/loader';
@@ -86,7 +87,7 @@ export default function GameApp() {
   const back = () => go('s07');
   if (!ready) return <p role="status">{ru.loading}</p>;
   return (
-    <div className="game">
+    <div className={styles.game}>
       <header>
         <h1>{ru.appName}</h1>
         {p && g && effective !== 's06' && personal && (
@@ -212,7 +213,10 @@ export default function GameApp() {
             </>
           )}
           {effective === 's06' && p && (
-            <section className="handover" style={{ borderColor: p.color }}>
+            <section
+              className={styles.handover}
+              style={{ borderColor: p.color }}
+            >
               <h2>
                 {t.handover}: {p.name}
               </h2>
@@ -290,7 +294,7 @@ export default function GameApp() {
                       <section key={l.id}>
                         <h3>{l.name}</h3>
                         <p>{l.description}</p>
-                        <div className="location">
+                        <div className={styles.location}>
                           <img src={`/cases/${c.id}/${l.image}`} alt={l.name} />
                           {l.hotspots.map((h) => (
                             <button
@@ -348,7 +352,7 @@ export default function GameApp() {
                     {cl.image && <Art src={cl.image} label={cl.name} />}
                     <p>{cl.description}</p>
                     {cl.document && (
-                      <section className={'document ' + cl.document.template}>
+                      <section className={styles.document}>
                         {Object.entries(cl.document.fields).map(([k, v]) => (
                           <p key={k}>{Array.isArray(v) ? v.join('\n') : v}</p>
                         ))}
