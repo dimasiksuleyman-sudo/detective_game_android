@@ -30,3 +30,126 @@ a:focus-visible {
   outline: 3px solid var(--accent);
   outline-offset: 3px;
 }
+.game {
+  max-width: 44rem;
+  margin: auto;
+  padding: 1rem;
+  padding-top: max(1rem, env(safe-area-inset-top));
+  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+}
+fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  min-width: 0;
+}
+button,
+select,
+input,
+textarea {
+  font: inherit;
+  color: var(--paper);
+  background: var(--slate);
+  border: 1px solid var(--teal-gray);
+  border-radius: 4px;
+  padding: 0.65rem;
+  max-width: 100%;
+}
+button {
+  display: inline-block;
+  margin: 0.3rem;
+  min-height: 48px;
+  cursor: pointer;
+}
+button:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+button:focus-visible {
+  outline: 3px solid var(--accent);
+}
+label {
+  display: block;
+  margin: 0.7rem 0;
+}
+input:not([type='checkbox']),
+select,
+textarea {
+  display: block;
+  width: 100%;
+}
+article,
+aside {
+  padding: 0.75rem;
+  margin: 0.6rem 0;
+  border: 1px solid var(--teal-gray);
+  overflow-wrap: anywhere;
+}
+figure {
+  position: relative;
+  margin: 0.6rem 0;
+}
+figure img {
+  width: 100%;
+  max-height: 18rem;
+  object-fit: contain;
+  background: var(--slate);
+}
+figcaption {
+  position: absolute;
+  inset: 40% 1rem auto;
+  text-align: center;
+  background: var(--slate);
+  padding: 0.5rem;
+}
+header h1 {
+  font-size: 1.5rem;
+}
+.location {
+  position: relative;
+  width: 100%;
+  touch-action: pinch-zoom;
+}
+.location > img {
+  width: 100%;
+  display: block;
+}
+.location button {
+  margin: 0;
+  font-size: 0.9rem;
+  overflow-wrap: anywhere;
+}
+.document {
+  background: var(--paper);
+  color: var(--ink);
+  white-space: pre-line;
+  padding: 1rem;
+  font-family: 'PT Mono', monospace;
+}
+.handover {
+  min-height: 70vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+  border: 2px solid;
+}
+progress {
+  display: block;
+  width: 100%;
+}
+small {
+  display: block;
+}
+
+.location > img {
+  aspect-ratio: 2/3;
+  min-height: 20rem;
+  object-fit: cover;
+}
+figure img {
+  min-height: 10rem;
+}
+fieldset {
+  min-inline-size: 0;
+}

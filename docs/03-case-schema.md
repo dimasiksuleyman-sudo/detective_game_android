@@ -57,6 +57,7 @@ type Fact = {
   text: string;                  // КАНОНИЧЕСКИЙ текст, который попадёт в блокнот
   time?: string;                 // "23:31" — если есть, факт попадает во вкладку «Хронология»
   importance: "key" | "supporting" | "red_herring" | "flavor";
+  proves?: ("motive" | "method" | "opportunity")[]; // ADR-006: проверяемое назначение доказательства
   aboutSuspectIds?: string[];    // о ком факт (для фильтров блокнота)
 };
 

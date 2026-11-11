@@ -1,0 +1,992 @@
+{
+  "schemaVersion": 1,
+  "id": "case-001-blue-owl",
+  "version": 1,
+  "minAppVersion": "0.1.0",
+  "title": "Синяя сова",
+  "tagline": "Последний сет отыгран. Последний счёт закрыт.",
+  "difficulty": 1,
+  "estimatedMinutes": 30,
+  "players": {
+    "min": 1,
+    "max": 4
+  },
+  "cover": "images/cover.webp",
+  "setting": {
+    "city": "Ветрогорск",
+    "place": "Синяя сова",
+    "dateLabel": "Ночь с пятницы на субботу",
+    "weather": "Проливной дождь"
+  },
+  "briefing": "Ветрогорск, ночь с пятницы на субботу, проливной дождь. В 7 утра уборщица джаз-бара «Синяя сова» нашла в кабинете владельца, Аркадия Лебедева (52), мёртвым. Удар тяжёлым предметом по голове. Смерть наступила между 23:30 и 00:15. Бар закрылся в 23:00; следов взлома на входе нет. В тот вечер с Аркадием виделись четверо: его партнёр по бизнесу, певица бара, бармен, которого он уволил, и сестра, которая, как считалось, живёт в другом городе. Шеф дал вам восемь раундов. Найдите убийцу — и докажите.",
+  "victim": {
+    "name": "Аркадий Лебедев",
+    "age": 52,
+    "occupation": "Владелец бара",
+    "actorId": "a01-arkady",
+    "bio": "Добродушный, вспыльчивый, всё записывал в ежедневник.",
+    "causeOfDeath": "Удар тяжёлым предметом",
+    "foundAt": "Кабинет, 07:00, уборщица",
+    "timeOfDeathWindow": "23:30–00:15"
+  },
+  "motives": [
+    {
+      "id": "m-embezzlement",
+      "label": "Скрыть хищения от разоблачения"
+    },
+    {
+      "id": "m-inheritance",
+      "label": "Получить наследство"
+    },
+    {
+      "id": "m-revenge",
+      "label": "Месть за увольнение"
+    },
+    {
+      "id": "m-debt",
+      "label": "Отказ в деньгах"
+    },
+    {
+      "id": "m-jealousy",
+      "label": "Ревность"
+    }
+  ],
+  "methods": [
+    {
+      "id": "w-statuette",
+      "label": "Удар бронзовой статуэткой"
+    },
+    {
+      "id": "w-poison",
+      "label": "Отравление"
+    },
+    {
+      "id": "w-strangle",
+      "label": "Удушение"
+    },
+    {
+      "id": "w-fall",
+      "label": "Несчастный случай / падение"
+    }
+  ],
+  "solution": {
+    "culpritId": "s-gleb",
+    "motiveId": "m-embezzlement",
+    "methodId": "w-statuette",
+    "keyEvidence": [
+      "c-parking-stub",
+      "c-ledger",
+      "f-timur-saw",
+      "f-arkady-said-gleb-steals",
+      "f-gleb-returned",
+      "f-keys-holders"
+    ],
+    "explanation": "Глеб Соколов два года выводил деньги «Синей совы» на свою фирму. Аркадий нашёл тайную бухгалтерию, спрятал её в сейф и назначил встречу с юристом. В 23:00 Глеб показательно уехал — но Аркадий позвонил и потребовал вернуться. В 23:31 машина Глеба встала на парковке на Портовой; через чёрный ход, ключ от которого был только у партнёров, Глеб вошёл в кабинет. Тимур, вернувшийся за украденным виски, видел его машину и слышал ссору. В 23:45 Глеб ударил Аркадия бронзовой статуэткой, стёр её и ушёл переулком, обронив в луже парковочный талон. Сейф он открыть не смог — и тайная бухгалтерия его выдала.",
+    "reconstruction": [
+      {
+        "image": "images/reconstruction/1.webp",
+        "caption": "Глеб вернулся через чёрный ход."
+      },
+      {
+        "image": "images/reconstruction/2.webp",
+        "caption": "Ссора из-за тайной бухгалтерии закончилась ударом статуэткой."
+      },
+      {
+        "image": "images/reconstruction/3.webp",
+        "caption": "Уходя, Глеб обронил парковочный талон."
+      }
+    ]
+  },
+  "timelineTruth": [
+    {
+      "time": "21:00",
+      "event": "Аркадий увольняет бармена Тимура за недостачу; Тимур сдаёт ключи, кричит «Ты пожалеешь!»"
+    },
+    {
+      "time": "22:10",
+      "event": "Ольга приезжает поездом из Северска"
+    },
+    {
+      "time": "22:30",
+      "event": "Ссора Аркадия и Веры в кабинете: она просит аванс, он отказывает"
+    },
+    {
+      "time": "22:45",
+      "event": "Ольга приходит к брату, просит денег. Он отказывает: «Глеб меня обворовывает. В понедельник я его уничтожу»"
+    },
+    {
+      "time": "23:00",
+      "event": "Бар закрывается. Глеб уезжает на глазах у всех"
+    },
+    {
+      "time": "23:05",
+      "event": "Вера уходит; в коридоре слышит, как Аркадий говорит по телефону: «Возвращайся, Глеб. Разговор не окончен»"
+    },
+    {
+      "time": "23:15",
+      "event": "Ольга уходит; 23:20 — регистрация в гостинице «Маяк»"
+    },
+    {
+      "time": "23:30",
+      "event": "Вера начинает выступление в клубе «Ржавый якорь» (до 01:00)"
+    },
+    {
+      "time": "23:31",
+      "event": "Машина Глеба (В742КС) въезжает на парковку на Портовой, 12"
+    },
+    {
+      "time": "23:35",
+      "event": "Глеб входит через чёрный ход своим ключом"
+    },
+    {
+      "time": "23:40",
+      "event": "Тимур приходит в переулок за спрятанными ящиками виски, видит серебристый седан Глеба у парковки, свет в кабинете, слышит два мужских голоса; пугается, бросает один ящик и убегает"
+    },
+    {
+      "time": "23:45",
+      "event": "Убийство"
+    },
+    {
+      "time": "23:55",
+      "event": "Глеб уходит переулком, роняет талон в лужу, уезжает"
+    },
+    {
+      "time": "07:00",
+      "event": "Уборщица находит тело"
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-statuette-weapon",
+      "text": "Орудие — бронзовая статуэтка саксофониста из кабинета. Её стёрли, на мраморной подставке свежий скол.",
+      "importance": "key",
+      "proves": ["method"]
+    },
+    {
+      "id": "f-lawyer-meeting",
+      "text": "В ежедневнике Аркадия: «Пн, 10:00 — юрист. По Г. — вскрыть всё».",
+      "importance": "key"
+    },
+    {
+      "id": "f-safe-code",
+      "text": "В ежедневнике записан код сейфа: 1408 («день рождения Совы»).",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-vera-advance",
+      "text": "В ежедневнике: «Вера — аванс? НЕТ».",
+      "importance": "red_herring"
+    },
+    {
+      "id": "f-double-books",
+      "text": "В сейфе — вторая, тайная бухгалтерия: переводы на фирму «Норд-Транзит» за подписью Г. Соколова.",
+      "importance": "key",
+      "proves": ["motive"]
+    },
+    {
+      "id": "f-gleb-car-plate",
+      "text": "На обороте фото с открытия бара: «Глеб и его ласточка. В742КС. 14.08.2014».",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-parking-2331",
+      "text": "Талон парковки на Портовой, 12 (минута ходьбы от бара): машина В742КС, въезд 23:31.",
+      "importance": "key",
+      "time": "23:31",
+      "proves": ["opportunity"]
+    },
+    {
+      "id": "f-door-key",
+      "text": "Замок чёрного хода не взломан — дверь открывали ключом.",
+      "importance": "key"
+    },
+    {
+      "id": "f-keys-holders",
+      "text": "Ключи от чёрного хода были только у Лебедева и Соколова. Тимур сдал свой ключ в 21:00 при увольнении.",
+      "importance": "key",
+      "time": "21:00",
+      "aboutSuspectIds": ["s-timur"]
+    },
+    {
+      "id": "f-timur-fired",
+      "text": "Тимура уволили в 21:00 за недостачу. Уходя, он крикнул: «Ты пожалеешь!»",
+      "importance": "red_herring",
+      "time": "21:00",
+      "aboutSuspectIds": ["s-timur"]
+    },
+    {
+      "id": "f-timur-crate",
+      "text": "За мусорным баком в переулке спрятан ящик виски из бара.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-timur-saw",
+      "text": "Тимур признался: в 23:40 он был в переулке, видел серебристый седан Глеба у парковки, свет в кабинете и слышал два мужских голоса.",
+      "importance": "key",
+      "time": "23:40"
+    },
+    {
+      "id": "f-vera-quarrel",
+      "text": "В 22:30 Вера и Аркадий громко ругались в кабинете.",
+      "importance": "red_herring",
+      "time": "22:30",
+      "aboutSuspectIds": ["s-vera"]
+    },
+    {
+      "id": "f-vera-debt",
+      "text": "Вера должна крупную сумму опасным людям; просила у Аркадия аванс, он отказал.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-vera-alibi",
+      "text": "Вера выступала в клубе «Ржавый якорь» с 23:30 до 01:00 — это подтвердит весь зал.",
+      "importance": "supporting",
+      "time": "23:30",
+      "aboutSuspectIds": ["s-vera"]
+    },
+    {
+      "id": "f-arkady-call",
+      "text": "Уходя в 23:05, Вера слышала, как Аркадий сказал по телефону: «Возвращайся, Глеб. Разговор не окончен».",
+      "importance": "key",
+      "time": "23:05"
+    },
+    {
+      "id": "f-gleb-left",
+      "text": "Глеб уехал из бара около 23:00, это видели Вера и Ольга.",
+      "importance": "flavor",
+      "time": "23:00"
+    },
+    {
+      "id": "f-olga-in-town",
+      "text": "Ольга приехала в Ветрогорск поездом в 22:10 — хотя говорила, что весь вечер была дома в Северске.",
+      "importance": "red_herring",
+      "time": "22:10",
+      "aboutSuspectIds": ["s-olga"]
+    },
+    {
+      "id": "f-olga-heir",
+      "text": "Ольга — единственная наследница Аркадия и его доли в баре.",
+      "importance": "red_herring"
+    },
+    {
+      "id": "f-olga-hotel",
+      "text": "Ольга зарегистрировалась в гостинице «Маяк» в 23:20 и до утра не выходила.",
+      "importance": "supporting",
+      "time": "23:20",
+      "aboutSuspectIds": ["s-olga"]
+    },
+    {
+      "id": "f-arkady-said-gleb-steals",
+      "text": "Ольге брат сказал в 22:45: «Глеб меня обворовывает. В понедельник я его уничтожу».",
+      "importance": "key",
+      "time": "22:45"
+    },
+    {
+      "id": "f-gleb-returned",
+      "text": "Глеб признал, что вернулся около 23:35 через чёрный ход, чтобы «поговорить». Утверждает, что ушёл, когда Аркадий был жив.",
+      "importance": "key",
+      "time": "23:35"
+    },
+    {
+      "id": "f-gleb-took-money",
+      "text": "Глеб признал, что «брал в долг» из кассы бара через свою фирму.",
+      "importance": "supporting"
+    }
+  ],
+  "suspects": [
+    {
+      "id": "s-gleb",
+      "name": "Глеб Соколов",
+      "age": 47,
+      "actorId": "a02-gleb",
+      "occupation": "Партнёр по бизнесу",
+      "relationToVictim": "Партнёр по бизнесу",
+      "publicProfile": "партнёр Аркадия по бару, 50/50. «Деловой, обаятельный, всегда в дорогом пальто».",
+      "personality": "холодный, вежливый, контролирует себя; раздражается, когда теряет контроль. Любит переводить стрелки.",
+      "speechStyle": "на «вы», гладкие формулировки, деловая лексика («давайте по существу», «объективно»).",
+      "coverStory": "«Уехал в 23:00, был дома, спал. Аркадий был в порядке, мы обсуждали поставки».",
+      "sensitiveTopics": [
+        "где был после 23:00",
+        " деньги бара",
+        " ключи от чёрного хода",
+        " машина."
+      ],
+      "shareableFactIds": [
+        "f-timur-fired",
+        "f-vera-quarrel",
+        "f-olga-heir",
+        "f-gleb-left"
+      ],
+      "hiddenTruths": [
+        {
+          "id": "t-returned",
+          "topic": "где был после 23:00",
+          "lie": "Дома, спал",
+          "truth": "Да, вернулся около 23:35 через чёрный ход, поговорить. Он был жив, когда я уходил!"
+        },
+        {
+          "id": "t-money",
+          "topic": "деньги бара",
+          "lie": "Финансы в идеальном порядке",
+          "truth": "Брал в долг через свою фирму. Собирался вернуть."
+        }
+      ],
+      "breakThreshold": 6,
+      "breakpoints": [
+        {
+          "clueId": "c-parking-stub",
+          "requiresFactIds": ["f-gleb-car-plate"],
+          "unlocksTruthIds": ["t-returned"],
+          "revealsFactIds": ["f-gleb-returned"],
+          "confession": "Да, вернулся около 23:35 через чёрный ход, поговорить; Он был жив, когда я уходил!"
+        },
+        {
+          "clueId": "c-ledger",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-money"],
+          "revealsFactIds": ["f-gleb-took-money"],
+          "confession": "Брал в долг через свою фирму; Собирался вернуть."
+        }
+      ],
+      "clueReactions": [],
+      "offlineQA": [
+        {
+          "id": "q-gleb-1",
+          "question": "Где вы были после 23:00?",
+          "answer": "Уехал домой ровно в одиннадцать; Спал; Объективно, мне нечего добавить",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-gleb-2",
+          "question": "Какие у вас были отношения с Аркадием?",
+          "answer": "Партнёрские; Спорили о поставках, как все; Ничего личного",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-gleb-3",
+          "question": "Кто, по-вашему, мог это сделать?",
+          "answer": "Бармен, которого он вечером выгнал, кричал, что Аркадий пожалеет; И Вера с ним ругалась — полбара слышало",
+          "revealsFactIds": ["f-timur-fired", "f-vera-quarrel"]
+        },
+        {
+          "id": "q-gleb-4",
+          "question": "Кому выгодна смерть Аркадия?",
+          "answer": "Формально — сестре; Ольга единственная наследница",
+          "revealsFactIds": ["f-olga-heir"]
+        },
+        {
+          "id": "q-gleb-5",
+          "question": "Когда вы видели его в последний раз?",
+          "answer": "В одиннадцать, когда уезжал; Вера с Ольгой тоже видели",
+          "revealsFactIds": ["f-gleb-left"]
+        },
+        {
+          "id": "q-gleb-6",
+          "question": "У кого есть ключи от чёрного хода?",
+          "answer": "У Аркадия… ну и у меня, я же совладелец; Но я им не пользовался",
+          "revealsFactIds": [],
+          "requiresFactId": "f-door-key",
+          "stressDelta": 1
+        },
+        {
+          "id": "q-gleb-7",
+          "question": "Как идут дела у бара?",
+          "answer": "Прекрасно; Финансы в идеальном порядке",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-gleb-8",
+          "question": "Что такое «Норд-Транзит",
+          "answer": "Логистическая фирма; Моя; Это законный бизнес",
+          "revealsFactIds": [],
+          "requiresFactId": "f-double-books",
+          "stressDelta": 2
+        }
+      ],
+      "isCulprit": true
+    },
+    {
+      "id": "s-vera",
+      "name": "Вера Орлова",
+      "age": 31,
+      "actorId": "a03-vera",
+      "occupation": "Певица",
+      "relationToVictim": "Певица",
+      "publicProfile": "певица «Синей совы», звезда пятничных вечеров.",
+      "personality": "эмоциональная, гордая, ироничная; защищается нападением.",
+      "speechStyle": "на «ты» после первой реплики, театральные паузы, «милый», «дорогуша».",
+      "coverStory": "«Ругались из-за репертуара. В 23:05 ушла петь в «Ржавый якорь»».",
+      "sensitiveTopics": ["причина ссоры", " деньги."],
+      "shareableFactIds": ["f-vera-alibi", "f-gleb-left"],
+      "hiddenTruths": [
+        {
+          "id": "t-debt",
+          "topic": "причина ссоры",
+          "lie": "Из-за репертуара",
+          "truth": "Я должна денег очень неприятным людям. Просила аванс, он отказал. Уходя, слышала: «Возвращайся, Глеб. Разговор не окончен»."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-diary",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-debt"],
+          "revealsFactIds": ["f-vera-debt", "f-arkady-call"],
+          "confession": "Я должна денег очень неприятным людям; Просила аванс, он отказал; Уходя, слышала: «Возвращайся, Глеб; Разговор не окончен»."
+        }
+      ],
+      "clueReactions": [],
+      "offlineQA": [
+        {
+          "id": "q-vera-1",
+          "question": "Из-за чего вы ругались?",
+          "answer": "Из-за репертуара; Он хотел, чтобы я пела попсу; Я — джаз",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-vera-2",
+          "question": "Где вы были после 23:00?",
+          "answer": "В 23:05 ушла, в полдвенадцатого уже пела в «Ржавом якоре»; До часу ночи; Спроси кого хочешь",
+          "revealsFactIds": ["f-vera-alibi"]
+        },
+        {
+          "id": "q-vera-3",
+          "question": "Кто был в баре, когда вы уходили?",
+          "answer": "Аркадий и его сестрица; Глеб укатил в одиннадцать, как обычно",
+          "revealsFactIds": ["f-gleb-left"]
+        },
+        {
+          "id": "q-vera-4",
+          "question": "Что вы думаете о Глебе?",
+          "answer": "Скользкий; Улыбается, как гробовщик на распродаже",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-vera-5",
+          "question": "Вам нужны деньги?",
+          "answer": "Всем нужны деньги, милый; Это не преступление",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-vera-6",
+          "question": "Вы знали про аванс в ежедневнике?",
+          "answer": "Он и это записал?.; Чёрт",
+          "revealsFactIds": [],
+          "requiresClueId": "c-diary",
+          "stressDelta": 2
+        }
+      ],
+      "isCulprit": false
+    },
+    {
+      "id": "s-timur",
+      "name": "Тимур Галиев",
+      "age": 26,
+      "actorId": "a04-timur",
+      "occupation": "Бармен",
+      "relationToVictim": "Бармен",
+      "publicProfile": "бармен, уволенный в тот же вечер.",
+      "personality": "дерзкий, нервный, сначала грубит, потом быстро сдаётся.",
+      "speechStyle": "на «ты», сленг, короткие фразы.",
+      "coverStory": "«После девяти был дома. Один. Сериал смотрел».",
+      "sensitiveTopics": ["где был ночью", " недостача", " виски."],
+      "shareableFactIds": ["f-timur-fired", "f-keys-holders"],
+      "hiddenTruths": [
+        {
+          "id": "t-alley",
+          "topic": "где был ночью",
+          "lie": "Дома, сериал смотрел",
+          "truth": "Вернулся за ящиками в 23:40. Видел седан Глеба, свет в кабинете, слышал два мужских голоса. Бросил ящик и сбежал."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-whisky-crate",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-alley"],
+          "revealsFactIds": ["f-timur-saw"],
+          "confession": "Вернулся за ящиками в 23:40; Видел седан Глеба, свет в кабинете, слышал два мужских голоса; Бросил ящик и сбежал."
+        }
+      ],
+      "clueReactions": [],
+      "offlineQA": [
+        {
+          "id": "q-timur-1",
+          "question": "За что вас уволили?",
+          "answer": "Сказал, что я ворую; Доказательств — ноль",
+          "revealsFactIds": ["f-timur-fired"],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-timur-2",
+          "question": "Вы угрожали Аркадию?",
+          "answer": "Ну крикнул сгоряча; Это не значит, что я его…",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-timur-3",
+          "question": "Где вы были ночью?",
+          "answer": "Дома; Сериал; Один",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-timur-4",
+          "question": "У вас есть ключи от бара?",
+          "answer": "Забрал он ключи в девять, при мне; От чёрного хода ключи только у него и у Глеба",
+          "revealsFactIds": ["f-keys-holders"]
+        },
+        {
+          "id": "q-timur-5",
+          "question": "Что вы знаете о Глебе?",
+          "answer": "Ездит на серебристом седане, на чай не даёт; Всё",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-timur-6",
+          "question": "Вы знаете что-то про ящик виски в переулке?",
+          "answer": "Какой ещё ящик?..",
+          "revealsFactIds": [],
+          "requiresClueId": "c-whisky-crate",
+          "stressDelta": 2
+        }
+      ],
+      "isCulprit": false
+    },
+    {
+      "id": "s-olga",
+      "name": "Ольга Лебедева",
+      "age": 49,
+      "actorId": "a05-olga",
+      "occupation": "Сестра Аркадия",
+      "relationToVictim": "Сестра Аркадия",
+      "publicProfile": "сестра Аркадия, живёт в Северске, «приехала утром, узнав о смерти».",
+      "personality": "сдержанная, педантичная, скрывает обиду на брата; плачет, когда «ломается».",
+      "speechStyle": "на «вы», правильная, суховатая, «извольте», «будьте любезны».",
+      "coverStory": "«Весь вечер была дома в Северске. Приехала утром первым поездом».",
+      "sensitiveTopics": ["где была вечером", " деньги", " наследство."],
+      "shareableFactIds": ["f-olga-heir"],
+      "hiddenTruths": [
+        {
+          "id": "t-town",
+          "topic": "где была вечером",
+          "lie": "Дома, в Северске",
+          "truth": "Приехала в 22:10, просила денег. Брат сказал: «Глеб меня обворовывает. В понедельник я его уничтожу». В 23:20 была в гостинице «Маяк»."
+        }
+      ],
+      "breakThreshold": 5,
+      "breakpoints": [
+        {
+          "clueId": "c-train-ticket",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-town"],
+          "revealsFactIds": ["f-olga-hotel", "f-arkady-said-gleb-steals"],
+          "confession": "Приехала в 22:10, просила денег; Брат сказал: «Глеб меня обворовывает; В понедельник я его уничтожу»; В 23:20 была в гостинице «Маяк».",
+          "ignoreStress": true
+        }
+      ],
+      "clueReactions": [],
+      "offlineQA": [
+        {
+          "id": "q-olga-1",
+          "question": "Где вы были вечером?",
+          "answer": "Дома, в Северске; Приехала утром, как только позвонили",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-olga-2",
+          "question": "Вы наследница?",
+          "answer": "Единственная; Если вы на что-то намекаете — извольте прямо",
+          "revealsFactIds": ["f-olga-heir"]
+        },
+        {
+          "id": "q-olga-3",
+          "question": "Как вы ладили с братом?",
+          "answer": "Сложно; Он был щедр ко всем, кроме семьи",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-olga-4",
+          "question": "Мог ли кто-то желать ему зла?",
+          "answer": "Он доверял Глебу больше, чем мне; Это всё, что я скажу",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-olga-5",
+          "question": "Где Аркадий хранил важное?",
+          "answer": "В сейфе, в кабинете; А всё, что боялся забыть, — в ежедневнике",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-olga-6",
+          "question": "Вы были в кабинете брата недавно?",
+          "answer": "Нет; Я давно у него не была",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        }
+      ],
+      "isCulprit": false
+    }
+  ],
+  "locations": [
+    {
+      "id": "l-hall",
+      "name": "Зал бара",
+      "description": "Перевёрнутые стулья, запах табака и дождя. Сцена пуста",
+      "image": "images/locations/l-hall.webp",
+      "hotspots": [
+        {
+          "id": "h-photos",
+          "label": "Старые фото",
+          "text": "Стена со старыми фото. Одно — двое мужчин у новой машины.",
+          "rect": {
+            "x": 0.08,
+            "y": 0.08,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-photo",
+          "closeup": "images/closeups/h-photos.webp"
+        },
+        {
+          "id": "h-board",
+          "label": "Доска объявлений",
+          "text": "Доска объявлений с афишами.",
+          "rect": {
+            "x": 0.5599999999999999,
+            "y": 0.08,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-poster",
+          "closeup": "images/closeups/h-board.webp"
+        },
+        {
+          "id": "h-counter",
+          "label": "Стойка",
+          "text": "Пустые полки; под стойкой папка для бухгалтерии.",
+          "rect": {
+            "x": 0.08,
+            "y": 0.37,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-dismissal",
+          "closeup": "images/closeups/h-counter.webp"
+        },
+        {
+          "id": "h-piano",
+          "label": "Рояль",
+          "text": "Рояль. На крышке — недопитый бокал и ноты. Ничего полезного.",
+          "rect": {
+            "x": 0.5599999999999999,
+            "y": 0.37,
+            "w": 0.36,
+            "h": 0.22
+          }
+        }
+      ]
+    },
+    {
+      "id": "l-office",
+      "name": "Кабинет",
+      "description": "Тесно. Зелёная лампа всё ещё горит",
+      "image": "images/locations/l-office.webp",
+      "hotspots": [
+        {
+          "id": "h-floor",
+          "label": "Пол у стола",
+          "text": "У стола — меловой контур. Рядом статуэтка саксофониста, стёртая, со сколом. На полке — пустое место в пыли.",
+          "rect": {
+            "x": 0.08,
+            "y": 0.08,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-statuette",
+          "closeup": "images/closeups/h-floor.webp"
+        },
+        {
+          "id": "h-desk",
+          "label": "Письменный стол",
+          "text": "Бумаги, открытый ежедневник.",
+          "rect": {
+            "x": 0.5599999999999999,
+            "y": 0.08,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-diary",
+          "closeup": "images/closeups/h-desk.webp"
+        },
+        {
+          "id": "h-safe",
+          "label": "Сейф",
+          "text": "Стальной сейф. Требует `f-safe-code`; закрыто: «Кодовый замок, четыре цифры».",
+          "rect": {
+            "x": 0.08,
+            "y": 0.37,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-ledger",
+          "requiresFactId": "f-safe-code",
+          "lockedText": "Кодовый замок, четыре цифры",
+          "closeup": "images/closeups/h-safe.webp"
+        },
+        {
+          "id": "h-sofa",
+          "label": "Диван",
+          "text": "Под диваном в пыли — бумажный корешок.",
+          "rect": {
+            "x": 0.5599999999999999,
+            "y": 0.37,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-train-ticket",
+          "closeup": "images/closeups/h-sofa.webp"
+        },
+        {
+          "id": "h-window",
+          "label": "Окно",
+          "text": "Окно в переулок. Видна лампочка над чёрным ходом.",
+          "rect": {
+            "x": 0.08,
+            "y": 0.6599999999999999,
+            "w": 0.36,
+            "h": 0.22
+          }
+        }
+      ]
+    },
+    {
+      "id": "l-alley",
+      "name": "Переулок у чёрного хода",
+      "description": "Лужи, мусорные баки, одна лампочка над дверью",
+      "image": "images/locations/l-alley.webp",
+      "hotspots": [
+        {
+          "id": "h-door",
+          "label": "Чёрный ход",
+          "text": "Замок цел, царапин нет.",
+          "rect": {
+            "x": 0.08,
+            "y": 0.08,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "revealsFactIds": ["f-door-key"],
+          "closeup": "images/closeups/h-door.webp"
+        },
+        {
+          "id": "h-dumpster",
+          "label": "Мусорный бак",
+          "text": "За баком под пакетом — ящик виски.",
+          "rect": {
+            "x": 0.5599999999999999,
+            "y": 0.08,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-whisky-crate",
+          "closeup": "images/closeups/h-dumpster.webp"
+        },
+        {
+          "id": "h-puddle",
+          "label": "Лужа",
+          "text": "В луже — размокший бумажный талон.",
+          "rect": {
+            "x": 0.08,
+            "y": 0.37,
+            "w": 0.36,
+            "h": 0.22
+          },
+          "clueId": "c-parking-stub",
+          "closeup": "images/closeups/h-puddle.webp"
+        },
+        {
+          "id": "h-alley-end",
+          "label": "Выход из переулка",
+          "text": "Переулок выходит на Портовую. Там платная парковка — минута ходьбы.",
+          "rect": {
+            "x": 0.5599999999999999,
+            "y": 0.37,
+            "w": 0.36,
+            "h": 0.22
+          }
+        }
+      ]
+    }
+  ],
+  "clues": [
+    {
+      "id": "c-statuette",
+      "name": "Бронзовая статуэтка",
+      "kind": "object",
+      "description": "`clues/c-statuette.webp`",
+      "revealsFactIds": ["f-statuette-weapon"],
+      "isKey": true,
+      "image": "images/clues/c-statuette.webp"
+    },
+    {
+      "id": "c-diary",
+      "name": "Ежедневник Аркадия",
+      "kind": "object",
+      "description": "картинка + страницы: «Пн 10:00 — юрист. По Г. — вскрыть всё», «Сейф: 1408 (д.р. Совы)», «Вера — аванс? НЕТ»",
+      "revealsFactIds": ["f-lawyer-meeting", "f-safe-code", "f-vera-advance"],
+      "isKey": true,
+      "image": "images/clues/c-diary.webp",
+      "document": {
+        "template": "diary",
+        "fields": {
+          "title": "Ежедневник Аркадия",
+          "text": [
+            "В ежедневнике Аркадия: «Пн, 10:00 — юрист. По Г. — вскрыть всё».",
+            "В ежедневнике записан код сейфа: 1408 («день рождения Совы»).",
+            "В ежедневнике: «Вера — аванс? НЕТ»."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-ledger",
+      "name": "Тайная бухгалтерия",
+      "kind": "object",
+      "description": "4–5 строк переводов «Норд-Транзит», подпись «Г. Соколов»",
+      "revealsFactIds": ["f-double-books"],
+      "isKey": true,
+      "image": "images/clues/c-ledger.webp",
+      "document": {
+        "template": "ledger",
+        "fields": {
+          "title": "Тайная бухгалтерия",
+          "text": [
+            "В сейфе — вторая, тайная бухгалтерия: переводы на фирму «Норд-Транзит» за подписью Г. Соколова."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-photo",
+      "name": "Фото с открытия",
+      "kind": "photo",
+      "description": "`clues/c-photo.webp`; оборот: «Глеб и его ласточка. В742КС. 14.08.2014»",
+      "revealsFactIds": ["f-gleb-car-plate"],
+      "isKey": false,
+      "image": "images/clues/c-photo.webp",
+      "document": {
+        "template": "photo-back",
+        "fields": {
+          "title": "Фото с открытия",
+          "text": [
+            "На обороте фото с открытия бара: «Глеб и его ласточка. В742КС. 14.08.2014»."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-poster",
+      "name": "Афиша «Ржавого якоря»",
+      "kind": "document",
+      "description": "«Пятница. 23:30. Вера Орлова. Джаз до утра»",
+      "revealsFactIds": ["f-vera-alibi"],
+      "isKey": false,
+      "document": {
+        "template": "poster",
+        "fields": {
+          "title": "Афиша «Ржавого якоря»",
+          "text": [
+            "Вера выступала в клубе «Ржавый якорь» с 23:30 до 01:00 — это подтвердит весь зал."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-dismissal",
+      "name": "Приказ об увольнении",
+      "kind": "document",
+      "description": "«Галиев Т. уволен 21:00. Ключи (вход, чёрный ход) сданы. Ключи от чёрного хода: Лебедев А., Соколов Г.»",
+      "revealsFactIds": ["f-timur-fired", "f-keys-holders"],
+      "isKey": true,
+      "document": {
+        "template": "official",
+        "fields": {
+          "title": "Приказ об увольнении",
+          "text": [
+            "Тимура уволили в 21:00 за недостачу. Уходя, он крикнул: «Ты пожалеешь!»",
+            "Ключи от чёрного хода были только у Лебедева и Соколова. Тимур сдал свой ключ в 21:00 при увольнении."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-train-ticket",
+      "name": "Билет на поезд",
+      "kind": "document",
+      "description": "«Северск → Ветрогорск, пт, прибытие 22:10, пассажир: Лебедева О. В.»",
+      "revealsFactIds": ["f-olga-in-town"],
+      "isKey": false,
+      "document": {
+        "template": "ticket",
+        "fields": {
+          "title": "Билет на поезд",
+          "text": [
+            "Ольга приехала в Ветрогорск поездом в 22:10 — хотя говорила, что весь вечер была дома в Северске."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-whisky-crate",
+      "name": "Ящик виски",
+      "kind": "object",
+      "description": "`clues/c-whisky-crate.webp`",
+      "revealsFactIds": ["f-timur-crate"],
+      "isKey": false,
+      "image": "images/clues/c-whisky-crate.webp"
+    },
+    {
+      "id": "c-parking-stub",
+      "name": "Парковочный талон",
+      "kind": "document",
+      "description": "«Парковка Портовая, 12 · Авто В742КС · Въезд 23:31»",
+      "revealsFactIds": ["f-parking-2331"],
+      "isKey": true,
+      "document": {
+        "template": "ticket",
+        "fields": {
+          "title": "Парковочный талон",
+          "text": [
+            "Талон парковки на Портовой, 12 (минута ходьбы от бара): машина В742КС, въезд 23:31."
+          ]
+        }
+      }
+    }
+  ],
+  "hints": [
+    {
+      "afterRound": 3,
+      "unlessAnyPlayerHas": "c-diary",
+      "text": "Покойный всё записывал. Его стол кто-нибудь смотрел?"
+    },
+    {
+      "afterRound": 4,
+      "unlessAnyPlayerHas": "c-parking-stub",
+      "text": "Переулок осмотрели? Дождь смывает многое, но не всё."
+    },
+    {
+      "afterRound": 5,
+      "unlessAnyPlayerHas": "f-timur-saw",
+      "text": "Бармен что-то недоговаривает. Выясните, зачем он возвращался."
+    }
+  ]
+}

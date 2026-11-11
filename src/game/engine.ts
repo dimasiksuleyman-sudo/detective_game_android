@@ -1,2 +1,384 @@
-/** Чистые переходы состояния партии без сети и платформы (M1). */
-export {};
+/** Чистый детерминированный движок: все права, лимиты и открытия проверяются здесь. */
+import { ru } from '../i18n/ru';
+import type { CaseFile } from '../content/schema';
+export type Tone = 'neutral' | 'pressure' | 'empathy';
+export type Player = {
+  name: string;
+  color: string;
+  clues: string[];
+  facts: string[];
+  visited: string[];
+  asked: string[];
+  truths: string[];
+  broken: string[];
+  notes: string;
+  stress: Record<string, number>;
+  blocked: Record<string, number>;
+  turns: number;
+  eliminated: boolean;
+  grace: boolean;
+  score: number;
+  history: { suspect: string; question: string; answer: string }[];
+};
+export type GameState = {
+  caseId: string;
+  players: Player[];
+  current: number;
+  round: number;
+  roundLimit: number;
+  phase: 'briefing' | 'handover' | 'turn' | 'final' | 'finished';
+  finalMode: boolean;
+  finalDone: number[];
+  winners: number[];
+  action: { kind: 'search' | 'talk'; target: string; used: number } | null;
+  board: { id: string; by: number }[];
+  message: string;
+  hint: string;
+  started: boolean;
+};
+export type Action =
+  | { type: 'START_GAME'; names: string[]; roundLimit: number }
+  | { type: 'BEGIN_TURN' }
+  | { type: 'END_TURN' }
+  | { type: 'SEARCH_HOTSPOT'; locationId: string; hotspotId: string }
+  | {
+      type: 'ASK_OFFLINE_QUESTION';
+      suspectId: string;
+      questionId: string;
+      tone: Tone;
+    }
+  | { type: 'PRESENT_CLUE'; suspectId: string; clueId: string; tone: Tone }
+  | {
+      type: 'ASK_AI_QUESTION_RESULT';
+      suspectId: string;
+      reply: string;
+      factIds: string[];
+      stressDelta: number;
+      tone: Tone;
+      valid: boolean;
+    }
+  | { type: 'PUBLISH_TO_BOARD'; id: string }
+  | { type: 'ADD_NOTE'; text: string }
+  | {
+      type: 'ACCUSE';
+      suspectId: string;
+      motiveId: string;
+      methodId: string;
+      evidence: string[];
+    }
+  | { type: 'LOCK' };
+const unique = (a: string[]) => [...new Set(a)];
+const colors = ['#D2691E', '#52b6b6', '#bc6575', '#d6b644'];
+function grant(c: CaseFile, p: Player, clues: string[], facts: string[]) {
+  for (const id of clues) {
+    if (!p.clues.includes(id) && c.clues.find((x) => x.id === id)?.isKey)
+      p.score += 2;
+  }
+  p.clues = unique([...p.clues, ...clues]);
+  p.facts = unique([
+    ...p.facts,
+    ...facts,
+    ...c.clues
+      .filter((x) => clues.includes(x.id))
+      .flatMap((x) => x.revealsFactIds),
+  ]);
+}
+function begin(c: CaseFile, s: GameState) {
+  const p = s.players[s.current];
+  if (!p) return;
+  s.action = null;
+  p.turns++;
+  for (const suspect of c.suspects) {
+    const until = p.blocked[suspect.id];
+    if (until !== undefined && p.turns > until) {
+      p.stress[suspect.id] = 6;
+      p.blocked = Object.fromEntries(
+        Object.entries(p.blocked).filter(([id]) => id !== suspect.id),
+      );
+    } else p.stress[suspect.id] = Math.max(0, (p.stress[suspect.id] ?? 0) - 1);
+  }
+  s.hint = c.hints
+    .filter(
+      (h) =>
+        s.round >= h.afterRound &&
+        !s.players.some(
+          (x) =>
+            x.clues.includes(h.unlessAnyPlayerHas) ||
+            x.facts.includes(h.unlessAnyPlayerHas),
+        ),
+    )
+    .map((h) => h.text)
+    .join(' ');
+  s.started = true;
+  s.phase =
+    s.players.length === 1 ? (s.finalMode ? 'final' : 'turn') : 'handover';
+}
+function next(c: CaseFile, s: GameState) {
+  const active = s.players
+    .map((p, i) => (p.eliminated ? -1 : i))
+    .filter((i) => i >= 0);
+  if (!active.length) {
+    s.phase = 'finished';
+    return;
+  }
+  if (s.finalMode) {
+    const n = active.find((i) => !s.finalDone.includes(i));
+    if (n === undefined) {
+      s.phase = 'finished';
+      return;
+    }
+    s.current = n;
+    begin(c, s);
+    return;
+  }
+  let n = (s.current + 1) % s.players.length;
+  if (n === 0) s.round++;
+  while (s.players[n]?.eliminated) {
+    n = (n + 1) % s.players.length;
+    if (n === 0) s.round++;
+  }
+  s.current = n;
+  if (s.round > s.roundLimit) {
+    s.finalMode = true;
+    s.current = active[0] ?? 0;
+  }
+  begin(c, s);
+}
+function canUse(
+  s: GameState,
+  p: Player,
+  kind: 'search' | 'talk',
+  target: string,
+  limit: number,
+) {
+  return (
+    !s.finalMode &&
+    !p.eliminated &&
+    (!s.action ||
+      (s.action.kind === kind &&
+        s.action.target === target &&
+        s.action.used < limit))
+  );
+}
+function use(s: GameState, kind: 'search' | 'talk', target: string) {
+  s.action = { kind, target, used: (s.action?.used ?? 0) + 1 };
+}
+function stress(p: Player, id: string, delta: number) {
+  p.stress[id] = Math.min(10, Math.max(0, (p.stress[id] ?? 0) + delta));
+  if (p.stress[id] === 10) p.blocked[id] = p.turns + 1;
+}
+const toneDelta = (t: Tone) =>
+  t === 'pressure' ? 2 : t === 'empathy' ? -1 : 0;
+export function reduce(
+  c: CaseFile,
+  state: GameState | null,
+  a: Action,
+): GameState | null {
+  if (a.type === 'START_GAME') {
+    if (
+      a.names.length < 1 ||
+      a.names.length > 4 ||
+      ![6, 8, 10].includes(a.roundLimit) ||
+      a.names.some((x) => !x.trim() || x.length > 30)
+    )
+      return state;
+    return {
+      caseId: c.id,
+      players: a.names.map((name, i) => ({
+        name: name.trim(),
+        color: colors[i] ?? colors[0] ?? '',
+        clues: [],
+        facts: [],
+        visited: [],
+        asked: [],
+        truths: [],
+        broken: [],
+        notes: '',
+        stress: {},
+        blocked: {},
+        turns: 0,
+        eliminated: false,
+        grace: false,
+        score: 0,
+        history: [],
+      })),
+      current: 0,
+      round: 1,
+      roundLimit: a.roundLimit,
+      phase: 'briefing',
+      finalMode: false,
+      finalDone: [],
+      winners: [],
+      action: null,
+      board: [],
+      message: '',
+      hint: '',
+      started: false,
+    };
+  }
+  if (!state) return null;
+  const s = structuredClone(state),
+    p = s.players[s.current];
+  if (!p) return state;
+  if (a.type === 'LOCK') {
+    if (s.phase === 'turn' || s.phase === 'final') s.phase = 'handover';
+    return s;
+  }
+  if (a.type === 'BEGIN_TURN') {
+    if (s.phase === 'briefing') begin(c, s);
+    else if (s.phase === 'handover') s.phase = s.finalMode ? 'final' : 'turn';
+    return s;
+  }
+  if (!['turn', 'final'].includes(s.phase)) return state;
+  s.message = '';
+  if (a.type === 'END_TURN') {
+    if (!s.finalMode) next(c, s);
+    return s;
+  }
+  if (a.type === 'ADD_NOTE') {
+    p.notes = a.text.slice(0, 5000);
+    return s;
+  }
+  if (a.type === 'PUBLISH_TO_BOARD') {
+    if (
+      (p.clues.includes(a.id) || p.facts.includes(a.id)) &&
+      !s.board.some((x) => x.id === a.id)
+    ) {
+      s.board.push({ id: a.id, by: s.current });
+      p.score++;
+    }
+    return s;
+  }
+  if (a.type === 'SEARCH_HOTSPOT') {
+    const l = c.locations.find((x) => x.id === a.locationId),
+      h = l?.hotspots.find((x) => x.id === a.hotspotId);
+    if (
+      !h ||
+      !canUse(s, p, 'search', a.locationId, 2) ||
+      p.visited.includes(h.id)
+    )
+      return state;
+    if (h.requiresFactId && !p.facts.includes(h.requiresFactId)) {
+      s.message = h.lockedText ?? '';
+      return s;
+    }
+    use(s, 'search', a.locationId);
+    p.visited.push(h.id);
+    grant(c, p, h.clueId ? [h.clueId] : [], h.revealsFactIds ?? []);
+    s.message = h.text;
+    return s;
+  }
+  if (
+    a.type === 'ASK_OFFLINE_QUESTION' ||
+    a.type === 'PRESENT_CLUE' ||
+    a.type === 'ASK_AI_QUESTION_RESULT'
+  ) {
+    const suspect = c.suspects.find((x) => x.id === a.suspectId);
+    if (
+      !suspect ||
+      !canUse(s, p, 'talk', a.suspectId, 3) ||
+      p.blocked[a.suspectId] !== undefined
+    )
+      return state;
+    let answer: string,
+      question = '',
+      delta = toneDelta(a.tone);
+    if (a.type === 'ASK_OFFLINE_QUESTION') {
+      const q = suspect.offlineQA.find((x) => x.id === a.questionId);
+      if (
+        !q ||
+        p.asked.includes(q.id) ||
+        (q.requiresClueId && !p.clues.includes(q.requiresClueId)) ||
+        (q.requiresFactId && !p.facts.includes(q.requiresFactId))
+      )
+        return state;
+      p.asked.push(q.id);
+      grant(c, p, [], q.revealsFactIds);
+      answer = q.answer;
+      question = q.question;
+      delta += q.stressDelta ?? 0;
+    } else if (a.type === 'PRESENT_CLUE') {
+      if (!p.clues.includes(a.clueId)) return state;
+      question = c.clues.find((x) => x.id === a.clueId)?.name ?? '';
+      const bp = suspect.breakpoints.find(
+        (x) =>
+          x.clueId === a.clueId &&
+          (x.requiresFactIds ?? []).every((id) => p.facts.includes(id)),
+      );
+      // Порог проверяем до изменения стресса этой репликой; иначе тон менял бы исход задним числом.
+      if (bp && !bp.unlocksTruthIds.every((id) => p.truths.includes(id))) {
+        if (
+          bp.ignoreStress ||
+          (p.stress[suspect.id] ?? 0) >= suspect.breakThreshold
+        ) {
+          p.truths = unique([...p.truths, ...bp.unlocksTruthIds]);
+          grant(c, p, [], bp.revealsFactIds);
+          answer = bp.confession;
+          if (!p.broken.includes(suspect.id)) {
+            p.broken.push(suspect.id);
+            p.score++;
+          }
+        } else {
+          delta += 2;
+          answer = ru.game.nervous;
+        }
+      } else
+        answer =
+          suspect.clueReactions.find((x) => x.clueId === a.clueId)?.reaction ??
+          ru.game.neutralReaction;
+    } else {
+      if (!a.valid) return state;
+      const allowed = unique([
+        ...suspect.shareableFactIds,
+        ...suspect.breakpoints
+          .filter((b) => b.unlocksTruthIds.every((id) => p.truths.includes(id)))
+          .flatMap((b) => b.revealsFactIds),
+      ]);
+      grant(
+        c,
+        p,
+        [],
+        a.factIds.filter((id) => allowed.includes(id)),
+      );
+      answer = a.reply;
+      delta += Math.min(2, Math.max(-1, a.stressDelta));
+    }
+    use(s, 'talk', a.suspectId);
+    stress(p, suspect.id, delta);
+    p.history.push({ suspect: suspect.id, question, answer });
+    s.message = p.blocked[suspect.id] !== undefined ? ru.game.lawyer : answer;
+    return s;
+  }
+  if (a.type === 'ACCUSE') {
+    if (
+      !c.suspects.some((x) => x.id === a.suspectId) ||
+      !c.motives.some((x) => x.id === a.motiveId) ||
+      !c.methods.some((x) => x.id === a.methodId) ||
+      a.evidence.length > 3 ||
+      unique(a.evidence).length !== a.evidence.length ||
+      !a.evidence.every((id) => p.clues.includes(id) || p.facts.includes(id))
+    )
+      return state;
+    const correct =
+      a.suspectId === c.solution.culpritId &&
+      a.motiveId === c.solution.motiveId &&
+      a.methodId === c.solution.methodId;
+    const proven = a.evidence.some((id) => c.solution.keyEvidence.includes(id));
+    if (correct && proven) {
+      p.score += 10;
+      s.winners.push(s.current);
+      if (!s.finalMode) {
+        s.phase = 'finished';
+        return s;
+      }
+    } else if (!s.finalMode && correct && !p.grace) {
+      p.grace = true;
+      s.message = ru.game.noEvidence;
+      return s;
+    } else if (!s.finalMode) p.eliminated = true;
+    if (s.finalMode) s.finalDone.push(s.current);
+    next(c, s);
+    return s;
+  }
+  return state;
+}
