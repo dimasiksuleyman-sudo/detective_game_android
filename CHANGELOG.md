@@ -9,4 +9,4 @@
 
 Локальный debug APK собран из исходного кода `83d432f` (Gradle BUILD SUCCESSFUL, 93 задачи). Подпись проверена `apksigner verify`. Размер 4 483 645 байт, SHA-256 `ff27b0a47c513b959fcc78d61951daab6434e3e07cdc67015ea0775e3197a97d`.
 
-CI-артефакт подписывается собственным debug-ключом runner и может иметь другой хеш. Источник скачивания и результат CI указаны в STATUS/devlog. Для приёмки используйте APK из успешного запуска CI. Release-версия пока не выпускалась.
+CI-артефакт подписывается собственным debug-ключом runner и может иметь другой хеш. Успешный [CI 43079709053](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053) для исходного кода eaa7ab5; [ZIP с APK](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053/artifacts/13882664903), artifact ID 13882664903. Для приёмки используйте APK из успешного запуска CI. Release-версия пока не выпускалась.

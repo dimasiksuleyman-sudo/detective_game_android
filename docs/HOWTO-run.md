@@ -55,11 +55,15 @@ npm run android:debug
 
 ## Установка на телефон
 
-В GitHub откройте репозиторий → Actions → «Проверки и debug APK» → успешный запуск для ветки `codex/m0-project-scaffold` → Artifacts → `android-debug`. Скачайте ZIP и распакуйте `app-debug.apk`. Для скачивания артефактов нужен вход в GitHub. Номер запуска и ссылка будут указаны в итоговом devlog.
+В GitHub откройте репозиторий → Actions → «Проверки и debug APK» → успешный запуск для ветки `codex/m0-project-scaffold` → Artifacts → `android-debug`. Скачайте ZIP и распакуйте `app-debug.apk`. Для скачивания артефактов нужен вход в GitHub. Проверенная сборка M0: [CI 43079709053](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053), [ZIP android-debug](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053/artifacts/13882664903), исходный код eaa7ab5. Внутри ZIP файл app-debug.apk. Если артефакт уже истёк, запустите workflow кнопкой Run workflow на нужной ветке.
 
 После сборки скачать `app-debug.apk`, открыть на телефоне, разрешить установку из этого источника. Альтернатива через USB с включённой отладкой: `adb install -r android/app/build/outputs/apk/debug/app-debug.apk`. Проверить MT-001 из MANUAL-TEST-QUEUE.md.
 
 Если Android сообщает о конфликте подписи (`INSTALL_FAILED_UPDATE_INCOMPATIBLE`), предыдущая debug-сборка была подписана другим debug-ключом. Для M0 удалите старое приложение и установите выбранный APK заново. Удаление стирает данные приложения; на этапах с сохранением партий сначала завершите нужную партию/сохраните предусмотренную игрой резервную копию. Это не относится к обычному обновлению правильно подписанной release-версии.
+
+## Дополнительная сборка Android-теста
+
+`cd android && ./gradlew :app:assembleDebugAndroidTest` компилирует instrumentation-APK приложения без устройства; этот шаг проверен. Реальный запуск: `./gradlew :app:connectedDebugAndroidTest` при подключённом телефоне, здесь не выполнялся. Не путайте с задачей без `:app:`: она собирает тестовые APK всех библиотек; известный конфликт зависимостей сгенерированного Cordova-модуля описан в STATUS.
 
 ## Серверы
 
