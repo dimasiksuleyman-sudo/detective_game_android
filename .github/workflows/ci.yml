@@ -18,6 +18,29 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Нужна ли нативная сборка
+        id: native
+        env:
+          CI_EVENT_NAME: ${{ github.event_name }}
+        run: |
+          python3 - <<'PYCODE'
+          import json, os, subprocess
+          event = json.load(open(os.environ['GITHUB_EVENT_PATH']))
+          pr = event.get('pull_request', {})
+          head = pr.get('head', {}).get('sha') or os.environ['GITHUB_SHA']
+          base = event.get('before') or pr.get('base', {}).get('sha')
+          if not base or set(base) == {'0'}:
+              base = subprocess.check_output(['git', 'rev-parse', head + '^'], text=True).strip()
+          paths = subprocess.check_output(['git', 'diff', '--name-only', base, head], text=True).splitlines()
+          needed = os.environ['CI_EVENT_NAME'] == 'workflow_dispatch' or any(
+              p.startswith('android/') or p in {'package.json', 'package-lock.json', 'capacitor.config.ts'}
+              for p in paths)
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
+              output.write('apk=' + str(needed).lower() + '\n')
+          print('Native APK required:', needed)
+          PYCODE
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -46,21 +69,27 @@ jobs:
             test-results/
             docs/devlog/assets/
       - uses: actions/setup-java@v4
+        if: steps.native.outputs.apk == 'true'
         with:
           distribution: temurin
           java-version: 21
       - uses: android-actions/setup-android@v3
+        if: steps.native.outputs.apk == 'true'
         with:
           packages: platform-tools
           log-accepted-android-sdk-licenses: false
       - name: Android SDK
+        if: steps.native.outputs.apk == 'true'
         run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;35.0.0"
       - name: Синхронизация Capacitor
+        if: steps.native.outputs.apk == 'true'
         run: npx cap sync android
       - name: Debug APK
+        if: steps.native.outputs.apk == 'true'
         working-directory: android
         run: ./gradlew --no-daemon assembleDebug
       - uses: actions/upload-artifact@v4
+        if: steps.native.outputs.apk == 'true'
         with:
           name: android-debug
           path: android/app/build/outputs/apk/debug/app-debug.apk

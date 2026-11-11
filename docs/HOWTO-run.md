@@ -74,3 +74,7 @@ npm run android:debug
 Ветка `codex/m1-classic-game` наследует принятый M0. На Windows после `git fetch origin` выполнить `git switch codex/m1-classic-game`, затем `npm.cmd ci` и `npm.cmd run android:sync`. В Android Studio открыть папку android и выбрать JDK 21. Установка зависимостей нужна после смены ветки.
 
 Новые проверки: `npm run case:validate`, `npm run test:coverage`. Все игровые данные встроены в JS bundle; API-ключ не нужен. Для проверки сохранения выполните действие, вернитесь в меню и нажмите «Продолжить». Веб-оболочка не PWA: повторная загрузка страницы требует локально работающего dev/preview-сервера. На Android ассеты внутри APK.
+
+## Когда CI выдаёт APK
+
+По ADR-007 Android-сборка выполняется после изменений android/, npm-зависимостей или capacitor.config.ts. После правок только веб-кода/документов APK может отсутствовать: используйте последний подходящий артефакт либо Actions → workflow → Run workflow на нужной ветке для актуального APK. Ваш локальный цикл — npm.cmd run android:sync и Run в Android Studio. Веб-проверки CI остаются обязательными.
