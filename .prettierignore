@@ -15,3 +15,5 @@ docs/decisions/00[123]-*.md
 docs/decisions/_TEMPLATE.md
 docs/devlog/_TEMPLATE.md
 docs/devlog/2026-11-11-01-project-plan.md
+
+dist-e2e/

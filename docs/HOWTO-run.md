@@ -88,3 +88,11 @@ npm run android:debug
 ```powershell
 & "C:\Program Files\Android\Android Studio1\bin\studio64.exe" "D:\Projects\detective_game_android\android"
 ```
+
+## M2: разработка и ИИ
+
+Ветка codex/m2-ai-interrogation. После переключения: npm.cmd ci → npm.cmd run android:sync → Gradle Sync и Run с JDK 21. Настройки → ввести свой ключ → «Проверить и сохранить ключ»; проверка запрашивает баланс без генерации. Новый режим ИИ доступен после сохранения проверенного ключа. Офлайн-вопросы не требуют ключа.
+
+E2E собирает отдельный dist-e2e с mode=e2e и MockAiClient; production dist всегда отдельный. Не меняйте webDir на dist-e2e и не используйте эту сборку в APK.
+
+Реальный бенчмарк не входит в npm test/e2e. Только вручную: задайте AITUNNEL_API_KEY в локальном защищённом окружении либо игнорируемом .env.local, затем `npm.cmd run ai:smoke -- --allow-paid`. Будет до 60 платных запросов (20 на модель); файл `work/ai-benchmark/report.json` содержит маскированные ответы, стоимость/задержку и проценты JSON/guard. Оценку живости заполните вручную. Отсутствие ключа/флага останавливает запуск до запросов. Ключ не копировать в чат, команды с его значением, git или скриншоты.
