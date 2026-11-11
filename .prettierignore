@@ -1,0 +1,17 @@
+node_modules/
+dist/
+android/
+package-lock.json
+playwright-report/
+test-results/
+docs/devlog/assets/
+# Исходная документация сохраняет формат автора.
+AGENTS.md
+CLAUDE.md
+README.md
+docs/0*.md
+docs/cases/
+docs/decisions/00[123]-*.md
+docs/decisions/_TEMPLATE.md
+docs/devlog/_TEMPLATE.md
+docs/devlog/2026-11-11-01-project-plan.md

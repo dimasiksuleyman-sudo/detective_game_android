@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.env*
+*.keystore
+*.jks
+*.p12
+*.pem
+*.key
+android/local.properties
+android/.gradle/
+android/**/build/
+playwright-report/
+test-results/
+coverage/
+work/
+.DS_Store
