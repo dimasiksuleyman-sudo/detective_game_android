@@ -1,7 +1,7 @@
 /** Версионированное сохранение партии в IndexedDB, без ключей и сетевых запросов. */
 import { get, set, del } from 'idb-keyval';
 import { z } from 'zod';
-import type { GameState } from '../game/engine';
+import { emptyAiUsage, type GameState } from '../game/engine';
 const strings = z.array(z.string()),
   num = z.number().int().nonnegative();
 const player = z.object({
@@ -14,6 +14,12 @@ const player = z.object({
   truths: strings,
   broken: strings,
   notes: z.string(),
+  emotions: z
+    .record(
+      z.string(),
+      z.enum(['neutral', 'nervous', 'angry', 'sad', 'smug', 'broken']),
+    )
+    .default({}),
   stress: z.record(z.string(), num.max(10)),
   blocked: z.record(z.string(), num),
   turns: num,
@@ -26,6 +32,16 @@ const player = z.object({
 });
 const schema = z.object({
   caseId: z.string(),
+  aiUsage: z
+    .object({
+      knownCostRub: z.number().nonnegative(),
+      unknownCost: z.boolean(),
+      lastCostRub: z.number().nonnegative().nullable(),
+      balance: z.number().nonnegative().nullable(),
+      attempts: num,
+    })
+    .default(emptyAiUsage),
+  mode: z.enum(['classic', 'ai']).default('classic'),
   players: z.array(player).min(1).max(4),
   current: num,
   round: num.positive(),
@@ -46,8 +62,7 @@ const key = 'interrogation-save-v1';
 export async function saveGame(state: GameState) {
   await set(key, { version: 1, state });
 }
-export async function loadGame(): Promise<GameState | null> {
-  const raw: unknown = await get(key);
+export function parseStoredGame(raw: unknown): GameState | null {
   if (raw === undefined) return null;
   const parsed = z
     .object({ version: z.literal(1), state: schema })
@@ -58,6 +73,9 @@ export async function loadGame(): Promise<GameState | null> {
   )
     throw new Error('Invalid save');
   return parsed;
+}
+export async function loadGame(): Promise<GameState | null> {
+  return parseStoredGame(await get(key));
 }
 export async function clearGame() {
   await del(key);

@@ -1,3 +1,7 @@
+import { AiSettings } from '../components/AiSettings';
+import { useSettings } from '../store/settingsStore';
+import { useAi, askAi, cancelAi, resetAiUsage } from '../ai/coordinator';
+import { isAiTestBuild } from '../ai/factory';
 import styles from './GameApp.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
@@ -25,6 +29,12 @@ export default function GameApp() {
   const { game: g, ready, busy, error, init, dispatch, reset } = useGame(),
     nav = useNavigate(),
     path = useLocation().pathname;
+  const initSettings = useSettings((s) => s.init);
+  const ai = useAi(),
+    settings = useSettings();
+  const [narrateClues, setNarrateClues] = useState(true);
+  const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
+    [freeQuestion, setFreeQuestion] = useState('');
   const [privacy, setPrivacy] = useState(false);
   const [count, setCount] = useState(1),
     [names, setNames] = useState(
@@ -48,11 +58,13 @@ export default function GameApp() {
   const p = g?.players[g.current];
   useEffect(() => {
     void init();
-  }, [init]);
+    void initSettings();
+  }, [init, initSettings]);
   useEffect(
     () =>
       watchLifecycle(() => {
         if (['turn', 'final'].includes(useGame.getState().game?.phase ?? '')) {
+          cancelAi();
           setPrivacy(true);
           void dispatch({ type: 'LOCK' });
         }
@@ -77,7 +89,7 @@ export default function GameApp() {
             : screen;
   const go = (s: string) => nav('/' + s);
   const button = (label: string, fn: () => void, disabled = false) => (
-    <button type="button" disabled={disabled || busy} onClick={fn}>
+    <button type="button" disabled={disabled || busy || ai.busy} onClick={fn}>
       {label}
     </button>
   );
@@ -97,7 +109,7 @@ export default function GameApp() {
         )}
       </header>
       {error && <p role="alert">{error}</p>}
-      <fieldset disabled={busy}>
+      <fieldset disabled={busy || ai.busy}>
         <main>
           {effective === 's01' && <>{button(t.menu, () => go('s02'))}</>}
           {effective === 's02' && (
@@ -176,12 +188,28 @@ export default function GameApp() {
                   ))}
                 </select>
               </label>
-              <p>{t.classic}</p>
+              <label>
+                {ru.ai.mode}
+                <select
+                  value={mode}
+                  onChange={(e) =>
+                    setMode(e.target.value === 'ai' ? 'ai' : 'classic')
+                  }
+                >
+                  <option value="classic">{t.classic}</option>
+                  <option value="ai" disabled={!settings.hasKey}>
+                    {ru.ai.enabled}
+                  </option>
+                </select>
+              </label>
+              {!settings.hasKey && <p>{ru.ai.noKey}</p>}
               {button(
                 t.brief,
                 () => {
+                  resetAiUsage();
                   void dispatch({
                     type: 'START_GAME',
+                    mode: settings.hasKey ? mode : 'classic',
                     names: names.slice(0, count),
                     roundLimit: rounds,
                   }).then(() => go('s05'));
@@ -387,9 +415,10 @@ export default function GameApp() {
                             '/' +
                             (p.broken.includes(s.id)
                               ? 'broken'
-                              : (p.stress[s.id] ?? 0) >= 6
-                                ? 'nervous'
-                                : 'neutral') +
+                              : (p.emotions[s.id] ??
+                                ((p.stress[s.id] ?? 0) >= 6
+                                  ? 'nervous'
+                                  : 'neutral'))) +
                             '.webp'
                           }
                           label={p.broken.includes(s.id) ? t.broken : s.name}
@@ -445,19 +474,72 @@ export default function GameApp() {
                                 p.blocked[s.id] !== undefined,
                             ),
                           )}
+                        {g.mode === 'ai' && (
+                          <section>
+                            {!settings.hasKey ? (
+                              <p>{ru.ai.noKey}</p>
+                            ) : (
+                              <>
+                                <p>{ru.ai.paidNotice}</p>
+                                <label>
+                                  {ru.ai.question}
+                                  <textarea
+                                    value={freeQuestion}
+                                    maxLength={1000}
+                                    onChange={(e) =>
+                                      setFreeQuestion(e.target.value)
+                                    }
+                                  />
+                                </label>
+                                {button(
+                                  ru.ai.send,
+                                  () => {
+                                    const question = freeQuestion;
+                                    setFreeQuestion('');
+                                    void askAi(s.id, question, tone);
+                                  },
+                                  !freeQuestion.trim() ||
+                                    (g.action?.used ?? 0) >= 3 ||
+                                    p.blocked[s.id] !== undefined,
+                                )}
+                              </>
+                            )}
+                          </section>
+                        )}
                         <h3>{t.present}</h3>
+                        {g.mode === 'ai' && (
+                          <label>
+                            <input
+                              type="checkbox"
+                              checked={narrateClues}
+                              onChange={(e) =>
+                                setNarrateClues(e.target.checked)
+                              }
+                            />
+                            {ru.ai.narrateClues}
+                            <p>{ru.ai.offlinePresent}</p>
+                          </label>
+                        )}
                         {c.clues
                           .filter((cl) => p.clues.includes(cl.id))
                           .map((cl) =>
                             button(
                               cl.name,
-                              () =>
-                                act({
-                                  type: 'PRESENT_CLUE',
-                                  suspectId: s.id,
-                                  clueId: cl.id,
-                                  tone,
-                                }),
+                              () => {
+                                if (
+                                  g.mode === 'ai' &&
+                                  settings.hasKey &&
+                                  narrateClues
+                                )
+                                  void askAi(s.id, '', tone, cl.id);
+                                else
+                                  act({
+                                    type: 'PRESENT_CLUE',
+                                    suspectId: s.id,
+                                    clueId: cl.id,
+                                    tone,
+                                  });
+                              },
                               (g.action?.used ?? 0) >= 3 ||
                                 p.blocked[s.id] !== undefined,
                             ),
@@ -684,7 +766,7 @@ export default function GameApp() {
           {effective === 's15' && (
             <>
               <h2>{t.settings}</h2>
-              <p>{t.settingsText}</p>
+              <AiSettings />
               {button(t.reset, () => {
                 if (confirm(t.resetConfirm)) void reset().then(() => go('s02'));
               })}
@@ -698,6 +780,29 @@ export default function GameApp() {
           )}
         </main>
       </fieldset>
+      {isAiTestBuild && <p role="note">{ru.ai.testMode}</p>}
+      {effective === 's10' && g?.mode === 'ai' && (
+        <aside>
+          {ai.busy && <p role="status">{ru.ai.typing}</p>}
+          {ai.error && (
+            <p role="alert">
+              {ai.error} {ru.ai.freeFallback}
+            </p>
+          )}
+          <details>
+            <summary>{ru.ai.cost}</summary>
+            <p>
+              {g.aiUsage.lastCostRub === null
+                ? ru.ai.unknown
+                : g.aiUsage.lastCostRub.toFixed(4) + ' ₽'}
+            </p>
+            <p>
+              {ru.ai.total}: {g.aiUsage.knownCostRub.toFixed(4)} ₽
+            </p>
+            {g.aiUsage.unknownCost && <p>{ru.ai.unknownCost}</p>}
+          </details>
+        </aside>
+      )}
       {g?.message && ['s08', 's09', 's10', 's13'].includes(effective) && (
         <p role="status">{g.message}</p>
       )}

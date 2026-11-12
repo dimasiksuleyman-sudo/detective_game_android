@@ -20,3 +20,11 @@ CI-артефакт подписывается собственным debug-кл
 - Локальная сборка Gradle успешна, подпись проверена. Физическая приёмка M1 ожидает MT-009.
 
 Проверенный CI M1: [43094122435](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43094122435), код 9f45429, [APK ZIP](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43094122435/artifacts/13889094343). Последующие изменения процесса CI и документов не выдаются за отдельную APK-сборку.
+
+## 0.2.0 (versionCode 3) — 2026-11-12, M2 debug
+
+- Настройки BYOK: Android Keystore, проверка ключа методом баланса, удаление, модели и запасной режим.
+- Свободные вопросы, guard, разрешённый контекст, канонические факты, озвучивание предъявлений и явный офлайн-путь.
+- Отмена при сворачивании, бесплатный игровой фолбэк, учёт известной/неизвестной стоимости и совместимость M1-сохранений.
+- 69 unit и 20 e2e на MockAiClient; реальные модели/ключ и телефон ещё не проверены.
+- Контрольный [CI 43189010590](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43189010590) для кода `4e23355` успешен, включая [APK ZIP](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43189010590/artifacts/13929139414), artifact ID 13929139414. Физическая приёмка и реальный бенчмарк ожидают владельца. Последующие изменения документов не являются новой APK-сборкой.

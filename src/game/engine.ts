@@ -1,7 +1,23 @@
 /** Чистый детерминированный движок: все права, лимиты и открытия проверяются здесь. */
 import { ru } from '../i18n/ru';
 import type { CaseFile } from '../content/schema';
+export type Emotion =
+  'neutral' | 'nervous' | 'angry' | 'sad' | 'smug' | 'broken';
 export type Tone = 'neutral' | 'pressure' | 'empathy';
+export type AiUsage = {
+  knownCostRub: number;
+  unknownCost: boolean;
+  lastCostRub: number | null;
+  balance: number | null;
+  attempts: number;
+};
+export const emptyAiUsage: AiUsage = {
+  knownCostRub: 0,
+  unknownCost: false,
+  lastCostRub: null,
+  balance: null,
+  attempts: 0,
+};
 export type Player = {
   name: string;
   color: string;
@@ -13,6 +29,7 @@ export type Player = {
   broken: string[];
   notes: string;
   stress: Record<string, number>;
+  emotions: Record<string, Emotion>;
   blocked: Record<string, number>;
   turns: number;
   eliminated: boolean;
@@ -22,6 +39,8 @@ export type Player = {
 };
 export type GameState = {
   caseId: string;
+  aiUsage: AiUsage;
+  mode: 'classic' | 'ai';
   players: Player[];
   current: number;
   round: number;
@@ -37,7 +56,13 @@ export type GameState = {
   started: boolean;
 };
 export type Action =
-  | { type: 'START_GAME'; names: string[]; roundLimit: number }
+  | {
+      type: 'START_GAME';
+      names: string[];
+      roundLimit: number;
+      mode?: 'classic' | 'ai';
+    }
+  | { type: 'RECORD_AI_USAGE'; usage: AiUsage }
   | { type: 'BEGIN_TURN' }
   | { type: 'END_TURN' }
   | { type: 'SEARCH_HOTSPOT'; locationId: string; hotspotId: string }
@@ -47,9 +72,18 @@ export type Action =
       questionId: string;
       tone: Tone;
     }
-  | { type: 'PRESENT_CLUE'; suspectId: string; clueId: string; tone: Tone }
+  | {
+      type: 'PRESENT_CLUE';
+      suspectId: string;
+      clueId: string;
+      tone: Tone;
+      aiReply?: string;
+      aiEmotion?: Emotion;
+    }
   | {
       type: 'ASK_AI_QUESTION_RESULT';
+      question?: string;
+      emotion?: Emotion;
       suspectId: string;
       reply: string;
       factIds: string[];
@@ -185,6 +219,8 @@ export function reduce(
       return state;
     return {
       caseId: c.id,
+      aiUsage: { ...emptyAiUsage },
+      mode: a.mode ?? 'classic',
       players: a.names.map((name, i) => ({
         name: name.trim(),
         color: colors[i] ?? colors[0] ?? '',
@@ -196,6 +232,7 @@ export function reduce(
         broken: [],
         notes: '',
         stress: {},
+        emotions: {},
         blocked: {},
         turns: 0,
         eliminated: false,
@@ -221,6 +258,24 @@ export function reduce(
   const s = structuredClone(state),
     p = s.players[s.current];
   if (!p) return state;
+  if (a.type === 'RECORD_AI_USAGE') {
+    if (
+      ![
+        a.usage.knownCostRub,
+        a.usage.attempts,
+        a.usage.lastCostRub ?? 0,
+        a.usage.balance ?? 0,
+      ].every((n) => Number.isFinite(n) && n >= 0)
+    )
+      return state;
+    s.aiUsage = {
+      ...a.usage,
+      knownCostRub: s.aiUsage.knownCostRub + a.usage.knownCostRub,
+      attempts: s.aiUsage.attempts + a.usage.attempts,
+      unknownCost: s.aiUsage.unknownCost || a.usage.unknownCost,
+    };
+    return s;
+  }
   if (a.type === 'LOCK') {
     if (s.phase === 'turn' || s.phase === 'final') s.phase = 'handover';
     return s;
@@ -282,7 +337,7 @@ export function reduce(
     )
       return state;
     let answer: string,
-      question = '',
+      question: string,
       delta = toneDelta(a.tone);
     if (a.type === 'ASK_OFFLINE_QUESTION') {
       const q = suspect.offlineQA.find((x) => x.id === a.questionId);
@@ -342,10 +397,29 @@ export function reduce(
         a.factIds.filter((id) => allowed.includes(id)),
       );
       answer = a.reply;
-      delta += Math.min(2, Math.max(-1, a.stressDelta));
+      question = a.question ?? '';
+      delta += Math.min(
+        2,
+        Math.max(-1, Number.isFinite(a.stressDelta) ? a.stressDelta : 0),
+      );
     }
+    if (a.type === 'PRESENT_CLUE' && a.aiReply) answer = a.aiReply;
     use(s, 'talk', a.suspectId);
     stress(p, suspect.id, delta);
+    const emotion =
+      a.type === 'ASK_AI_QUESTION_RESULT'
+        ? a.emotion
+        : a.type === 'PRESENT_CLUE'
+          ? a.aiEmotion
+          : undefined;
+    p.emotions[suspect.id] = p.broken.includes(suspect.id)
+      ? 'broken'
+      : emotion &&
+          ['neutral', 'nervous', 'angry', 'sad', 'smug'].includes(emotion)
+        ? emotion
+        : (p.stress[suspect.id] ?? 0) >= 6
+          ? 'nervous'
+          : 'neutral';
     p.history.push({ suspect: suspect.id, question, answer });
     s.message = p.blocked[suspect.id] !== undefined ? ru.game.lawyer : answer;
     return s;

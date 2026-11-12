@@ -8,6 +8,7 @@ export default tseslint.config(
   {
     ignores: [
       'dist/**',
+      'dist-e2e/**',
       'android/**',
       'node_modules/**',
       'playwright-report/**',
