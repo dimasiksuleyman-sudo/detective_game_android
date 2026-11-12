@@ -1,0 +1,18 @@
+[
+  {
+    "voice": "TUQNWEvVPBLzMBSVDPUA",
+    "libraryVoice": "TUQNWEvVPBLzMBSVDPUA",
+    "file": "art/narration/elevenlabs/samples/TUQNWEvVPBLzMBSVDPUA-briefing-preview.mp3",
+    "seconds": 5.56,
+    "chars": 119,
+    "characterCost": "48"
+  },
+  {
+    "voice": "pM78bgjPVk0JXtaEnFoj",
+    "libraryVoice": "pM78bgjPVk0JXtaEnFoj",
+    "file": "art/narration/elevenlabs/samples/pM78bgjPVk0JXtaEnFoj-chief-hint-1.mp3",
+    "seconds": 4.91,
+    "chars": 110,
+    "characterCost": "44"
+  }
+]

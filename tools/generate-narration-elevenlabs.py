@@ -3,7 +3,7 @@
 Режимы (запуск из корня репозитория):
   --list                 тексты и «произносимые» версии, без сети;
   --voices               русские мужские голоса из библиотеки + бесплатные превью (кредиты не тратятся);
-  --sample --voice OWNER:VOICE [--voice ...]   одна пробная фраза на каждый голос (до 3), платно;
+  --sample --voice OWNER:VOICE [--voice ...] [--clip ID]   одна пробная фраза на каждый голос (до 3), платно;
   --all --narrator ID --chief ID               все дорожки дела, платно.
 
 Платные режимы требуют --allow-paid и ELEVENLABS_API_KEY в окружении. Ключ не выводится и
@@ -44,7 +44,10 @@ def clips():
         stale = speech is not None and speech["text"] != clip["text"]
         say = speech["say"] if speech and not stale else clip["text"]
         role = CONFIG["roles"][clip["role"]]
-        rows.append({**clip, "say": say, "stale": stale, "input": role["direction"] + " " + say})
+        # Жёсткое правило ранбука: цифры в речи запрещены (ElevenLabs путает падежи и формат времени).
+        digits = speech is not None and not stale and re.search(r"\d", say) is not None
+        rows.append({**clip, "say": say, "stale": stale, "digits": digits,
+                     "input": role["direction"] + " " + say})
     return rows
 
 
@@ -107,6 +110,13 @@ def voice_id(value):
     return value
 
 
+def owner_id(value):
+    # public_owner_id в библиотеке — 64-символьный hex.
+    if not re.fullmatch(r"[0-9a-f]{20,64}", value):
+        raise ValueError("Неверный формат ID владельца голоса: " + value)
+    return value
+
+
 def cmd_voices(key):
     query = urllib.parse.urlencode({"language": "ru", "gender": "male", "page_size": 30,
                                     "sort": "usage_character_count_1y"})
@@ -130,21 +140,23 @@ def cmd_voices(key):
     print(f"Голосов: {len(rows)}; превью: {len(list(previews.glob('*.mp3')))} (бесплатно)")
 
 
-def cmd_sample(key, pairs):
+def cmd_sample(key, pairs, clip_id="briefing-preview"):
     if not 1 <= len(pairs) <= 3:
         raise SystemExit("Нужно от 1 до 3 голосов --voice OWNER:VOICE")
-    clip = next(c for c in clips() if c["id"] == "briefing-preview")
+    clip = next(c for c in clips() if c["id"] == clip_id)
+    if clip["digits"] or clip["id"] not in CONFIG["speech"]:
+        raise SystemExit(clip["id"] + ": в произносимом тексте цифры или его нет — перепишите словами")
     report = []
     for pair in pairs:
         owner, _, vid = pair.partition(":")
         vid = voice_id(vid or owner)
-        target = ORIGINALS / "samples" / f"{vid}-briefing-preview.mp3"
+        target = ORIGINALS / "samples" / f"{vid}-{clip_id}.mp3"
         if target.exists():
             print(f"{vid}: проба уже есть, повтор не отправлен")
             continue
         if owner and vid != owner:
             # Добавляем голос из библиотеки в «Мои голоса» — без генерации и кредитов.
-            raw, _ = call("POST", f"/v1/voices/add/{voice_id(owner)}/{vid}", key, {"new_name": "Noir " + vid[:6]})
+            raw, _ = call("POST", f"/v1/voices/add/{owner_id(owner)}/{vid}", key, {"new_name": "Noir " + vid[:6]})
             vid_used = json.loads(raw).get("voice_id", vid)
         else:
             vid_used = vid
@@ -154,7 +166,9 @@ def cmd_sample(key, pairs):
                        "seconds": seconds(target), **cost})
         print(f"{vid}: проба {report[-1]['seconds']} с, {cost['chars']} знаков")
     REPORTS.mkdir(parents=True, exist_ok=True)
-    (REPORTS / "samples.json").write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path = REPORTS / "samples.json"
+    old = json.loads(path.read_text(encoding="utf-8")) if path.exists() else []
+    path.write_text(json.dumps(old + report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
 
 
 def cmd_all(key, narrator, chief):
@@ -162,6 +176,9 @@ def cmd_all(key, narrator, chief):
     stale = [c["id"] for c in rows if c["stale"] or c["id"] not in CONFIG["speech"]]
     if stale:
         raise SystemExit("Тексты дела изменились, обновите content/narration/elevenlabs.json: " + ", ".join(stale))
+    digits = [c["id"] for c in rows if c["digits"]]
+    if digits:
+        raise SystemExit("В произносимом тексте цифры, перепишите словами: " + ", ".join(digits))
     voices = {"narrator": voice_id(narrator), "chief": voice_id(chief)}
     case_id = json.loads((ROOT / "content/narration/plan.json").read_text(encoding="utf-8"))["caseId"]
     folder = ORIGINALS / case_id
@@ -211,13 +228,14 @@ def main():
     mode.add_argument("--sample", action="store_true")
     mode.add_argument("--all", action="store_true")
     parser.add_argument("--voice", action="append", default=[], help="OWNER:VOICE из voices.json или ID из «Моих голосов»")
+    parser.add_argument("--clip", default="briefing-preview", help="Фраза для пробы (id из --list), например chief-hint-1")
     parser.add_argument("--narrator")
     parser.add_argument("--chief")
     parser.add_argument("--allow-paid", action="store_true")
     args = parser.parse_args()
     if args.list or not (args.voices or args.sample or args.all):
         for c in clips():
-            flag = " [УСТАРЕЛО: текст дела изменился]" if c["stale"] else ""
+            flag = " [УСТАРЕЛО: текст дела изменился]" if c["stale"] else (" [ЦИФРЫ: перепишите словами]" if c["digits"] else "")
             print(f"{c['id']} [{c['role']}, {len(c['input'])} знаков]{flag}: {c['input']}")
         print("Всего знаков (без пробы):", sum(len(c["input"]) for c in clips() if c["id"] != "briefing-preview"))
         return
@@ -227,7 +245,7 @@ def main():
     if not args.allow_paid:
         raise SystemExit("Нужен --allow-paid. Генерации не было.")
     if args.sample:
-        return cmd_sample(key, args.voice)
+        return cmd_sample(key, args.voice, args.clip)
     if not (args.narrator and args.chief):
         raise SystemExit("Нужны --narrator и --chief. Генерации не было.")
     return cmd_all(key, args.narrator, args.chief)
