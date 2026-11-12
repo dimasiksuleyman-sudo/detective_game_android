@@ -1,0 +1,32 @@
+{
+  "version": 1,
+  "music": [
+    {
+      "id": "music-menu",
+      "file": "music/music-menu.mp3",
+      "loop": true,
+      "screens": ["s02", "s03", "s04", "s15", "s16"],
+      "durationSec": 107.05
+    }
+  ],
+  "planned": [
+    {
+      "id": "music-investigation",
+      "loop": true,
+      "screens": ["s05", "s07", "s08", "s09", "s11", "s12", "s13"]
+    },
+    { "id": "music-interrogation", "loop": true, "screens": ["s10"] },
+    { "id": "music-solved", "loop": false, "screens": ["s14"] },
+    { "id": "music-unsolved", "loop": false, "screens": ["s14"] }
+  ],
+  "sfx": [
+    { "id": "ui-tap", "file": "sfx/ui-tap.mp3" },
+    { "id": "new-fact", "file": "sfx/new-fact.mp3" },
+    { "id": "handover", "file": "sfx/handover.mp3" },
+    { "id": "hold-confirm", "file": "sfx/hold-confirm.mp3" },
+    { "id": "error", "file": "sfx/error.mp3" },
+    { "id": "rain-loop", "file": "sfx/rain-loop.mp3", "loop": true },
+    { "id": "sting-break", "file": "sfx/sting-break.mp3" },
+    { "id": "paper", "file": "sfx/paper.mp3" }
+  ]
+}
