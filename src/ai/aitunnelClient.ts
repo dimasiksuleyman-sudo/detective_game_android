@@ -82,6 +82,8 @@ async function request(
     try {
       data = await r.json();
     } catch {
+      if (controller.signal.aborted)
+        throw new AiError(signal.aborted ? 'cancelled' : 'timeout');
       throw new AiError('invalid');
     }
     return { response: r, data };

@@ -48,12 +48,26 @@ export class MockAiClient implements AiClient {
       valid: true,
     },
     private readonly script: (Completion | AiError)[] = [],
+    private readonly latencyMs = 0,
   ) {}
   async ask(question: string) {
     void question;
     return structuredClone(this.result);
   }
   async complete(request: CompletionRequest): Promise<Completion> {
+    if (request.signal.aborted) throw new AiError('cancelled');
+    if (this.latencyMs)
+      await new Promise<void>((resolve, reject) => {
+        const aborted = () => {
+          clearTimeout(timer);
+          reject(new AiError('cancelled'));
+        };
+        const timer = setTimeout(() => {
+          request.signal.removeEventListener('abort', aborted);
+          resolve();
+        }, this.latencyMs);
+        request.signal.addEventListener('abort', aborted, { once: true });
+      });
     if (request.signal.aborted) throw new AiError('cancelled');
     const { signal, ...metadata } = request;
     void signal;

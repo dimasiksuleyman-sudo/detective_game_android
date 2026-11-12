@@ -15,7 +15,7 @@ async function capture(p: Page, name: string) {
       p.getByRole('heading', { name: titles[name], exact: true }),
     ).toBeVisible();
   await p.screenshot({
-    path: `docs/devlog/assets/m1/${test.info().project.name}-${name}.png`,
+    path: `docs/devlog/assets/m2/classic/${test.info().project.name}-${name}.png`,
     fullPage: true,
   });
 }
@@ -100,7 +100,7 @@ test('одиночная партия офлайн до победы; сохра
   ).toBeVisible();
   await expect(page.getByText('Победители: Детектив 1')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m1/${info.project.name}-final.png`,
+    path: `docs/devlog/assets/m2/classic/${info.project.name}-final.png`,
     fullPage: true,
   });
 });
@@ -122,7 +122,7 @@ test('два игрока: защита передачи, ошибочное о�
   await accusation(page, 's-gleb', 'Тайная бухгалтерия');
   await expect(page.getByText('Победители: Детектив 2')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m1/${info.project.name}-two-players.png`,
+    path: `docs/devlog/assets/m2/classic/${info.project.name}-two-players.png`,
     fullPage: true,
   });
 });
@@ -174,7 +174,7 @@ test('допрос: давление, слом, канонический фак�
         page.getByRole('heading', { name: title, exact: true }),
       ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/m1/${info.project.name}-${name}.png`,
+      path: `docs/devlog/assets/m2/classic/${info.project.name}-${name}.png`,
       fullPage: true,
     });
     expect(

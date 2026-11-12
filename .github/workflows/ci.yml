@@ -14,6 +14,7 @@ concurrency:
 
 jobs:
   verify:
+    if: github.event_name != 'push' || github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     steps:
@@ -56,6 +57,8 @@ jobs:
         run: npm run case:validate
       - name: Сборка web
         run: npm run build
+      - name: Проверка production-бандла
+        run: npm run verify:production
       - name: Браузер Chromium
         run: npx playwright install --with-deps chromium
       - name: E2E на двух размерах телефона

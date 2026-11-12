@@ -1,3 +1,5 @@
+import config from '../../capacitor.config';
+import { readFileSync } from 'node:fs';
 import { beforeEach, it, expect, vi } from 'vitest';
 const api = vi.hoisted(() => ({
   native: false,
@@ -49,4 +51,11 @@ it('ошибка Keystore не сохраняет ключ в web-хранили
   api.set.mockRejectedValue(new Error('native failure'));
   await expect(storeApiKey('dummy')).rejects.toThrow();
   expect(sessionStorage.getItem('interrogation_api_key')).toBeNull();
+});
+
+it('секретные аргументы моста не логируются и backup приложения отключён', () => {
+  expect(config.loggingBehavior).toBe('none');
+  expect(
+    readFileSync('android/app/src/main/AndroidManifest.xml', 'utf8'),
+  ).toContain('android:allowBackup="false"');
 });

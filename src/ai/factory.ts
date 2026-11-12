@@ -19,6 +19,7 @@ export function getAiClient(): AiClient {
       client = new MockAiClient(
         undefined,
         failure ? [failure, failure, failure] : [],
+        fixture === 'slow' ? 1500 : 0,
       );
     } else client = new AitunnelClient();
   }

@@ -1,7 +1,7 @@
 {
   "name": "interrogation-room",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
@@ -16,12 +16,13 @@
     "build": "npm run typecheck && vite build",
     "preview": "vite preview --host 0.0.0.0",
     "e2e": "playwright test",
-    "android:sync": "npm run build && cap sync android",
+    "android:sync": "npm run build && npm run verify:production && cap sync android",
     "android:debug": "npm run android:sync && cd android && ./gradlew assembleDebug",
     "case:validate": "tsx tools/validate-case.ts",
     "test:coverage": "vitest run --coverage",
     "build:e2e": "vite build --mode e2e --outDir dist-e2e",
-    "ai:smoke": "tsx --env-file-if-exists=.env.local tools/ai-smoke.ts"
+    "ai:smoke": "tsx --env-file-if-exists=.env.local tools/ai-smoke.ts",
+    "verify:production": "tsx tools/assert-production.ts"
   },
   "dependencies": {
     "@aparajita/capacitor-secure-storage": "8.0.1",
