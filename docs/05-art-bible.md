@@ -78,7 +78,7 @@ Edit the attached reference portrait. Keep EXACTLY the same person: identical fa
 | `broken` | head lowered, eyes red and exhausted, looking down at the table, slumped shoulders, defeated |
 | `blink` (опц.) | same as reference but with eyes gently closed |
 
-### 3.4. Состав труппы (v1: 16 актёров; пилот использует 5)
+### 3.4. Состав труппы (v1: 16 актёров; пилот использует 6)
 
 | actorId | {{APPEARANCE}} | {{CLOTHES}} | Типажи |
 |---|---|---|---|
@@ -97,7 +97,7 @@ Edit the attached reference portrait. Keep EXACTLY the same person: identical fa
 | `a13-nadia` | a serious woman in her late thirties, black hair in a low ponytail, no makeup, tired eyes | a dark navy nurse's uniform under a grey cardigan | медсестра, врач, сиделка |
 | `a14-boris` | a jowly man in his sixties, thick grey moustache, bald on top, small shrewd eyes | a brown three-piece suit, a gold pocket watch chain | антиквар, ростовщик, депутат |
 | `a15-kira` | a sharp young woman in her late twenties, asymmetrical black bob, silver nose ring, dark eyeliner | a black turtleneck and a silver chain necklace | художница, хакер, журналистка |
-| `a16-chief` | a weathered man in his late fifties, grey crew cut, heavy-lidded eyes, deep frown lines | a rumpled grey police-style overcoat, loosened dark tie | **Шеф** — постоянный NPC подсказок (только `neutral`, `smug`, `angry`) |
+| `a16-chief` | a weathered man in his late fifties, grey crew cut, heavy-lidded eyes, deep frown lines | a rumpled grey police-style overcoat, loosened dark tie | **Шеф** — постоянный NPC подсказок (для полного набора подготовлены все 6 эмоций) |
 
 Труппа хранится в `public/troupe/` (встроенная) и расширяется паками.
 
@@ -202,7 +202,7 @@ Book-cover style key art for a detective case titled (do not render the title) "
 
 ## Подключённый первый набор M3
 
-Обложка и три локации пилота подготовлены из art/pilot/*.png через `npx tsx tools/build-pack.ts --art-only`. Манифест art/pilot/manifest.json определяет готовые ресурсы; остальные пока заглушки. Локации увеличены с исходных 1024×1536 до согласованных 1080×1620 без обещания новой детализации (ADR-016). Зоны осмотра обновлены в case.json.
+Обложка и три локации пилота подготовлены из art/pilot/*.png через `npx tsx tools/build-pack.ts --art-only`. Манифест art/pilot/manifest.json определяет готовые ресурсы; полный актуальный список — в `art/ASSETS.md`, заглушек в пилоте больше нет. Локации увеличены с исходных 1024×1536 до согласованных 1080×1620 без обещания новой детализации (ADR-016). Зоны осмотра обновлены в case.json.
 
 ## Статуэтка для осмотра M3
 

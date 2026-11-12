@@ -15,7 +15,7 @@ async function capture(p: Page, name: string) {
       p.getByRole('heading', { name: titles[name], exact: true }),
     ).toBeVisible();
   await p.screenshot({
-    path: `docs/devlog/assets/point-and-click/classic/${test.info().project.name}-${name}.png`,
+    path: `docs/devlog/assets/m3-art/screens/classic/${test.info().project.name}-${name}.png`,
     fullPage: true,
   });
 }
@@ -100,7 +100,7 @@ test('одиночная партия офлайн до победы; сохра
   ).toBeVisible();
   await expect(page.getByText('Победители: Детектив 1')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/classic/${info.project.name}-final.png`,
+    path: `docs/devlog/assets/m3-art/screens/classic/${info.project.name}-final.png`,
     fullPage: true,
   });
 });
@@ -121,6 +121,23 @@ test('два игрока: защита передачи, ошибочное о�
   await diary(page);
   await accusation(page, 's-gleb', 'Тайная бухгалтерия');
   await expect(page.getByText('Победители: Детектив 2')).toBeVisible();
+  const panels = page.locator('figure img');
+  await expect(panels).toHaveCount(3);
+  // Финальные панели проверяем в доступном web-сервере: web не является PWA.
+  // На Android те же файлы поставляются локально, офлайн-приёмка — MT-016.
+  await expect
+    .poll(() =>
+      panels.evaluateAll((images) =>
+        images.every(
+          (image) =>
+            image instanceof HTMLImageElement &&
+            image.complete &&
+            image.naturalWidth === 1200 &&
+            image.naturalHeight === 800,
+        ),
+      ),
+    )
+    .toBe(true);
   const tracks = page.locator('audio');
   await expect(tracks).toHaveCount(4);
   await tracks.nth(1).evaluate(async (el: HTMLAudioElement) => {
@@ -134,7 +151,7 @@ test('два игрока: защита передачи, ошибочное о�
   await expect(tracks.nth(1)).toHaveJSProperty('currentTime', 0);
 
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/classic/${info.project.name}-two-players.png`,
+    path: `docs/devlog/assets/m3-art/screens/classic/${info.project.name}-two-players.png`,
     fullPage: true,
   });
 });
@@ -186,7 +203,7 @@ test('допрос: давление, слом, канонический фак�
         page.getByRole('heading', { name: title, exact: true }),
       ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/point-and-click/classic/${info.project.name}-${name}.png`,
+      path: `docs/devlog/assets/m3-art/screens/classic/${info.project.name}-${name}.png`,
       fullPage: true,
     });
     expect(
@@ -259,7 +276,7 @@ test('иллюстрации локаций загружаются; зоны п�
       ).toBe('rgba(0, 0, 0, 0)');
     }
     await page.screenshot({
-      path: `docs/devlog/assets/point-and-click/${info.project.name}-${id}.png`,
+      path: `docs/devlog/assets/m3-art/screens/${info.project.name}-${id}.png`,
       fullPage: true,
     });
     await click(page, 'Назад');

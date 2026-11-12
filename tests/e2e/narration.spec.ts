@@ -47,7 +47,7 @@ test('озвучка брифинга по нажатию, без финальн
   });
   const element = await audio.elementHandle();
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/${info.project.name}-briefing.png`,
+    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-briefing.png`,
     fullPage: true,
   });
   await page

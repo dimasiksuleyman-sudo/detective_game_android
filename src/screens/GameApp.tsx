@@ -12,7 +12,10 @@ import { isAiTestBuild } from '../ai/factory';
 import styles from './GameApp.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { isFinishedIllustration } from '../content/illustrations';
+import {
+  isFinishedIllustration,
+  illustrationDimensions,
+} from '../content/illustrations';
 import { pilot as c } from '../content/loader';
 import { useGame } from '../store/gameStore';
 import { ru } from '../i18n/ru';
@@ -21,11 +24,14 @@ import { watchLifecycle } from '../platform/appLifecycle';
 import type { Tone } from '../game/engine';
 const t = ru.game;
 function Art({ src, label }: { src: string; label: string }) {
+  const dimensions = illustrationDimensions(src);
   return (
     <figure
       className={isFinishedIllustration(src) ? styles.finishedArt : undefined}
     >
       <img
+        width={dimensions?.width}
+        height={dimensions?.height}
         src={src.startsWith('/troupe') ? src : `/cases/${c.id}/${src}`}
         alt=""
       />
