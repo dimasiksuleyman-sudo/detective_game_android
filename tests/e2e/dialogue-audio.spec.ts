@@ -39,7 +39,9 @@ test('чат без внутренней прокрутки, история от
   await click(page, 'Допрос');
   await click(page, 'Ольга Лебедева');
   await click(page, 'Билет на поезд');
-  const music = page.locator('audio[data-audio-channel="music"][src]');
+  const music = page.locator(
+    'audio[data-audio-channel="music"][data-current="true"]',
+  );
   await expect
     .poll(() => music.evaluate((a: HTMLAudioElement) => a.volume))
     .toBeCloseTo(0.1, 2);
@@ -135,7 +137,9 @@ test('фоновая музыка приглушается под голос, с
   await click(page, 'Новое дело');
   await click(page, 'Синяя сова');
   await click(page, 'К брифингу');
-  const music = page.locator('audio[data-audio-channel="music"][src]');
+  const music = page.locator(
+    'audio[data-audio-channel="music"][data-current="true"]',
+  );
   await expect
     .poll(() => music.evaluate((a: HTMLAudioElement) => a.volume))
     .toBeCloseTo(0.4, 2);

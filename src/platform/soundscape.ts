@@ -141,6 +141,10 @@ function createSoundscape() {
     const next = music[index];
     if (!next) return;
     pause(next, true);
+    music.forEach((a) => {
+      a.dataset.current = 'false';
+    });
+    next.dataset.current = 'true';
     weights[index] = 0;
     next.src = '/audio/' + track.file;
     next.loop = track.loop;

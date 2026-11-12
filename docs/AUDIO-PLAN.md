@@ -115,4 +115,4 @@ Instrumental noir jazz theme for a detective game main menu. Slow tempo around 7
 
 ## Подключённый плеер (0.3.2)
 
-Платформенная реализация — `src/platform/soundscape.ts`, роли — `src/audio/policy.ts`, настройки — `src/store/audioSettingsStore.ts`. Четыре недостающих готовых трека используют music-menu; новый исходник investigation пока не подготовлен. Дождь по умолчанию выключен. Подробности — ADR-023, проверка на телефоне MT-018.
+Платформенная реализация — `src/platform/soundscape.ts`, роли — `src/audio/policy.ts`, настройки — `src/store/audioSettingsStore.ts`. Три недостающих готовых трека используют music-menu; investigation подготовлен в main. Дождь по умолчанию выключен. Подробности — ADR-023, проверка на телефоне MT-018.

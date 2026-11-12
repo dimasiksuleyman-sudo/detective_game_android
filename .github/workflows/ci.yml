@@ -1,9 +1,14 @@
-name: Проверки и debug APK
+name: Проверки (APK только вручную)
 
 on:
   push:
   pull_request:
   workflow_dispatch:
+    inputs:
+      build_apk:
+        description: Собрать debug APK
+        type: boolean
+        default: false
 
 permissions:
   contents: read
@@ -27,17 +32,9 @@ jobs:
           CI_EVENT_NAME: ${{ github.event_name }}
         run: |
           python3 - <<'PYCODE'
-          import json, os, subprocess
+          import json, os
           event = json.load(open(os.environ['GITHUB_EVENT_PATH']))
-          pr = event.get('pull_request', {})
-          head = pr.get('head', {}).get('sha') or os.environ['GITHUB_SHA']
-          base = event.get('before') or pr.get('base', {}).get('sha')
-          if not base or set(base) == {'0'}:
-              base = subprocess.check_output(['git', 'rev-parse', head + '^'], text=True).strip()
-          paths = subprocess.check_output(['git', 'diff', '--name-only', base, head], text=True).splitlines()
-          needed = os.environ['CI_EVENT_NAME'] == 'workflow_dispatch' or any(
-              p.startswith('android/') or p in {'package.json', 'package-lock.json', 'capacitor.config.ts'}
-              for p in paths)
+          needed = os.environ['CI_EVENT_NAME'] == 'workflow_dispatch' and str(event.get('inputs', {}).get('build_apk', False)).lower() == 'true'
           with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
               output.write('apk=' + str(needed).lower() + '\n')
           print('Native APK required:', needed)
