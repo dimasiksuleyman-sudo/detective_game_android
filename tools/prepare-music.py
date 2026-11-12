@@ -7,8 +7,9 @@
 Нужен ffmpeg. Сеть и ключи не используются.
 
 Петля строится так: берём оригинал с loop_start по loop_end и перекрёстно
-сводим его конец (crossfade секунд) с первыми loop_start секундами оригинала.
-Последний сэмпл петли продолжается первым — шва не слышно. Затем loudnorm.
+сводим его последние crossfade секунд с отрезком оригинала
+[loop_start − crossfade, loop_start]. Петля заканчивается ровно там, где
+начинается, — шва не слышно. Затем loudnorm. Нужно loop_start ≥ crossfade.
 """
 
 import os
@@ -24,6 +25,9 @@ TRACKS = {
     # Оригинал 120 с: фраза заканчивается к ~107 с, дальше затухание.
     # Первые 3 с — затухающая вступительная нота, новая фраза с ~3,3 с.
     "music-menu": (3.0, 110.0, 3.0, -18),
+    # Оригинал 120 с: 0,35 с тишины в начале, музыка до ~117 с, дальше затухание.
+    # Фоновый трек — чуть тише меню, чтобы не мешать чтению.
+    "music-investigation": (2.5, 118.5, 2.0, -20),
 }
 
 
@@ -43,7 +47,9 @@ def prepare(track_id):
             run("-i", full, "-af", f"loudnorm=I={lufs}:TP=-1.5:LRA=11", "-ar", "44100", mixed)
         else:
             run("-ss", str(loop_start), "-to", str(loop_end), "-i", full, body)
-            run("-t", str(xfade), "-i", full, head)
+            if loop_start < xfade:
+                raise SystemExit(f"{track_id}: loop_start must be >= crossfade")
+            run("-ss", str(loop_start - xfade), "-t", str(xfade), "-i", full, head)
             run(
                 "-i", body, "-i", head, "-filter_complex",
                 f"[0:a][1:a]acrossfade=d={xfade}:c1=qsin:c2=qsin,loudnorm=I={lufs}:TP=-1.5:LRA=11",

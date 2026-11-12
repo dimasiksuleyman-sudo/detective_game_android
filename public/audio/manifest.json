@@ -7,14 +7,16 @@
       "loop": true,
       "screens": ["s02", "s03", "s04", "s15", "s16"],
       "durationSec": 107.05
+    },
+    {
+      "id": "music-investigation",
+      "file": "music/music-investigation.mp3",
+      "loop": true,
+      "screens": ["s05", "s07", "s08", "s09", "s11", "s12", "s13"],
+      "durationSec": 116.04
     }
   ],
   "planned": [
-    {
-      "id": "music-investigation",
-      "loop": true,
-      "screens": ["s05", "s07", "s08", "s09", "s11", "s12", "s13"]
-    },
     { "id": "music-interrogation", "loop": true, "screens": ["s10"] },
     { "id": "music-solved", "loop": false, "screens": ["s14"] },
     { "id": "music-unsolved", "loop": false, "screens": ["s14"] }
