@@ -53,6 +53,24 @@ def request(endpoint, key, body=None, limit=MAX_AUDIO):
         return raw
 
 
+def normalize_wav(audio):
+    # Потоковый WAV может объявлять размер data как 0xFFFFFFFF. Считаем реальные кадры.
+    with wave.open(io.BytesIO(audio), "rb") as wav:
+        channels, width, rate = wav.getnchannels(), wav.getsampwidth(), wav.getframerate()
+        if channels not in (1, 2) or rate != 44100 or width != 2:
+            raise ValueError("Некорректный формат WAV")
+        frames = wav.readframes(MAX_AUDIO // (channels * width))
+    if not frames or len(frames) % (channels * width):
+        raise ValueError("Нет полных аудиокадров")
+    out = io.BytesIO()
+    with wave.open(out, "wb") as wav:
+        wav.setnchannels(channels)
+        wav.setsampwidth(width)
+        wav.setframerate(rate)
+        wav.writeframes(frames)
+    return out.getvalue(), len(frames) / (rate * channels * width)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     command = parser.add_mutually_exclusive_group()
@@ -115,10 +133,7 @@ def main():
             print(clip["id"] + ": готовый файл сохранён ранее, повтор не отправлен")
             continue
         audio = request("/tts/bytes", key, body)
-        with wave.open(io.BytesIO(audio), "rb") as wav:
-            if wav.getnframes() == 0 or wav.getframerate() != 44100 or wav.getsampwidth() != 2:
-                raise ValueError("Некорректный WAV")
-            duration = wav.getnframes() / wav.getframerate()
+        audio, duration = normalize_wav(audio)
         # Запись с x исключает случайную перезапись существующей пробы.
         with target.open("xb") as stream:
             stream.write(audio)

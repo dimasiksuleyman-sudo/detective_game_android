@@ -6,6 +6,7 @@ on:
 
 permissions:
   contents: read
+  actions: read
 
 concurrency:
   group: cartesia-sample-${{ github.event.pull_request.number }}
@@ -29,6 +30,32 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: cartesia-sample
+          path: |
+            work/cartesia/*.wav
+            work/cartesia/*.json
+          if-no-files-found: error
+          retention-days: 14
+
+  normalize:
+    if: github.event.label.name == 'cartesia-normalize' && github.event.pull_request.head.ref == 'codex/cartesia-narration' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: cartesia-sample
+          run-id: 43207260107
+          github-token: ${{ github.token }}
+          path: work/cartesia
+      - name: Исправление заголовка WAV без генерации и без ключа Cartesia
+        run: python3 tools/normalize-narration.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cartesia-sample-repaired
           path: |
             work/cartesia/*.wav
             work/cartesia/*.json

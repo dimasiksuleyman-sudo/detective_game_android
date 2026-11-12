@@ -146,3 +146,5 @@ ADR-015: текущий постоянный блок ошибок времен�
 ## Ручная проба Cartesia
 
 Документ NARRATION-PLAN.md содержит фразы и правила. Ключ только в GitHub → Settings → Secrets and variables → Actions → New repository secret, имя CARTESIA_API_KEY. Никогда не добавлять его в Variables, исходники или сообщения. Для одной пробы на PR ветки codex/cartesia-narration добавить метку cartesia-sample; workflow выдаст артефакт WAV+JSON. Обычный push/unit/e2e TTS не запускает. Локально без сети: python3 tools/generate-narration.py --list. Генерация доступна только с env-ключом и --sample --allow-paid, полный набор отдельным --all --allow-paid --voice ID после оценки голоса. На Windows команда python вместо python3 при соответствующей установке Python; владельцу сейчас не требуется настраивать Python на ПК.
+
+Исправление уже полученной пробы: метка cartesia-normalize в PR №6 запускает отдельный job без Cartesia-ключа и без генерации. Он скачивает результат run 43207260107, исправляет потоковый заголовок и выдаёт cartesia-sample-repaired. Не добавляйте повторно метку cartesia-sample для исправления WAV: она создаёт новый платный запрос.
