@@ -1,0 +1,105 @@
+name: Cartesia — ручная подготовка озвучки
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: cartesia-sample-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  sample:
+    if: github.event.label.name == 'cartesia-sample' && github.event.pull_request.head.ref == 'codex/cartesia-narration' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Одна пробная фраза, без автоматических повторов
+        env:
+          CARTESIA_API_KEY: ${{ secrets.CARTESIA_API_KEY }}
+          CARTESIA_VOICE_ID: ${{ vars.CARTESIA_VOICE_ID }}
+        run: python3 tools/generate-narration.py --sample --allow-paid
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cartesia-sample
+          path: |
+            work/cartesia/*.wav
+            work/cartesia/*.json
+          if-no-files-found: error
+          retention-days: 14
+
+  normalize:
+    if: github.event.label.name == 'cartesia-normalize' && github.event.pull_request.head.ref == 'codex/cartesia-narration' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - uses: actions/download-artifact@v4
+        with:
+          name: cartesia-sample
+          run-id: 43207260107
+          github-token: ${{ github.token }}
+          path: work/cartesia
+      - name: Исправление заголовка WAV без генерации и без ключа Cartesia
+        run: python3 tools/normalize-narration.py
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cartesia-sample-repaired
+          path: |
+            work/cartesia/*.wav
+            work/cartesia/*.json
+          if-no-files-found: error
+          retention-days: 14
+
+  full:
+    if: github.event.label.name == 'cartesia-full' && github.event.pull_request.head.ref == 'codex/cartesia-narration' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: write
+      actions: read
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - name: Проверка кодировщика
+        run: |
+          if ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq
+            sudo apt-get install -y ffmpeg
+          fi
+      - name: Восемь утверждённых текстов голосом Sergei, без повторов
+        env:
+          CARTESIA_API_KEY: ${{ secrets.CARTESIA_API_KEY }}
+        run: python3 tools/generate-narration.py --all --allow-paid --voice 1e4176b1-3db9-44d6-a601-4fe68b041942
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: cartesia-full-originals
+          path: |
+            work/cartesia/*.wav
+            work/cartesia/*.json
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Подготовка игровых MP3 без Cartesia-ключа
+        run: python3 tools/prepare-narration.py
+      - name: Сохранение только готового аудио в рабочую ветку
+        run: |
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add public/cases/case-001-blue-owl/audio/
+          if ! git diff --cached --quiet; then
+            git commit -m 'Add approved Sergei narration audio assets'
+            git push origin HEAD:codex/cartesia-narration
+          fi

@@ -1,0 +1,52 @@
+{
+  "caseId": "case-001-blue-owl",
+  "clips": [
+    {
+      "id": "briefing-preview",
+      "role": "narrator",
+      "source": ["briefing"],
+      "firstSentence": true
+    },
+    {
+      "id": "briefing",
+      "role": "narrator",
+      "source": ["briefing"],
+      "omit": "Шеф дал вам восемь раундов. "
+    },
+    {
+      "id": "chief-hint-1",
+      "role": "chief",
+      "source": ["hints", 0, "text"]
+    },
+    {
+      "id": "chief-hint-2",
+      "role": "chief",
+      "source": ["hints", 1, "text"]
+    },
+    {
+      "id": "chief-hint-3",
+      "role": "chief",
+      "source": ["hints", 2, "text"]
+    },
+    {
+      "id": "reconstruction-1",
+      "role": "narrator",
+      "source": ["solution", "reconstruction", 0, "caption"]
+    },
+    {
+      "id": "reconstruction-2",
+      "role": "narrator",
+      "source": ["solution", "reconstruction", 1, "caption"]
+    },
+    {
+      "id": "reconstruction-3",
+      "role": "narrator",
+      "source": ["solution", "reconstruction", 2, "caption"]
+    },
+    {
+      "id": "solution-explanation",
+      "role": "narrator",
+      "source": ["solution", "explanation"]
+    }
+  ]
+}

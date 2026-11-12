@@ -15,7 +15,7 @@ async function capture(p: Page, name: string) {
       p.getByRole('heading', { name: titles[name], exact: true }),
     ).toBeVisible();
   await p.screenshot({
-    path: `docs/devlog/assets/m3/classic/${test.info().project.name}-${name}.png`,
+    path: `docs/devlog/assets/narration/classic/${test.info().project.name}-${name}.png`,
     fullPage: true,
   });
 }
@@ -100,7 +100,7 @@ test('одиночная партия офлайн до победы; сохра
   ).toBeVisible();
   await expect(page.getByText('Победители: Детектив 1')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m3/classic/${info.project.name}-final.png`,
+    path: `docs/devlog/assets/narration/classic/${info.project.name}-final.png`,
     fullPage: true,
   });
 });
@@ -121,8 +121,20 @@ test('два игрока: защита передачи, ошибочное о�
   await diary(page);
   await accusation(page, 's-gleb', 'Тайная бухгалтерия');
   await expect(page.getByText('Победители: Детектив 2')).toBeVisible();
+  const tracks = page.locator('audio');
+  await expect(tracks).toHaveCount(4);
+  await tracks.nth(1).evaluate(async (el: HTMLAudioElement) => {
+    await el.play();
+  });
+  await tracks.nth(0).evaluate(async (el: HTMLAudioElement) => {
+    await el.play();
+  });
+  await expect(tracks.nth(0)).toHaveJSProperty('paused', false);
+  await expect(tracks.nth(1)).toHaveJSProperty('paused', true);
+  await expect(tracks.nth(1)).toHaveJSProperty('currentTime', 0);
+
   await page.screenshot({
-    path: `docs/devlog/assets/m3/classic/${info.project.name}-two-players.png`,
+    path: `docs/devlog/assets/narration/classic/${info.project.name}-two-players.png`,
     fullPage: true,
   });
 });
@@ -174,7 +186,7 @@ test('допрос: давление, слом, канонический фак�
         page.getByRole('heading', { name: title, exact: true }),
       ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/m3/classic/${info.project.name}-${name}.png`,
+      path: `docs/devlog/assets/narration/classic/${info.project.name}-${name}.png`,
       fullPage: true,
     });
     expect(
@@ -247,7 +259,7 @@ test('иллюстрации локаций загружаются; зоны п�
       ).toBe('rgba(0, 0, 0, 0)');
     }
     await page.screenshot({
-      path: `docs/devlog/assets/m3/${info.project.name}-${id}.png`,
+      path: `docs/devlog/assets/narration/${info.project.name}-${id}.png`,
       fullPage: true,
     });
     await click(page, 'Назад');
