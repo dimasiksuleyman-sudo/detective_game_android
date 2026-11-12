@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Комната допросов</string>
+    <string name="title_activity_main">Комната допросов</string>
+    <string name="package_name">com.example.interrogation</string>
+    <string name="custom_url_scheme">com.example.interrogation</string>
+</resources>

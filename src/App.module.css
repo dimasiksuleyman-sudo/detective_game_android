@@ -1,0 +1,31 @@
+.app {
+  max-width: 44rem;
+  margin: auto;
+  padding: 1.25rem;
+  padding-top: max(1.25rem, env(safe-area-inset-top));
+  padding-bottom: max(1.25rem, env(safe-area-inset-bottom));
+}
+.header {
+  border-bottom: 1px solid var(--teal-gray);
+  margin-bottom: 1.5rem;
+}
+.header > p {
+  color: var(--sepia);
+}
+.navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.65rem;
+  margin-top: 2rem;
+}
+.navigation a {
+  padding: 0.7rem;
+  border: 1px solid var(--teal-gray);
+  border-radius: 0.25rem;
+  background: var(--slate);
+  color: var(--paper);
+}
+.navigation a[aria-current='page'] {
+  border-color: var(--accent);
+  color: var(--sepia);
+}
