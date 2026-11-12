@@ -388,7 +388,10 @@ export function reduce(
         return state;
       p.asked.push(q.id);
       grant(c, p, [], q.revealsFactIds);
-      answer = q.answer;
+      answer =
+        q.afterBreak && p.truths.includes(q.afterBreak.truthId)
+          ? q.afterBreak.answer
+          : q.answer;
       question = q.question;
       delta += q.stressDelta ?? 0;
     } else if (a.type === 'PRESENT_CLUE') {

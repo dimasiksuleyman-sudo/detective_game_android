@@ -8,7 +8,9 @@ test('озвучка брифинга по нажатию, без финальн
       : r.abort(),
   );
   await page.goto('/');
-  await expect(page.locator('audio')).toHaveCount(0);
+  await expect(page.locator('section[aria-label="Озвучка"] audio')).toHaveCount(
+    0,
+  );
   await page.getByRole('button', { name: 'Новое дело', exact: true }).click();
   await page.getByRole('button', { name: 'Синяя сова', exact: true }).click();
   await page
@@ -18,7 +20,7 @@ test('озвучка брифинга по нажатию, без финальн
   await expect(
     page.getByText('Лимит раундов: 6', { exact: true }),
   ).toBeVisible();
-  const audio = page.locator('audio');
+  const audio = page.locator('section[aria-label="Озвучка"] audio');
   await expect(audio).toHaveCount(1);
   await expect(audio).toHaveAttribute('preload', 'none');
   await expect(audio).toHaveAttribute('src', /briefing\.mp3$/);
@@ -56,7 +58,9 @@ test('озвучка брифинга по нажатию, без финальн
   await expect(
     page.getByRole('heading', { name: 'Хаб хода', exact: true }),
   ).toBeVisible();
-  await expect(page.locator('audio')).toHaveCount(0);
+  await expect(page.locator('section[aria-label="Озвучка"] audio')).toHaveCount(
+    0,
+  );
   expect(await element?.evaluate((el: HTMLAudioElement) => el.paused)).toBe(
     true,
   );

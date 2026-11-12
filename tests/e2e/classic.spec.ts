@@ -144,7 +144,7 @@ test('два игрока: защита передачи, ошибочное о�
       ),
     )
     .toBe(true);
-  const tracks = page.locator('audio');
+  const tracks = page.locator('section[aria-label="Озвучка"] audio');
   await expect(tracks).toHaveCount(4);
   await tracks.nth(1).evaluate(async (el: HTMLAudioElement) => {
     await el.play();

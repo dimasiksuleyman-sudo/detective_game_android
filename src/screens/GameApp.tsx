@@ -1,3 +1,5 @@
+import { Soundscape } from '../components/Soundscape';
+import { AudioSettings } from '../components/AudioSettings';
 import { DocumentRender } from '../components/DocumentRender';
 import { watchBackButton, exitApp } from '../platform/backButton';
 import { ClueInspection } from '../components/ClueInspection';
@@ -190,6 +192,7 @@ export default function GameApp() {
   if (!ready) return <p role="status">{ru.loading}</p>;
   return (
     <div className={styles.game} data-screen={effective}>
+      <Soundscape screen={effective} solved={!!g?.winners.length} />
       <header>
         <h1>{ru.appName}</h1>
         {p && g && effective !== 's06' && effective !== 's14' && personal && (
@@ -568,10 +571,26 @@ export default function GameApp() {
                           label={p.broken.includes(s.id) ? t.broken : ''}
                         />
                         <div className="chat" role="log">
+                          {p.history.filter((h) => h.suspect === s.id).length >
+                            1 && (
+                            <details className="earlierReplies">
+                              <summary>{ru.dialogue.earlier}</summary>
+                              {p.history
+                                .filter((h) => h.suspect === s.id)
+                                .slice(0, -1)
+                                .map((h, i) => (
+                                  <article key={i}>
+                                    <p>{h.question}</p>
+                                    <blockquote>{h.answer}</blockquote>
+                                  </article>
+                                ))}
+                            </details>
+                          )}
                           {p.history
                             .filter((h) => h.suspect === s.id)
+                            .slice(-1)
                             .map((h, i) => (
-                              <article key={i}>
+                              <article className="latestReply" key={i}>
                                 <p>{h.question}</p>
                                 <blockquote>{h.answer}</blockquote>
                               </article>
@@ -982,6 +1001,7 @@ export default function GameApp() {
           {effective === 's15' && (
             <>
               <h2>{t.settings}</h2>
+              <AudioSettings />
               <AiSettings />
               {HotspotEditor && button(ru.qa.editor, () => go('s17'))}
               {button(t.reset, () => {

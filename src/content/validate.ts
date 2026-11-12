@@ -46,6 +46,16 @@ export function validateCase(c: CaseFile) {
   for (const f of c.facts) refs(f.aboutSuspectIds ?? [], suspects);
   for (const cl of c.clues) {
     refs(cl.revealsFactIds, facts);
+    const normalizeDocument = (text: string) =>
+      text.normalize('NFKC').replace(/\s+/g, ' ').trim().toLowerCase();
+    const factTexts = new Set(c.facts.map((f) => normalizeDocument(f.text)));
+    for (const field of Object.values(cl.document?.fields ?? {}))
+      for (const line of Array.isArray(field) ? field : [field])
+        check(
+          !factTexts.has(normalizeDocument(line)),
+          'document repeats fact ' + cl.id,
+        );
+
     check(!!cl.image || !!cl.document, 'clue has no rendering');
   }
   for (const l of c.locations)
@@ -106,6 +116,9 @@ export function validateCase(c: CaseFile) {
     refs(s.shareableFactIds, facts);
     for (const q of s.offlineQA) {
       refs(q.revealsFactIds, facts);
+      if (q.afterBreak)
+        refs([q.afterBreak.truthId], new Set(s.hiddenTruths.map((t) => t.id)));
+
       refs(q.requiresClueId ? [q.requiresClueId] : [], clues);
       refs(q.requiresFactId ? [q.requiresFactId] : [], facts);
     }
@@ -228,6 +241,13 @@ export function validateCase(c: CaseFile) {
   for (const s of c.suspects)
     for (const line of [...s.offlineQA.map((q) => q.answer)])
       check(sentences(line) <= 3, 'reply too long ' + s.id);
+  for (const s of c.suspects)
+    for (const q of s.offlineQA)
+      if (q.afterBreak)
+        check(
+          sentences(q.afterBreak.answer) <= 3,
+          'after-break reply too long ' + s.id,
+        );
   for (const s of c.suspects)
     for (const b of s.breakpoints)
       check(sentences(b.confession) <= 4, 'confession too long ' + s.id);

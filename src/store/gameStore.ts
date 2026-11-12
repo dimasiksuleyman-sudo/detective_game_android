@@ -1,4 +1,5 @@
 /** Zustand объединяет чистый движок и последовательное сохранение до подтверждения действия. */
+import { playEffect } from '../platform/soundscape';
 import { create } from 'zustand';
 import { pilot } from '../content/loader';
 import { reduce, type GameState, type Action } from '../game/engine';
@@ -38,10 +39,26 @@ export const useGame = create<Store>((set, get) => ({
     const run = async () => {
       if (a.type !== 'ADD_NOTE') set({ busy: true, error: '' });
       try {
-        const game = reduce(pilot, get().game, a);
+        const before = get().game;
+        const game = reduce(pilot, before, a);
+
         if (game) await saveGame(game);
         set({ game, busy: false });
+        const oldPlayer = before?.players[before.current];
+        const nextPlayer = before ? game?.players[before.current] : undefined;
+        if (oldPlayer && nextPlayer) {
+          if (nextPlayer.broken.length > oldPlayer.broken.length)
+            playEffect('sting-break');
+          else if (
+            nextPlayer.facts.length > oldPlayer.facts.length ||
+            nextPlayer.clues.length > oldPlayer.clues.length
+          )
+            playEffect('new-fact');
+          if (nextPlayer.eliminated && !oldPlayer.eliminated)
+            playEffect('error');
+        }
       } catch {
+        playEffect('error');
         set({ busy: false, error: ru.game.saveError });
       }
     };

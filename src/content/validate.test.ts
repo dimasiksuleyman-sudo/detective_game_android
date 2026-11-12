@@ -69,3 +69,18 @@ it('отклоняет сломанную пунктуацию, сохраняя
     ).toBe(true);
   }
 });
+
+it('документ не повторяет факт даже с изменённым регистром и пробелами; связь afterBreak локальная', () => {
+  const copy = structuredClone(pilot);
+  const clue = copy.clues.find((c) => c.document);
+  const fact = copy.facts[0];
+  if (!clue?.document || !fact) throw new Error('fixture');
+  clue.document.fields = { text: '  ' + fact.text.toUpperCase() + '  ' };
+  expect(validateCase(copy).errors).toContain(
+    'document repeats fact ' + clue.id,
+  );
+  const question = copy.suspects[0]?.offlineQA[0];
+  if (!question) throw new Error('fixture');
+  question.afterBreak = { truthId: 't-missing', answer: 'Правда.' };
+  expect(validateCase(copy).errors).toContain('missing reference t-missing');
+});
