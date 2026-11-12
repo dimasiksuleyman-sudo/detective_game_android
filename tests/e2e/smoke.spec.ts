@@ -1,41 +1,33 @@
 import { test, expect } from '@playwright/test';
-import { screens } from '../../src/screens/catalog';
 import { ru } from '../../src/i18n/ru';
-
-test('все 16 экранов доступны; переходы и перезагрузка работают без внешних запросов', async ({
+test('главное меню, инструкция, настройки и выбор дела доступны без внешних запросов', async ({
   page,
-}, testInfo) => {
+}) => {
   const errors: string[] = [];
-  page.on('pageerror', (error) => errors.push(error.message));
-  await page.route('**/*', (route) => {
-    if (new URL(route.request().url()).hostname !== '127.0.0.1')
-      return route.abort();
-    return route.continue();
-  });
+  page.on('pageerror', (e) => errors.push(e.message));
+  await page.route('**/*', (r) =>
+    new URL(r.request().url()).hostname === '127.0.0.1'
+      ? r.continue()
+      : r.abort(),
+  );
   await page.goto('/');
-  for (const { id, path } of screens) {
-    await expect(page.getByRole('heading', { level: 2 })).toHaveText(
-      ru.screens[id].title,
-    );
-    await expect(page).toHaveURL(new RegExp(`#${path}$`));
-    expect(
-      await page.evaluate(
-        () => document.documentElement.scrollWidth <= window.innerWidth,
-      ),
-    ).toBe(true);
+  await expect(
+    page.getByRole('heading', { name: ru.screens.S02.title }),
+  ).toBeVisible();
+  for (const title of [ru.game.help, ru.game.settings]) {
+    await page.getByRole('button', { name: title, exact: true }).click();
+    await expect(
+      page.getByRole('heading', { name: title, exact: true }),
+    ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/m0/${testInfo.project.name}-${id}.png`,
+      path: `docs/devlog/assets/m1/${test.info().project.name}-${title === ru.game.help ? 'S16-help' : 'S15-settings'}.png`,
       fullPage: true,
     });
-    await page.getByRole('link', { name: ru.nextScreen, exact: true }).click();
+    await page.getByRole('button', { name: ru.game.menu, exact: true }).click();
   }
-  await page
-    .getByRole('navigation')
-    .getByRole('link', { name: ru.screens.S15.title, exact: true })
-    .click();
-  await page.reload();
-  await expect(page.getByRole('heading', { level: 2 })).toHaveText(
-    ru.screens.S15.title,
-  );
+  await page.getByRole('button', { name: ru.game.newGame }).click();
+  await expect(
+    page.getByRole('heading', { name: ru.game.choose }),
+  ).toBeVisible();
   expect(errors).toEqual([]);
 });

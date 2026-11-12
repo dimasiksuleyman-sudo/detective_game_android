@@ -10,3 +10,13 @@
 Локальный debug APK собран из исходного кода `83d432f` (Gradle BUILD SUCCESSFUL, 93 задачи). Подпись проверена `apksigner verify`. Размер 4 483 645 байт, SHA-256 `ff27b0a47c513b959fcc78d61951daab6434e3e07cdc67015ea0775e3197a97d`.
 
 CI-артефакт подписывается собственным debug-ключом runner и может иметь другой хеш. Успешный [CI 43079709053](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053) для исходного кода eaa7ab5; [ZIP с APK](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053/artifacts/13882664903), artifact ID 13882664903. Для приёмки используйте APK из успешного запуска CI. Release-версия пока не выпускалась.
+
+## 0.1.0 (versionCode 2) — 2026-11-11, M1 debug
+
+- «Синяя сова» в классическом режиме: обыск, допрос, стресс, предъявление улик, блокнот, доска, обвинение и финал.
+- 1–4 игрока, удержание передачи, лимиты действий, выбывание и финальные попытки.
+- Автосохранение в IndexedDB и продолжение; защита при возвращении в приложение через App plugin.
+- Изображения временные, все данные встроены. Реальный ИИ, голос и датчики не подключены.
+- Локальная сборка Gradle успешна, подпись проверена. Физическая приёмка M1 ожидает MT-009.
+
+Проверенный CI M1: [43094122435](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43094122435), код 9f45429, [APK ZIP](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43094122435/artifacts/13889094343). Последующие изменения процесса CI и документов не выдаются за отдельную APK-сборку.

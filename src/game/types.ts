@@ -1,2 +1,2 @@
-/** Типы сериализуемого состояния и действий движка (M1). */
-export {};
+/** Публичные сериализуемые типы движка. */
+export type { GameState, Player, Action, Tone } from './engine';

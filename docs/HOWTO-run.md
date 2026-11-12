@@ -13,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-Откройте http://localhost:5173. Это каркас M0: ссылки ведут на 16 заглушек экранов. Настоящих игровых действий и сохранения пока нет. Шрифты включены локально.
+Откройте http://localhost:5173. На ветке codex/m1-classic-game доступна классическая «Синяя сова»: новое дело, настройка игроков, обыск, допрос, блокнот, обвинение и финал. Изображения пока заглушки; шрифты включены локально.
 
 ## Тесты
 
@@ -26,7 +26,7 @@ npx playwright install chromium
 npm run e2e
 ```
 
-E2E сам запускает preview на 4173, проверяет production-сборку при 360×800 и 412×915. Скриншоты: `docs/devlog/assets/m0/`. На чистой Linux-машине для библиотек браузера используйте `npx playwright install --with-deps chromium`.
+E2E сам запускает preview на 4173, проверяет production-сборку при 360×800 и 412×915. Скриншоты: `docs/devlog/assets/m1/`. На чистой Linux-машине для библиотек браузера используйте `npx playwright install --with-deps chromium`.
 
 ## Подготовка Android SDK
 
@@ -68,3 +68,23 @@ npm run android:debug
 ## Серверы
 
 Конфигурация раздачи паков и производственных скриптов появится на M5. Пустые файлы tools сейчас ничего не выполняют.
+
+## Разработка M1
+
+Ветка `codex/m1-classic-game` наследует принятый M0. На Windows после `git fetch origin` выполнить `git switch codex/m1-classic-game`, затем `npm.cmd ci` и `npm.cmd run android:sync`. В Android Studio открыть папку android и выбрать JDK 21. Установка зависимостей нужна после смены ветки.
+
+Новые проверки: `npm run case:validate`, `npm run test:coverage`. Все игровые данные встроены в JS bundle; API-ключ не нужен. Для проверки сохранения выполните действие, вернитесь в меню и нажмите «Продолжить». Веб-оболочка не PWA: повторная загрузка страницы требует локально работающего dev/preview-сервера. На Android ассеты внутри APK.
+
+## Когда CI выдаёт APK
+
+По ADR-007 Android-сборка выполняется после изменений android/, npm-зависимостей или capacitor.config.ts. После правок только веб-кода/документов APK может отсутствовать: используйте последний подходящий артефакт либо Actions → workflow → Run workflow на нужной ветке для актуального APK. Ваш локальный цикл — npm.cmd run android:sync и Run в Android Studio. Веб-проверки CI остаются обязательными.
+
+## Проверенная сборка M1
+
+[CI 43094122435](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43094122435), [APK 0.1.0 ZIP](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43094122435/artifacts/13889094343), исходный код 9f45429. Для локальной сборки в Android Studio используйте текущую ветку M1 и npm.cmd run android:sync. Физическая проверка — MT-009 и MT-003.
+
+В подтверждённой установке владельца Android Studio находится здесь: `C:\Program Files\Android\Android Studio1\bin\studio64.exe`. Открытие из PowerShell:
+
+```powershell
+& "C:\Program Files\Android\Android Studio1\bin\studio64.exe" "D:\Projects\detective_game_android\android"
+```
