@@ -4,6 +4,7 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { caseSchema } from '../src/content/schema';
 import { validateCase } from '../src/content/validate';
+import art from '../art/pilot/manifest.json';
 const file = process.argv[2] ?? 'public/cases/case-001-blue-owl/case.json';
 const c = caseSchema.parse(JSON.parse(await readFile(file, 'utf8'))),
   report = validateCase(c);
@@ -27,8 +28,24 @@ for (const a of assets) {
   const m = await sharp(path.join(path.dirname(file), a.file)).metadata();
   if (m.format !== 'webp' || m.width !== a.w || m.height !== a.h)
     report.errors.push('image format/size ' + a.file);
+  if (a.file.startsWith('images/clues/')) {
+    const stats = await sharp(path.join(path.dirname(file), a.file)).stats();
+    if (!m.hasAlpha || stats.channels[3]?.min !== 0)
+      report.errors.push('image transparency ' + a.file);
+  }
 }
-for (const a of [c.victim, ...c.suspects])
+// Шеф не входит в список подозреваемых, но его эмоции тоже поставляются с игрой.
+const actorIds = new Set([
+  c.victim.actorId,
+  ...c.suspects.map((a) => a.actorId),
+]);
+if (c.id === art.caseId)
+  for (const f of art.files)
+    if (f.output.startsWith('troupe/')) {
+      const actorId = f.output.split('/')[1];
+      if (actorId) actorIds.add(actorId);
+    }
+for (const actorId of actorIds)
   for (const emotion of [
     'neutral',
     'nervous',
@@ -38,10 +55,10 @@ for (const a of [c.victim, ...c.suspects])
     'broken',
   ]) {
     const m = await sharp(
-      `public/troupe/${a.actorId}/${emotion}.webp`,
+      `public/troupe/${actorId}/${emotion}.webp`,
     ).metadata();
     if (m.width !== 768 || m.height !== 1152 || m.format !== 'webp')
-      report.errors.push('actor image ' + a.actorId);
+      report.errors.push('actor image ' + actorId + '/' + emotion);
   }
 console.log(
   report.errors.length

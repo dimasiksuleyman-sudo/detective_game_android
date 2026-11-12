@@ -18,7 +18,7 @@ const manifest = z
           output: z
             .string()
             .regex(
-              /^images\/(?:(?:locations|closeups|clues)\/)?[a-z0-9-]+\.webp$/,
+              /^(?:images\/(?:(?:locations|closeups|clues|reconstruction)\/)?[a-z0-9-]+|troupe\/a[0-9]{2}-[a-z0-9-]+\/(?:neutral|nervous|angry|sad|smug|broken))\.webp$/,
             ),
           width: z.number().int().positive().max(2048),
           height: z.number().int().positive().max(2048),
@@ -33,35 +33,50 @@ const manifest = z
 if (new Set(manifest.files.map((f) => f.output)).size !== manifest.files.length)
   throw new Error('Повторяющиеся выходные пути');
 // Сначала готовим и проверяем весь набор: повреждённый исходник не оставит половину новых ресурсов.
-const prepared = await Promise.all(
-  manifest.files.map(async (file) => {
-    const source = path.join('art/pilot', file.source);
-    const meta = await sharp(source).metadata();
-    if (
-      meta.format !== 'png' ||
-      meta.width !== file.sourceWidth ||
-      meta.height !== file.sourceHeight
-    )
-      throw new Error(
-        'Размер оригинала PNG не совпадает с манифестом: ' + source,
-      );
-    const buffer = await sharp(source)
-      .rotate()
-      .resize(file.width, file.height, { fit: 'fill' })
-      .webp({ quality: file.quality })
-      .toBuffer();
-    const result = await sharp(buffer).metadata();
-    if (
-      result.format !== 'webp' ||
-      result.width !== file.width ||
-      result.height !== file.height
-    )
-      throw new Error('Неверный результат конвертации: ' + file.output);
-    return { file, buffer };
-  }),
-);
+const prepared: { file: (typeof manifest.files)[number]; buffer: Buffer }[] =
+  [];
+for (const file of manifest.files) {
+  const source = path.join('art/pilot', file.source);
+  const meta = await sharp(source).metadata();
+  if (
+    meta.format !== 'png' ||
+    meta.width !== file.sourceWidth ||
+    meta.height !== file.sourceHeight
+  )
+    throw new Error(
+      'Размер оригинала PNG не совпадает с манифестом: ' + source,
+    );
+  if (
+    Math.abs(
+      file.sourceWidth / file.sourceHeight / (file.width / file.height) - 1,
+    ) > 0.025
+  )
+    throw new Error(
+      'Не совпадают пропорции оригинала и игрового изображения: ' + source,
+    );
+  if (file.output.startsWith('images/clues/')) {
+    const stats = await sharp(source).stats();
+    if (!meta.hasAlpha || stats.channels[3]?.min !== 0)
+      throw new Error('У предмета нужен прозрачный фон: ' + source);
+  }
+  const buffer = await sharp(source)
+    .rotate()
+    .resize(file.width, file.height, { fit: 'fill' })
+    .webp({ quality: file.quality })
+    .toBuffer();
+  const result = await sharp(buffer).metadata();
+  if (
+    result.format !== 'webp' ||
+    result.width !== file.width ||
+    result.height !== file.height
+  )
+    throw new Error('Неверный результат конвертации: ' + file.output);
+  prepared.push({ file, buffer });
+}
 for (const { file, buffer } of prepared) {
-  const output = path.join('public/cases', manifest.caseId, file.output);
+  const output = file.output.startsWith('troupe/')
+    ? path.join('public', file.output)
+    : path.join('public/cases', manifest.caseId, file.output);
   await mkdir(path.dirname(output), { recursive: true });
   await writeFile(output, buffer);
   console.log(

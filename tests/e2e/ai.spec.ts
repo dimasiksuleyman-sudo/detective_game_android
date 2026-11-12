@@ -28,7 +28,7 @@ async function setup(page: Page, fixture = '') {
     '',
   );
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/${test.info().project.name}-key-checked.png`,
+    path: `docs/devlog/assets/m3-art/screens/${test.info().project.name}-key-checked.png`,
     fullPage: true,
   });
   await page.reload();
@@ -75,7 +75,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   ).toBeVisible();
   await page.getByText('Стоимость последней попытки', { exact: true }).click();
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/${info.project.name}-ai-dialogue.png`,
+    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-ai-dialogue.png`,
     fullPage: true,
   });
   await page.getByRole('combobox', { name: 'Тон' }).selectOption('pressure');
@@ -86,7 +86,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   await click(page, 'Допрос');
   await click(page, 'Вера Орлова');
   await click(page, 'Ежедневник Аркадия');
-  await expect(page.getByText('Временное изображение: Сломлен')).toBeVisible();
+  await expect(page.getByText('Сломлен', { exact: true })).toBeVisible();
   await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Факты');
@@ -108,7 +108,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   });
   expect(stored).not.toContain('e2e-dummy-credential');
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/${info.project.name}-ai-facts.png`,
+    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-ai-facts.png`,
     fullPage: true,
   });
 });
@@ -144,7 +144,7 @@ test('ключ удаляется; AI отключён в новой парти�
     ),
   ).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/point-and-click/${info.project.name}-settings.png`,
+    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-settings.png`,
     fullPage: true,
   });
   await click(page, 'В меню');
@@ -176,7 +176,7 @@ test('предъявление в ИИ-партии работает офлай�
     .uncheck();
   await context.setOffline(true);
   await click(page, 'Билет на поезд');
-  await expect(page.getByText('Временное изображение: Сломлен')).toBeVisible();
+  await expect(page.getByText('Сломлен', { exact: true })).toBeVisible();
   await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Факты');

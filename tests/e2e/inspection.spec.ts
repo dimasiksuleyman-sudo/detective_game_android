@@ -93,7 +93,7 @@ test('предмет → самостоятельный осмотр → фак�
     await region.evaluate((el) => getComputedStyle(el).backgroundColor),
   ).toBe('rgba(0, 0, 0, 0)');
   await page.screenshot({
-    path: `docs/devlog/assets/inspection/${info.project.name}-before.png`,
+    path: `docs/devlog/assets/m3-art/screens/inspection/${info.project.name}-before.png`,
     fullPage: true,
   });
   await region.click();
@@ -111,7 +111,7 @@ test('предмет → самостоятельный осмотр → фак�
     'd-statuette-chip',
   ]);
   await page.screenshot({
-    path: `docs/devlog/assets/inspection/${info.project.name}-found.png`,
+    path: `docs/devlog/assets/m3-art/screens/inspection/${info.project.name}-found.png`,
     fullPage: true,
   });
   await page.reload();
