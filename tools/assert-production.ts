@@ -3,6 +3,8 @@ import { readdir, readFile } from 'node:fs/promises';
 import config from '../capacitor.config';
 if (config.webDir !== 'dist') throw new Error('Production webDir must be dist');
 const files = (await readdir('dist/assets')).filter((f) => f.endsWith('.js'));
+if (files.some((f) => f.includes('HotspotEditor')))
+  throw new Error('Debug editor detected in production');
 if (!files.length) throw new Error('Production JS assets missing');
 for (const file of files) {
   const code = await readFile('dist/assets/' + file, 'utf8');

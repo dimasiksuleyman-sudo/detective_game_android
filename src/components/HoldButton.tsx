@@ -26,6 +26,8 @@ export function HoldButton({
   return (
     <button
       type="button"
+      onContextMenu={(e) => e.preventDefault()}
+      className={holding ? 'hold holding' : 'hold'}
       onPointerDown={start}
       onPointerUp={stop}
       onPointerLeave={stop}
@@ -38,9 +40,14 @@ export function HoldButton({
       }}
       onKeyUp={stop}
       onBlur={stop}
-      style={{ opacity: holding ? 0.65 : 1, touchAction: 'none' }}
+      style={{
+        touchAction: 'none',
+        userSelect: 'none',
+        WebkitTouchCallout: 'none',
+      }}
     >
       {children}
+      <span className="holdProgress" aria-hidden="true" />
     </button>
   );
 }

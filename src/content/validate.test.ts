@@ -57,3 +57,15 @@ it('ранний факт, ранний текст и недостижимый �
     'unreachable f-statuette-weapon',
   );
 });
+
+it('отклоняет сломанную пунктуацию, сохраняя каноническое вопросительное многоточие', () => {
+  for (const text of ['Ответ; Следующее предложение', 'Что?.']) {
+    const copy = structuredClone(pilot);
+    const q = copy.suspects[0]?.offlineQA[0];
+    if (!q) throw new Error('Missing pilot question');
+    q.answer = text;
+    expect(
+      validateCase(copy).errors.some((e) => e.startsWith('punctuation')),
+    ).toBe(true);
+  }
+});

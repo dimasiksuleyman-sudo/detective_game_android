@@ -394,3 +394,13 @@ describe('осмотр найденной улики', () => {
     expect(s?.players[0]?.facts).not.toContain('f-statuette-weapon');
   });
 });
+
+it('START_GAME сохраняет текущую партию без явного подтверждения перезаписи', () => {
+  const current = game();
+  const next = { type: 'START_GAME', names: ['Новый'], roundLimit: 6 } as const;
+  expect(reduce(c, current, { ...next, names: [...next.names] })).toBe(current);
+  expect(
+    reduce(c, current, { ...next, names: [...next.names], overwrite: true })
+      ?.players[0]?.name,
+  ).toBe('Новый');
+});

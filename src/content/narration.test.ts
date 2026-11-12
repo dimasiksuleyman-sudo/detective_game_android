@@ -26,3 +26,15 @@ it('восемь встроенных MP3 соответствуют маниф�
     expect(clip.seconds).toBeGreaterThan(0);
   }
 });
+
+it('тексты всех восьми записей совпадают с текущим каноном игры', () => {
+  expect(narrationFor('briefing', briefingText)).toBeDefined();
+  for (const hint of pilot.hints)
+    expect(hintNarration(hint.text)).toBeDefined();
+  expect(
+    narrationFor('solution-explanation', pilot.solution.explanation),
+  ).toBeDefined();
+  pilot.solution.reconstruction.forEach((r, i) =>
+    expect(narrationFor('reconstruction-' + (i + 1), r.caption)).toBeDefined(),
+  );
+});
