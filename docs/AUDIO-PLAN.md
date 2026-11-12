@@ -27,11 +27,17 @@
 | --------------------- | ----------------------------------- | ----- | ----------------------------------------------------- |
 | `music-menu`          | главное меню, выбор дела, настройки | да    | ✅ готово: 1:47, петля 3,0→110,0 с, шов 3 с           |
 | `music-investigation` | хаб, обыск, блокнот, доска          | да    | ✅ готово: 1:56, петля 2,5→118,5 с, шов 2 с, −20 LUFS |
-| `music-interrogation` | допрос                              | да    | ⏳ ждёт генерации                                     |
-| `music-solved`        | финал «дело раскрыто»               | нет   | ⏳ ждёт генерации                                     |
-| `music-unsolved`      | финал «дело не раскрыто»            | нет   | ⏳ ждёт генерации                                     |
+| `music-interrogation` | допрос                              | да    | ✅ готово: 0:59, петля 1,0→60,0 с, шов 1 с, −20 LUFS  |
+| `music-solved`        | финал «дело раскрыто»               | нет   | ✅ готово: 0:30, разовый, ≈ −18 LUFS                  |
+| `music-unsolved`      | финал «дело не раскрыто»            | нет   | ✅ готово: 0:24, разовый, −20 LUFS (тихий по замыслу) |
 
 `music-investigation`: оригинал 2:00 (просили 2:30), −19,9 LUFS, 0,35 с тишины в начале, музыка до ~117 с. Петля — с 2,5 с, хвост до 118,5 с сведён с отрезком 0,5–2,5 с; −20 LUFS (тише меню, под чтение).
+
+`music-interrogation`: оригинал 1:00, начинается с удара и звучит до конца без затухания. Удар уходит в кроссфейд, петля — с 1-й секунды.
+
+`music-solved`: оригинал 0:30, финальный аккорд затухает к ~29,5 с; обрезан на 29,6 с с коротким fade-out.
+
+`music-unsolved`: оригинал 0:25, ~0,2 с тишины и медленное вступление; обрезан 0,2→24,6 с.
 
 `music-menu`: оригинал 2:00, −15 LUFS. Фраза заканчивается к ~107 с, дальше затухание. Первые 3 с — затухающая вступительная нота. Петля начинается с новой фразы (3 с) и сводит хвост со вступлением.
 
@@ -43,22 +49,22 @@
 Instrumental minimalist noir jazz background loop for investigating a crime scene. Around 65 BPM, A minor. Sparse upright bass pizzicato, soft brushed snare, occasional low vibraphone notes, quiet Rhodes, rain on windows ambience. Curious, thoughtful, slightly tense but calm; must stay in the background under dialogue and reading. No melody that grabs attention, no vocals, no drops, no ending. Seamless loop. 2 minutes 30 seconds.
 ```
 
-**music-interrogation** — 2:00, петля
+**music-interrogation** — 1:00, петля
 
 ```text
-Instrumental tense noir jazz underscore for a police interrogation scene. Around 75 BPM, E minor. Low pulsing upright bass ostinato, dry brushed hi-hat ticking like a clock, dissonant muted trumpet swells, dark piano clusters in the low register, subtle tape hiss. Suspicious, pressing, claustrophobic but restrained, quiet enough to sit under text. No vocals, no climax, no ending. Seamless loop. 2 minutes.
+Instrumental tense noir jazz underscore for a police interrogation scene. Around 75 BPM, E minor. Low pulsing upright bass ostinato, dry brushed hi-hat ticking like a clock, dissonant muted trumpet swells, dark piano clusters in the low register, subtle tape hiss. Suspicious, pressing, claustrophobic but restrained, quiet enough to sit under text. No vocals, no climax, no ending. Music starts on the very first beat with no silence. Seamless loop. 60 seconds.
 ```
 
-**music-solved** — 0:45
+**music-solved** — 0:30
 
 ```text
-Instrumental noir jazz finale for solving a murder case. Around 80 BPM, starts in D minor and resolves to D major. Full but small jazz combo: muted trumpet melody, upright bass, brushed drums, piano. Bittersweet relief, justice served on a rainy night. Clear ending with a final held chord. No vocals. 45 seconds.
+Instrumental noir jazz finale for solving a murder case. Around 80 BPM, starts in D minor and resolves to D major. Full but small jazz combo: muted trumpet melody, upright bass, brushed drums, piano. Bittersweet relief, justice served on a rainy night. Starts immediately with no silence, clear ending with a final held chord. No vocals. 30 seconds.
 ```
 
-**music-unsolved** — 0:40
+**music-unsolved** — 0:25
 
 ```text
-Instrumental noir jazz ending for an unsolved murder case. Slow, around 60 BPM, B-flat minor. Lonely solo muted trumpet over sparse low piano and rain ambience, unresolved dissonant final chord fading into rain. Sad, haunting, unfinished. No vocals. 40 seconds.
+Instrumental noir jazz ending for an unsolved murder case. Slow, around 60 BPM, B-flat minor. Lonely solo muted trumpet over sparse low piano and rain ambience, unresolved dissonant final chord fading into rain. Starts immediately with no silence. Sad, haunting, unfinished. No vocals. 25 seconds.
 ```
 
 <details><summary>music-menu (уже сгенерирован)</summary>
@@ -69,7 +75,7 @@ Instrumental noir jazz theme for a detective game main menu. Slow tempo around 7
 
 </details>
 
-Советы: делайте 2–3 варианта и берите тот, где начало и конец по настроению близки. Скачивайте MP3 или WAV. Перед публикацией игры сверьте условия коммерческого использования на своём тарифе ElevenLabs.
+Длительность выставляйте минимальную (экономия кредитов) — и в тексте, и в настройке длины ElevenLabs: длину из текста сервис, похоже, игнорирует. Советы: делайте 2–3 варианта и берите тот, где начало и конец по настроению близки. Скачивайте MP3 или WAV. Перед публикацией игры сверьте условия коммерческого использования на своём тарифе ElevenLabs.
 
 ## Звуки интерфейса (синтез, одобрены владельцем 2026-11-12)
 

@@ -14,13 +14,32 @@
       "loop": true,
       "screens": ["s05", "s07", "s08", "s09", "s11", "s12", "s13"],
       "durationSec": 116.04
+    },
+    {
+      "id": "music-interrogation",
+      "file": "music/music-interrogation.mp3",
+      "loop": true,
+      "screens": ["s10"],
+      "durationSec": 59.04
+    },
+    {
+      "id": "music-solved",
+      "file": "music/music-solved.mp3",
+      "loop": false,
+      "screens": ["s14"],
+      "when": "solved",
+      "durationSec": 29.65
+    },
+    {
+      "id": "music-unsolved",
+      "file": "music/music-unsolved.mp3",
+      "loop": false,
+      "screens": ["s14"],
+      "when": "unsolved",
+      "durationSec": 24.45
     }
   ],
-  "planned": [
-    { "id": "music-interrogation", "loop": true, "screens": ["s10"] },
-    { "id": "music-solved", "loop": false, "screens": ["s14"] },
-    { "id": "music-unsolved", "loop": false, "screens": ["s14"] }
-  ],
+  "planned": [],
   "sfx": [
     { "id": "ui-tap", "file": "sfx/ui-tap.mp3" },
     { "id": "new-fact", "file": "sfx/new-fact.mp3" },

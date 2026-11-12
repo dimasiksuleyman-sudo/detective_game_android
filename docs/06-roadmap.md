@@ -13,7 +13,7 @@
 - Структура папок из `02-architecture.md`, пустые модули с комментариями-заголовками.
 - Тема (CSS-токены из `05-art-bible.md`), шрифты (с открытой лицензией, напр. для заголовков — моноширинный «печатная машинка», для текста — читаемый с кириллицей; лицензии записать в `docs/licenses.md`).
 - `src/i18n/ru.ts`, роутер, заглушки экранов S01–S16 с навигацией.
-- GitHub Actions: lint → typecheck → unit → build → e2e (smoke) → debug APK как артефакт.
+- GitHub Actions: lint → typecheck → unit → build → e2e. APK в CI не собирается (ADR-022).
 - `docs/HOWTO-run.md` заполнен; `.gitignore` (в т.ч. `.env*`, keystore).
 
 **Готово, когда**
