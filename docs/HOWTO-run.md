@@ -4,7 +4,7 @@
 
 - Node.js 24 LTS (`.nvmrc`), npm 11. Проверенная среда: Node 24.22.1, npm 11.9.0.
 - Для APK: JDK 21, Android SDK platform 36, build-tools 35.0.0, platform-tools. Gradle 8.14.3 скачает Wrapper, AGP 8.13.0 задан в проекте.
-- Выполнять команды из корня репозитория. API-ключ для M0 не нужен.
+- Выполнять команды из корня репозитория. Для классического режима ключ не нужен. Windows владельца: Node 22.20.0 / npm 11.6.2 подходят (минимум Node 22.12).
 
 ## Разработка в браузере
 
@@ -13,7 +13,7 @@ npm ci
 npm run dev
 ```
 
-Откройте http://localhost:5173. На ветке codex/m1-classic-game доступна классическая «Синяя сова»: новое дело, настройка игроков, обыск, допрос, блокнот, обвинение и финал. Изображения пока заглушки; шрифты включены локально.
+Откройте http://localhost:5173. На текущей ветке codex/m2-ai-interrogation доступна классическая «Синяя сова»: новое дело, настройка игроков, обыск, допрос, блокнот, обвинение и финал. Изображения пока заглушки; шрифты включены локально.
 
 ## Тесты
 
@@ -26,7 +26,7 @@ npx playwright install chromium
 npm run e2e
 ```
 
-E2E сам запускает preview на 4173, проверяет production-сборку при 360×800 и 412×915. Скриншоты: `docs/devlog/assets/m1/`. На чистой Linux-машине для библиотек браузера используйте `npx playwright install --with-deps chromium`.
+E2E собирает отдельный `dist-e2e`, запускает preview на 4173 и проверяет сценарии при 360×800 и 412×915 с MockAiClient. Production проверяется отдельно командами `npm run build` и `npm run verify:production`. Новые скриншоты: `docs/devlog/assets/m2/`, исторические M1 сохранены в `assets/m1/`. На чистой Linux-машине для библиотек браузера используйте `npx playwright install --with-deps chromium`.
 
 ## Подготовка Android SDK
 
@@ -55,7 +55,7 @@ npm run android:debug
 
 ## Установка на телефон
 
-В GitHub откройте репозиторий → Actions → «Проверки и debug APK» → успешный запуск для ветки `codex/m0-project-scaffold` → Artifacts → `android-debug`. Скачайте ZIP и распакуйте `app-debug.apk`. Для скачивания артефактов нужен вход в GitHub. Проверенная сборка M0: [CI 43079709053](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053), [ZIP android-debug](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053/artifacts/13882664903), исходный код eaa7ab5. Внутри ZIP файл app-debug.apk. Если артефакт уже истёк, запустите workflow кнопкой Run workflow на нужной ветке.
+Для актуального M2 используйте ссылки ниже в разделе «Проверенная сборка M2» или локальную сборку Android Studio. Исторический M0: в GitHub откройте репозиторий → Actions → «Проверки и debug APK» → успешный запуск для ветки `codex/m0-project-scaffold` → Artifacts → `android-debug`. Скачайте ZIP и распакуйте `app-debug.apk`. Для скачивания артефактов нужен вход в GitHub. Проверенная сборка M0: [CI 43079709053](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053), [ZIP android-debug](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43079709053/artifacts/13882664903), исходный код eaa7ab5. Внутри ZIP файл app-debug.apk. Если артефакт уже истёк, запустите workflow кнопкой Run workflow на нужной ветке.
 
 После сборки скачать `app-debug.apk`, открыть на телефоне, разрешить установку из этого источника. Альтернатива через USB с включённой отладкой: `adb install -r android/app/build/outputs/apk/debug/app-debug.apk`. Проверить MT-001 из MANUAL-TEST-QUEUE.md.
 
@@ -67,7 +67,7 @@ npm run android:debug
 
 ## Серверы
 
-Конфигурация раздачи паков и производственных скриптов появится на M5. Пустые файлы tools сейчас ничего не выполняют.
+Конфигурация раздачи паков и производственных скриптов появится на M5. Инструменты паков ещё не реализованы; валидатор дела, production-проверка и ручной AI smoke уже работают.
 
 ## Разработка M1
 
@@ -96,3 +96,25 @@ npm run android:debug
 E2E собирает отдельный dist-e2e с mode=e2e и MockAiClient; production dist всегда отдельный. Не меняйте webDir на dist-e2e и не используйте эту сборку в APK.
 
 Реальный бенчмарк не входит в npm test/e2e. Только вручную: задайте AITUNNEL_API_KEY в локальном защищённом окружении либо игнорируемом .env.local, затем `npm.cmd run ai:smoke -- --allow-paid`. Будет до 60 платных запросов (20 на модель); файл `work/ai-benchmark/report.json` содержит маскированные ответы, стоимость/задержку и проценты JSON/guard. Оценку живости заполните вручную. Отсутствие ключа/флага останавливает запуск до запросов. Ключ не копировать в чат, команды с его значением, git или скриншоты.
+
+## Проверенная сборка M2 и обновление на Windows
+
+[CI 43189010590](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43189010590) успешен для кода `4e23355`, включая [APK 0.2.0 / code 3 ZIP](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43189010590/artifacts/13929139414). PR: [№3](https://github.com/dimasiksuleyman-sudo/detective_game_android/pull/3). Изменения документов после этого кода не изменяют APK.
+
+В PowerShell выполнить блок сверху вниз. Не копировать приглашение `PS ...>` или символы `>>`:
+
+```powershell
+Set-Location 'D:\Projects\detective_game_android'
+git fetch origin
+git switch codex/m2-ai-interrogation
+git pull --ff-only
+npm.cmd ci
+npm.cmd run android:sync
+& "C:\Program Files\Android\Android Studio1\bin\studio64.exe" "D:\Projects\detective_game_android\android"
+```
+
+При первом переключении Git создаст локальную ветку из origin, если её ещё нет. Если Git сообщает о локальных изменениях, сохранить их отдельно и прислать текст ошибки без секретов; не использовать reset --hard. В Android Studio дождаться Gradle Sync, выбрать JDK 21, подключённый TECNO и нажать Run. После будущих web-изменений снова выполнять android:sync перед Run.
+
+На телефоне выключить режим полёта, открыть **Настройки → ИИ-допрос → Ключ aitunnel**. Вставить ключ, нажать **«Проверить и сохранить ключ»**. Появятся подтверждение и баланс, поле ввода очистится. Проверка использует метод баланса без генерации текста. Затем **Новое дело → Синяя сова → настройка игроков → Режим допроса: ИИ**. Создать новую партию, начать допрос и задать один свободный вопрос; генерация оплачивается с собственного баланса aitunnel. Старая классическая партия автоматически в ИИ не превращается.
+
+Начать с одного вопроса, а не полного бенчмарка. Сообщить: удалось ли проверить ключ, модель, был ли ответ, отображённая стоимость и текст ошибки, если она есть. Ключ и скриншот заполненного поля не присылать. Полная проверка хранения/перезапуска/удаления/Logcat — MT-004/010; голос ещё не реализован.
