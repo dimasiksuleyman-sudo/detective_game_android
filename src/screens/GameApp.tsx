@@ -1,3 +1,9 @@
+import { NarrationPlayer } from '../components/NarrationPlayer';
+import {
+  briefingText,
+  narrationFor,
+  hintNarration,
+} from '../content/narration';
 import { AiSettings } from '../components/AiSettings';
 import { useSettings } from '../store/settingsStore';
 import { useAi, askAi, cancelAi, resetAiUsage } from '../ai/coordinator';
@@ -225,7 +231,11 @@ export default function GameApp() {
           {effective === 's05' && g && (
             <>
               <h2>{ru.screens.S05.title}</h2>
-              <p>{c.briefing}</p>
+              <p>{briefingText}</p>
+              <p>
+                {t.rounds}: {g.roundLimit}
+              </p>
+              <NarrationPlayer clip={narrationFor('briefing', briefingText)} />
               <Art
                 src={'/troupe/' + c.victim.actorId + '/neutral.webp'}
                 label={c.victim.name}
@@ -270,6 +280,7 @@ export default function GameApp() {
               {g.hint && (
                 <aside>
                   {t.hint}: {g.hint}
+                  <NarrationPlayer clip={hintNarration(g.hint)} />
                 </aside>
               )}
               <p>
@@ -752,8 +763,22 @@ export default function GameApp() {
                   : t.unsolved}
               </p>
               <p>{c.solution.explanation}</p>
-              {c.solution.reconstruction.map((r) => (
-                <Art key={r.image} src={r.image} label={r.caption} />
+              <NarrationPlayer
+                clip={narrationFor(
+                  'solution-explanation',
+                  c.solution.explanation,
+                )}
+              />
+              {c.solution.reconstruction.map((r, index) => (
+                <div key={r.image}>
+                  <Art src={r.image} label={r.caption} />
+                  <NarrationPlayer
+                    clip={narrationFor(
+                      'reconstruction-' + (index + 1),
+                      r.caption,
+                    )}
+                  />
+                </div>
               ))}
               {c.timelineTruth.map((e, i) => (
                 <p key={i}>
