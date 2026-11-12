@@ -246,7 +246,7 @@ test('ИИ-форма первая, готовые вопросы свёрнут
   for (let i = 0; i < 3; i++) {
     await field.fill('Расскажите о себе');
     await click(page, 'Спросить ИИ');
-    await expect(page.getByRole('blockquote')).toHaveCount(i + 1);
+    await expect(page.locator('.chat blockquote')).toHaveCount(i + 1);
   }
   await field.fill('Ещё вопрос');
   await expect(
@@ -259,5 +259,5 @@ test('ИИ-форма первая, готовые вопросы свёрнут
   await click(page, 'Глеб Соколов');
   await field.fill('Новый ход');
   await click(page, 'Спросить ИИ');
-  await expect(page.getByRole('blockquote')).toHaveCount(4);
+  await expect(page.locator('.chat blockquote')).toHaveCount(4);
 });

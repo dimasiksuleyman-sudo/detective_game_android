@@ -187,9 +187,8 @@ audio {
   display: none;
 }
 .interrogation :global(.chat) {
-  max-height: 14dvh;
-  overflow-y: auto;
   min-height: 1rem;
+  overflow: visible;
 }
 .interrogation :global(.chat) article {
   margin: 0.2rem 0;
@@ -207,7 +206,8 @@ audio {
   margin: 0.2rem 0;
 }
 .interrogation :global(.modeSwitch) {
-  margin: 0.25rem 0;
+  margin: 1rem 0 0.5rem;
+  border-top: 2px solid var(--teal-gray);
 }
 .interrogation :global(.questionComposer) details {
   font-size: 0.75rem;

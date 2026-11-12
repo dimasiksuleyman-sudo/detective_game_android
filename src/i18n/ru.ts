@@ -1,4 +1,14 @@
 export const ru = {
+  dialogue: { earlier: 'Предыдущие реплики' },
+  sound: {
+    saveError:
+      'Настройки звука применены, но не удалось сохранить их на устройстве.',
+    title: 'Звук',
+    music: 'Музыка',
+    volume: 'Громкость музыки',
+    effects: 'Звуки',
+    rain: 'Дождь',
+  },
   qa: {
     online: 'Онлайн',
     offline: 'Офлайн',
