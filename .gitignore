@@ -16,3 +16,4 @@ work/
 .DS_Store
 
 dist-e2e/
+__pycache__/
