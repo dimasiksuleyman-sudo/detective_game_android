@@ -41,6 +41,7 @@ const question = z.object({
   id: identifier,
   question: text,
   answer: text,
+  afterBreak: z.object({ truthId: identifier, answer: text }).optional(),
   revealsFactIds: ids,
   requiresClueId: identifier.optional(),
   requiresFactId: identifier.optional(),

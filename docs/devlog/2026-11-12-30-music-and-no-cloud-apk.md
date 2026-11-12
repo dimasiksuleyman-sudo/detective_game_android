@@ -1,6 +1,6 @@
-# 2026-11-12-29 — Вся музыка готова, APK только у владельца
+# 2026-11-12-30 — Вся музыка готова, APK только у владельца
 
-**Этап:** M3/M4 (аудио) и процесс · **Ветка:** `claude/lucid-wozniak-3iu7wi` от `main` (`8d04350`) · **ADR:** 022
+**Этап:** M3/M4 (аудио) и процесс · **Ветка:** `claude/lucid-wozniak-3iu7wi` от `main` (`8d04350`) · **ADR:** 024
 
 ## Цель
 
@@ -14,7 +14,7 @@
 - **music-unsolved**: оригинал 0:25, срезано 0,2 с тишины в начале, fade-out 0,4 с. Итог −21,6 LUFS (тихий по замыслу), 0,39 МБ.
 - `public/audio/manifest.json`: все 5 треков готовы, `planned` пуст. У финалов поле `when: solved|unsolved`.
 - `docs/AUDIO-PLAN.md`: статусы, параметры петель, промпты с минимальной длиной (60/30/25 с).
-- CI: убраны JDK, Android SDK, `cap sync`, Gradle и артефакт `android-debug`. Workflow «Проверки» оставляет lint, типы, unit, валидатор, build, production-проверку и e2e (ADR-022, заменяет ADR-007).
+- CI: убраны JDK, Android SDK, `cap sync`, Gradle и артефакт `android-debug`. Workflow «Проверки» оставляет lint, типы, unit, валидатор, build, production-проверку и e2e (ADR-024, заменяет ADR-007).
 - `AGENTS.md`: агент APK не собирает; перед закрытием этапа — build и `cap sync`. HOWTO, roadmap, testing, STATUS приведены в соответствие.
 
 ## Изменённые файлы
@@ -22,7 +22,7 @@
 - `art/music/*` — оригиналы владельца, не изменены.
 - `public/audio/music/music-{interrogation,solved,unsolved}.mp3` — готовые треки.
 - `tools/prepare-music.py`, `public/audio/manifest.json`, `docs/AUDIO-PLAN.md` — аудио.
-- `.github/workflows/ci.yml`, `docs/decisions/022-no-cloud-apk.md`, `docs/decisions/007-apk-build-frequency.md` (статус) — CI.
+- `.github/workflows/ci.yml`, `docs/decisions/024-no-cloud-apk.md`, `docs/decisions/007-apk-build-frequency.md` (статус) — CI.
 - `AGENTS.md`, `docs/HOWTO-run.md`, `docs/06-roadmap.md`, `docs/07-testing.md`, `docs/STATUS.md`, `docs/devlog/INDEX.md`, эта запись.
 
 ## Команды
@@ -35,7 +35,7 @@
 
 ## Отклонения от плана
 
-Нет. ADR-022 — по прямому указанию владельца.
+Нет. ADR-024 — по прямому указанию владельца.
 
 ## Ручная проверка
 
@@ -43,4 +43,4 @@
 
 ## Следующий шаг
 
-Агент подключает плеер. Новых треков не требуется.
+Плеер агента (PR #13) уже выбирает треки из манифеста по экранам и финалу — три новых трека подхватываются без кода. Новых треков не требуется.

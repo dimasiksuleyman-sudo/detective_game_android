@@ -404,3 +404,27 @@ it('START_GAME сохраняет текущую партию без явног�
       ?.players[0]?.name,
   ).toBe('Новый');
 });
+
+it('после раскрытия темы все помеченные вопросы дают правду, до раскрытия — прежний ответ', () => {
+  for (const suspect of c.suspects)
+    for (const q of suspect.offlineQA) {
+      if (!q.afterBreak) continue;
+      for (const known of [false, true]) {
+        const s = active();
+        const p = player(s);
+        p.facts = c.facts.map((f) => f.id);
+        p.clues = c.clues.map((cl) => cl.id);
+        if (known) p.truths.push(q.afterBreak.truthId);
+        const next = run(s, {
+          type: 'ASK_OFFLINE_QUESTION',
+          suspectId: suspect.id,
+          questionId: q.id,
+          tone: 'neutral',
+        });
+        expect(player(next).history.at(-1)?.answer).toBe(
+          known ? q.afterBreak.answer : q.answer,
+        );
+        expect(next.action?.used).toBe(1);
+      }
+    }
+});

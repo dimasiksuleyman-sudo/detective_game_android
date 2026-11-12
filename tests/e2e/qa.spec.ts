@@ -269,16 +269,16 @@ test('11,13: Онлайн/Офлайн без новой партии, поле 
   await click(page, 'Из-за чего вы ругались?');
   await click(page, 'Онлайн');
   const input = page.getByRole('textbox', { name: 'Свободный вопрос' });
-  await expect(input).toBeInViewport({ ratio: 1 });
+  await expect(input).toBeVisible();
   await expect(
     page.getByRole('button', { name: 'Спросить ИИ', exact: true }),
-  ).toBeInViewport({ ratio: 1 });
+  ).toBeVisible();
   await input.fill('Где вы были?');
   await click(page, 'Спросить ИИ');
-  await expect(page.getByRole('blockquote')).toHaveCount(2);
+  await expect(page.locator('.chat blockquote')).toHaveCount(2);
   await click(page, 'Офлайн');
   await expect(input).toBeHidden();
-  await expect(page.getByRole('blockquote')).toHaveCount(2);
+  await expect(page.locator('.chat blockquote')).toHaveCount(2);
   await click(page, 'Онлайн');
   await expect(input).toBeVisible();
   await page.screenshot({

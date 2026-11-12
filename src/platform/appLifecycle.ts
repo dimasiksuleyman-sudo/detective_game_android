@@ -1,14 +1,16 @@
 /** Android appStateChange и web visibility скрывают личную информацию до возврата. */
 import { App } from '@capacitor/app';
 import { Capacitor } from '@capacitor/core';
-export function watchLifecycle(lock: () => void) {
+export function watchLifecycle(lock: () => void, resume?: () => void) {
   const web = () => {
     if (document.hidden) lock();
+    else resume?.();
   };
   document.addEventListener('visibilitychange', web);
   const native = Capacitor.isNativePlatform()
     ? App.addListener('appStateChange', ({ isActive }) => {
         if (!isActive) lock();
+        else resume?.();
       })
     : null;
   return () => {
