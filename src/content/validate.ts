@@ -1,4 +1,5 @@
 /** Семантика ссылок и монотонная симуляция достижимости без LLM. */
+import { mentionsConcealedTerm } from './inspectionKnowledge';
 import type { CaseFile } from './schema';
 export function validateCase(c: CaseFile) {
   const errors: string[] = [],
@@ -9,6 +10,7 @@ export function validateCase(c: CaseFile) {
   const all = [
     ...c.facts,
     ...c.clues,
+    ...c.clues.flatMap((cl) => cl.inspection?.details ?? []),
     ...c.suspects,
     ...c.locations,
     ...c.motives,
@@ -46,6 +48,49 @@ export function validateCase(c: CaseFile) {
         'hotspot outside image',
       );
     }
+  const details = c.clues.flatMap((cl) => cl.inspection?.details ?? []);
+  const gated = details.flatMap((d) => d.revealsFactIds);
+  check(
+    new Set(gated).size === gated.length,
+    'inspection fact has multiple owners',
+  );
+  const immediate = [
+    ...c.clues.flatMap((cl) => cl.revealsFactIds),
+    ...c.locations.flatMap((l) =>
+      l.hotspots.flatMap((h) => h.revealsFactIds ?? []),
+    ),
+    ...c.suspects.flatMap((s) => [
+      ...s.shareableFactIds,
+      ...s.offlineQA.flatMap((q) => q.revealsFactIds),
+      ...s.breakpoints.flatMap((b) => b.revealsFactIds),
+    ]),
+  ];
+  for (const id of gated)
+    check(!immediate.includes(id), 'inspection fact opens early ' + id);
+  for (const d of details) {
+    refs(d.revealsFactIds, facts);
+    check(
+      d.rect.x + d.rect.w <= 1 && d.rect.y + d.rect.h <= 1,
+      'inspection outside image',
+    );
+    for (const t of [
+      ...c.clues.map((cl) => cl.description),
+      ...c.locations.flatMap((l) => [
+        l.description,
+        ...l.hotspots.map((h) => h.text),
+      ]),
+      ...c.suspects.flatMap((s) => [
+        s.coverStory,
+        s.publicProfile,
+        ...s.clueReactions.map((r) => r.reaction),
+        ...s.offlineQA.map((q) => q.answer),
+      ]),
+    ])
+      check(
+        !mentionsConcealedTerm(t, d.concealedTerms),
+        'inspection text leak ' + d.id,
+      );
+  }
   const culprit = c.suspects.find((s) => s.isCulprit)?.name.split(' ')[0] ?? '';
   for (const s of c.suspects) {
     refs(s.shareableFactIds, facts);
@@ -104,7 +149,13 @@ export function validateCase(c: CaseFile) {
             ...(h.revealsFactIds ?? []),
           ]);
     for (const cl of c.clues)
-      if (reached.has(cl.id)) add(cl.id, cl.revealsFactIds);
+      if (reached.has(cl.id)) {
+        add(cl.id, cl.revealsFactIds);
+        for (const d of cl.inspection?.details ?? []) {
+          add(cl.id, [d.id]);
+          add(d.id, d.revealsFactIds);
+        }
+      }
     for (const s of c.suspects) {
       for (const q of s.offlineQA)
         if (

@@ -76,7 +76,11 @@ async function main() {
             model: model.id,
             signal: new AbortController().signal,
           });
-          const checked = guard(response.content, prompt.allowedFactIds);
+          const checked = guard(
+            response.content,
+            prompt.allowedFactIds,
+            prompt.concealedTerms,
+          );
           total += response.costRub ?? 0;
           rows.push({
             model: model.id,

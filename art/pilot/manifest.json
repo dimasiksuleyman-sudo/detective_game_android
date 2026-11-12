@@ -24,6 +24,24 @@
       "output": "images/locations/l-alley.webp",
       "width": 1080,
       "height": 1620
+    },
+    {
+      "source": "statuette-closeup.png",
+      "output": "images/closeups/h-floor.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "statuette-item.png",
+      "output": "images/clues/c-statuette.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
     }
   ]
 }

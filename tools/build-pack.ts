@@ -17,9 +17,14 @@ const manifest = z
           source: z.string().regex(/^[a-z0-9-]+\.png$/),
           output: z
             .string()
-            .regex(/^images\/(?:locations\/)?[a-z0-9-]+\.webp$/),
+            .regex(
+              /^images\/(?:(?:locations|closeups|clues)\/)?[a-z0-9-]+\.webp$/,
+            ),
           width: z.number().int().positive().max(2048),
           height: z.number().int().positive().max(2048),
+          sourceWidth: z.number().int().positive().max(4096).default(1024),
+          sourceHeight: z.number().int().positive().max(4096).default(1536),
+          quality: z.number().int().min(1).max(100).default(80),
         }),
       )
       .min(1),
@@ -32,12 +37,18 @@ const prepared = await Promise.all(
   manifest.files.map(async (file) => {
     const source = path.join('art/pilot', file.source);
     const meta = await sharp(source).metadata();
-    if (meta.format !== 'png' || meta.width !== 1024 || meta.height !== 1536)
-      throw new Error('Ожидается оригинал PNG 1024×1536: ' + source);
+    if (
+      meta.format !== 'png' ||
+      meta.width !== file.sourceWidth ||
+      meta.height !== file.sourceHeight
+    )
+      throw new Error(
+        'Размер оригинала PNG не совпадает с манифестом: ' + source,
+      );
     const buffer = await sharp(source)
       .rotate()
       .resize(file.width, file.height, { fit: 'fill' })
-      .webp({ quality: 80 })
+      .webp({ quality: file.quality })
       .toBuffer();
     const result = await sharp(buffer).metadata();
     if (

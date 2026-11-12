@@ -327,3 +327,39 @@ it('стоимость хранится отдельно от лимита; lega
     }),
   ).toEqual(state);
 });
+
+it('неоткрытая деталь не передаётся в system, guard фильтрует скол без ложного «сколько»', async () => {
+  const p = player();
+  const prompt = buildSuspectPrompt(pilot, 's-gleb', p, 'neutral', 'Вопрос');
+  expect(prompt.messages[0]?.content).not.toContain('скол');
+  expect(
+    guard(
+      raw({ reply: 'На подставке свежий скол.' }),
+      prompt.allowedFactIds,
+      prompt.concealedTerms,
+    ).valid,
+  ).toBe(false);
+  expect(
+    guard(
+      raw({ reply: 'Сколько раз повторять? Насколько я помню, я уехал.' }),
+      prompt.allowedFactIds,
+      prompt.concealedTerms,
+    ).valid,
+  ).toBe(true);
+  const client = new MockAiClient(undefined, [
+    { content: raw({ reply: 'На подставке скол.' }) },
+    { content: raw({ reply: 'Я уехал в одиннадцать.' }) },
+  ]);
+  const answer = await interrogate({ ...options(), client });
+  expect(answer.result.reply).toBe('Я уехал в одиннадцать.');
+  expect(client.calls).toHaveLength(2);
+  p.inspectedDetails = ['d-statuette-chip'];
+  const known = buildSuspectPrompt(pilot, 's-gleb', p, 'neutral', 'Вопрос');
+  expect(
+    guard(
+      raw({ reply: 'На подставке скол.' }),
+      known.allowedFactIds,
+      known.concealedTerms,
+    ).valid,
+  ).toBe(true);
+});

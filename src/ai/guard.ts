@@ -1,4 +1,5 @@
 /** Эвристический пост-фильтр. Авторитетные факты берутся движком из канонического контента. */
+import { mentionsConcealedTerm } from '../content/inspectionKnowledge';
 import { parseResponse } from './responseParser';
 export const emotions = [
   'neutral',
@@ -23,7 +24,11 @@ const fallback: GuardedReply = {
   stressDelta: 0,
   valid: false,
 };
-export function guard(raw: string, allowedFactIds: string[]): GuardedReply {
+export function guard(
+  raw: string,
+  allowedFactIds: string[],
+  concealedTerms: string[] = [],
+): GuardedReply {
   const parsed = parseResponse(raw);
   if (!parsed) return { ...fallback };
   const normalized = parsed.reply
@@ -31,6 +36,7 @@ export function guard(raw: string, allowedFactIds: string[]): GuardedReply {
     .replace(/[\u200b-\u200f\u2060\ufeff]/g, '')
     .toLowerCase()
     .replace(/ё/g, 'е');
+  if (mentionsConcealedTerm(normalized, concealedTerms)) return { ...fallback };
   // Даже после брейкпоинта пилот раскрывает частичную правду, не полное признание в убийстве.
   if (
     /как\s+(?:ии|языковая модель)|language model|as an ai|языков[а-яa-z]*\s+модел|в\s+этой\s+игре|\bsystem\b|\bjson\b|я\s+убил[а]?(?![а-яa-z])|это\s+я\s+его|убийц|виновен|виновна|\bsk-[a-z0-9_-]{12,}|\bbearer\s/i.test(

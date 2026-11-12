@@ -56,7 +56,11 @@ export async function interrogate(args: {
       usage.knownCostRub += response.costRub ?? 0;
       if (response.costRub === undefined) usage.unknownCost = true;
       if (response.balance !== undefined) usage.balance = response.balance;
-      const result = guard(response.content, prompt.allowedFactIds);
+      const result = guard(
+        response.content,
+        prompt.allowedFactIds,
+        prompt.concealedTerms,
+      );
       if (result.valid) return { result, usage, error: null };
       error = 'invalid';
     } catch (e) {

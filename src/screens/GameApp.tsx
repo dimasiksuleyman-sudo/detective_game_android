@@ -1,3 +1,4 @@
+import { ClueInspection } from '../components/ClueInspection';
 import { NarrationPlayer } from '../components/NarrationPlayer';
 import {
   briefingText,
@@ -42,6 +43,7 @@ export default function GameApp() {
   const initSettings = useSettings((s) => s.init);
   const ai = useAi(),
     settings = useSettings();
+  const [clueReturn, setClueReturn] = useState<'s08' | 's11'>('s08');
   const [narrateClues, setNarrateClues] = useState(true);
   const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
     [freeQuestion, setFreeQuestion] = useState('');
@@ -66,6 +68,7 @@ export default function GameApp() {
       evidence: [] as string[],
     });
   const p = g?.players[g.current];
+  const selectedClue = c.clues.find((cl) => cl.id === clue);
   useEffect(() => {
     void init();
     void initSettings();
@@ -364,6 +367,7 @@ export default function GameApp() {
                                   !h.requiresFactId ||
                                   p.facts.includes(h.requiresFactId)
                                 ) {
+                                  setClueReturn('s08');
                                   setClue(h.clueId ?? '');
                                   setCloseup(h.closeup ?? '');
                                   go('s09');
@@ -389,14 +393,33 @@ export default function GameApp() {
           {effective === 's09' && g && p && (
             <>
               <h2>{t.found}</h2>
-              {closeup && <Art src={closeup} label={g.message} />}
+              {closeup && !selectedClue?.inspection && (
+                <Art src={closeup} label={g.message} />
+              )}
               {c.clues
                 .filter((x) => x.id === clue && p.clues.includes(x.id))
                 .map((cl) => (
                   <article key={cl.id}>
                     <h3>{cl.name}</h3>
-                    {cl.image && <Art src={cl.image} label={cl.name} />}
+                    {cl.image && !cl.inspection && (
+                      <Art src={cl.image} label={cl.name} />
+                    )}
                     <p>{cl.description}</p>
+                    {cl.inspection && (
+                      <ClueInspection
+                        key={cl.id}
+                        caseId={c.id}
+                        title={cl.name}
+                        inspection={cl.inspection}
+                        discovered={p.inspectedDetails}
+                        enabled={
+                          g.phase === 'turn' && !g.finalMode && !p.eliminated
+                        }
+                        inspect={(x, y) =>
+                          act({ type: 'INSPECT_CLUE', clueId: cl.id, x, y })
+                        }
+                      />
+                    )}
                     {cl.document && (
                       <section className={styles.document}>
                         {Object.entries(cl.document.fields).map(([k, v]) => (
@@ -406,7 +429,7 @@ export default function GameApp() {
                     )}
                   </article>
                 ))}
-              {button(t.back, () => go('s08'))}
+              {button(t.back, () => go(clueReturn))}
             </>
           )}
           {effective === 's10' && g && p && (
@@ -583,10 +606,26 @@ export default function GameApp() {
                   .filter((cl) => p.clues.includes(cl.id))
                   .map((cl) => (
                     <article key={cl.id}>
-                      {button(cl.name, () => {
-                        setClue(cl.id);
-                        go('s09');
-                      })}
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setCloseup('');
+                          setClueReturn('s11');
+                          setClue(cl.id);
+                          go('s09');
+                        }}
+                      >
+                        {cl.image && isFinishedIllustration(cl.image) && (
+                          <img
+                            className={styles.clueThumb}
+                            src={`/cases/${c.id}/${cl.image}`}
+                            alt=""
+                            width={64}
+                            height={64}
+                          />
+                        )}
+                        {cl.name}
+                      </button>
                       {button(
                         t.publish,
                         () => act({ type: 'PUBLISH_TO_BOARD', id: cl.id }),
