@@ -321,3 +321,76 @@ it('пять игроков имеют разные цвета и проходя
   }
   expect(s.round).toBe(2);
 });
+
+describe('осмотр найденной улики', () => {
+  const inspect = (s: GameState, x = 0.15, y = 0.72) =>
+    run(s, { type: 'INSPECT_CLUE', clueId: 'c-statuette', x, y });
+  it('владение/координаты/фаза, отдельное открытие и отсутствие повторных наград', () => {
+    let s = active(2);
+    expect(inspect(s)).toBe(s);
+    s = search(s, 'h-floor');
+    expect(player(s).facts).not.toContain('f-statuette-weapon');
+    const before = structuredClone(s);
+    for (const [x, y] of [
+      [0.9, 0.1],
+      [NaN, 0.72],
+      [0.15, Infinity],
+    ])
+      expect(inspect(s, x, y)).toBe(s);
+    s = inspect(s);
+    expect(player(s).facts).toContain('f-statuette-weapon');
+    expect(player(s).inspectedDetails).toEqual(['d-statuette-chip']);
+    expect(s.action).toEqual(before.action);
+    expect(player(s).score).toBe(player(before).score);
+    expect(s.players[1]?.facts).not.toContain('f-statuette-weapon');
+    expect(inspect(s)).toBe(s);
+    const locked = run(before, { type: 'LOCK' });
+    expect(inspect(locked)).toBe(locked);
+    const final = { ...before, phase: 'final' as const, finalMode: true };
+    expect(inspect(final)).toBe(final);
+  });
+  it('второй игрок самостоятельно находит ту же деталь', () => {
+    let s = inspect(search(active(2), 'h-floor'));
+    s = run(s, { type: 'END_TURN' });
+    s = run(s, { type: 'BEGIN_TURN' });
+    expect(s.current).toBe(1);
+    expect(inspect(s)).toBe(s);
+    s = search(s, 'h-floor');
+    expect(player(s).facts).not.toContain('f-statuette-weapon');
+    s = inspect(s);
+    expect(player(s).inspectedDetails).toEqual(['d-statuette-chip']);
+    expect(s.action?.used).toBe(1);
+  });
+  it('старое сохранение сохраняет уже открытый факт и помечает деталь, новое roundtrip читает v2', () => {
+    const state = search(active(), 'h-floor');
+    const legacy = JSON.parse(JSON.stringify(state));
+    delete legacy.players[0].inspectedDetails;
+    legacy.players[0].facts.push('f-statuette-weapon');
+    const migrated = parseStoredGame({ version: 1, state: legacy });
+    expect(migrated?.players[0]?.facts).toContain('f-statuette-weapon');
+    expect(migrated?.players[0]?.inspectedDetails).toEqual([
+      'd-statuette-chip',
+    ]);
+    expect(
+      parseStoredGame({ version: 2, state: inspect(state) })?.players[0]
+        ?.inspectedDetails,
+    ).toEqual(['d-statuette-chip']);
+    expect(() => parseStoredGame({ version: 3, state })).toThrow();
+  });
+  it('ИИ не может открыть факт детали до осмотра даже при ошибочной shareable-конфигурации', () => {
+    const altered = structuredClone(c);
+    const suspect = altered.suspects.find((x) => x.id === 's-gleb');
+    if (!suspect) throw Error('suspect');
+    suspect.shareableFactIds.push('f-statuette-weapon');
+    const s = reduce(altered, active(), {
+      type: 'ASK_AI_QUESTION_RESULT',
+      suspectId: 's-gleb',
+      reply: 'Не знаю.',
+      factIds: ['f-statuette-weapon'],
+      stressDelta: 0,
+      tone: 'neutral',
+      valid: true,
+    });
+    expect(s?.players[0]?.facts).not.toContain('f-statuette-weapon');
+  });
+});

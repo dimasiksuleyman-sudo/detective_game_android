@@ -1,15 +1,15 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "id": "case-001-blue-owl",
-  "version": 1,
-  "minAppVersion": "0.1.0",
+  "version": 2,
+  "minAppVersion": "0.3.0",
   "title": "Синяя сова",
   "tagline": "Последний сет отыгран. Последний счёт закрыт.",
   "difficulty": 1,
   "estimatedMinutes": 30,
   "players": {
     "min": 1,
-    "max": 4
+    "max": 5
   },
   "cover": "images/cover.webp",
   "setting": {
@@ -728,7 +728,7 @@
         {
           "id": "h-floor",
           "label": "Пол у стола",
-          "text": "У стола — меловой контур. Рядом статуэтка саксофониста, стёртая, со сколом. На полке — пустое место в пыли.",
+          "text": "У стола лежит бронзовая статуэтка саксофониста. На полке — пустое место в пыли.",
           "rect": {
             "x": 0.84,
             "y": 0.68,
@@ -856,10 +856,44 @@
       "id": "c-statuette",
       "name": "Бронзовая статуэтка",
       "kind": "object",
-      "description": "Орудие — бронзовая статуэтка саксофониста из кабинета. Её стёрли, на мраморной подставке свежий скол.",
-      "revealsFactIds": ["f-statuette-weapon"],
+      "description": "Бронзовая статуэтка саксофониста на тяжёлой чёрной подставке.",
+      "revealsFactIds": [],
       "isKey": true,
-      "image": "images/clues/c-statuette.webp"
+      "image": "images/clues/c-statuette.webp",
+      "inspection": {
+        "image": "images/closeups/h-floor.webp",
+        "details": [
+          {
+            "id": "d-statuette-chip",
+            "rect": {
+              "x": 0.075,
+              "y": 0.64,
+              "w": 0.16,
+              "h": 0.16
+            },
+            "text": "На углу мраморной подставки свежий скол. Поверхность бронзы выглядит протёртой.",
+            "revealsFactIds": ["f-statuette-weapon"],
+            "concealedTerms": [
+              "скол",
+              "сколы",
+              "скола",
+              "сколу",
+              "сколом",
+              "сколе",
+              "сколов",
+              "сколами",
+              "сколот",
+              "сколотая",
+              "сколотый",
+              "отбит",
+              "отбитый",
+              "отбитая",
+              "осколок",
+              "осколки"
+            ]
+          }
+        ]
+      }
     },
     {
       "id": "c-diary",

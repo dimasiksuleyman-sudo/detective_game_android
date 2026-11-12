@@ -1,4 +1,5 @@
 /** Чистый детерминированный движок: все права, лимиты и открытия проверяются здесь. */
+import { hiddenInspectionFactIds } from '../content/inspectionKnowledge';
 import { ru } from '../i18n/ru';
 import type { CaseFile } from '../content/schema';
 export type Emotion =
@@ -22,6 +23,7 @@ export type Player = {
   name: string;
   color: string;
   clues: string[];
+  inspectedDetails: string[];
   facts: string[];
   visited: string[];
   asked: string[];
@@ -65,6 +67,7 @@ export type Action =
   | { type: 'RECORD_AI_USAGE'; usage: AiUsage }
   | { type: 'BEGIN_TURN' }
   | { type: 'END_TURN' }
+  | { type: 'INSPECT_CLUE'; clueId: string; x: number; y: number }
   | { type: 'SEARCH_HOTSPOT'; locationId: string; hotspotId: string }
   | {
       type: 'ASK_OFFLINE_QUESTION';
@@ -109,12 +112,15 @@ function grant(c: CaseFile, p: Player, clues: string[], facts: string[]) {
       p.score += 2;
   }
   p.clues = unique([...p.clues, ...clues]);
+  const hiddenFacts = hiddenInspectionFactIds(c, p);
   p.facts = unique([
     ...p.facts,
-    ...facts,
-    ...c.clues
-      .filter((x) => clues.includes(x.id))
-      .flatMap((x) => x.revealsFactIds),
+    ...[
+      ...facts,
+      ...c.clues
+        .filter((x) => clues.includes(x.id))
+        .flatMap((x) => x.revealsFactIds),
+    ].filter((id) => !hiddenFacts.includes(id)),
   ]);
 }
 function begin(c: CaseFile, s: GameState) {
@@ -225,6 +231,7 @@ export function reduce(
         name: name.trim(),
         color: colors[i] ?? colors[0] ?? '',
         clues: [],
+        inspectedDetails: [],
         facts: [],
         visited: [],
         asked: [],
@@ -303,6 +310,30 @@ export function reduce(
       s.board.push({ id: a.id, by: s.current });
       p.score++;
     }
+    return s;
+  }
+  if (a.type === 'INSPECT_CLUE') {
+    if (
+      s.finalMode ||
+      p.eliminated ||
+      !p.clues.includes(a.clueId) ||
+      !Number.isFinite(a.x) ||
+      !Number.isFinite(a.y)
+    )
+      return state;
+    const detail = c.clues
+      .find((cl) => cl.id === a.clueId)
+      ?.inspection?.details.find(
+        (d) =>
+          a.x >= d.rect.x &&
+          a.x <= d.rect.x + d.rect.w &&
+          a.y >= d.rect.y &&
+          a.y <= d.rect.y + d.rect.h,
+      );
+    if (!detail || p.inspectedDetails.includes(detail.id)) return state;
+    p.inspectedDetails.push(detail.id);
+    grant(c, p, [], detail.revealsFactIds);
+    s.message = ru.inspection.found;
     return s;
   }
   if (a.type === 'SEARCH_HOTSPOT') {

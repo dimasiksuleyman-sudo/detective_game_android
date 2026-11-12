@@ -1,4 +1,8 @@
 /** Собирает только разрешённый срез знаний одного подозреваемого для одного игрока. */
+import {
+  hiddenInspectionDetails,
+  hiddenInspectionFactIds,
+} from '../content/inspectionKnowledge';
 import type { CaseFile } from '../content/schema';
 import type { Player, Tone } from '../game/engine';
 export type Message = {
@@ -12,9 +16,10 @@ export function buildSuspectPrompt(
   tone: Tone,
   question: string,
   reaction?: string,
-): { messages: Message[]; allowedFactIds: string[] } {
+): { messages: Message[]; allowedFactIds: string[]; concealedTerms: string[] } {
   const s = c.suspects.find((x) => x.id === suspectId);
   if (!s) throw Error('Unknown suspect');
+  const hidden = hiddenInspectionFactIds(c, p);
   const allowedFactIds = [
     ...new Set([
       ...s.shareableFactIds,
@@ -22,7 +27,7 @@ export function buildSuspectPrompt(
         .filter((b) => b.unlocksTruthIds.every((id) => p.truths.includes(id)))
         .flatMap((b) => b.revealsFactIds),
     ]),
-  ];
+  ].filter((id) => !hidden.includes(id));
   const facts = c.facts
     .filter((f) => allowedFactIds.includes(f.id))
     .map((f) => `[${f.id}] ${f.text}`);
@@ -62,5 +67,11 @@ export function buildSuspectPrompt(
       content: `[Тон детектива: ${tone}]\n${reaction ? 'Предъявлена улика: ' + question + '\nДвижок уже решил исход; вырази только эту реакцию: ' + reaction : 'Вопрос: ' + question.slice(0, 1000)}`,
     },
   ];
-  return { messages, allowedFactIds };
+  return {
+    messages,
+    allowedFactIds,
+    concealedTerms: hiddenInspectionDetails(c, p).flatMap(
+      (d) => d.concealedTerms,
+    ),
+  };
 }

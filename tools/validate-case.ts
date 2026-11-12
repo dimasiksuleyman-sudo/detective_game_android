@@ -18,6 +18,9 @@ const assets = [
   ...c.clues
     .filter((cl) => cl.image)
     .map((cl) => ({ file: cl.image ?? '', w: 512, h: 512 })),
+  ...c.clues
+    .filter((cl) => cl.inspection)
+    .map((cl) => ({ file: cl.inspection?.image ?? '', w: 1024, h: 1024 })),
   ...c.solution.reconstruction.map((r) => ({ file: r.image, w: 1200, h: 800 })),
 ];
 for (const a of assets) {

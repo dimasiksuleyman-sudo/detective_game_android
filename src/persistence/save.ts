@@ -1,4 +1,5 @@
 /** Версионированное сохранение партии в IndexedDB, без ключей и сетевых запросов. */
+import { pilot } from '../content/loader';
 import { get, set, del } from 'idb-keyval';
 import { z } from 'zod';
 import { emptyAiUsage, type GameState } from '../game/engine';
@@ -8,6 +9,7 @@ const player = z.object({
   name: z.string(),
   color: z.string(),
   clues: strings,
+  inspectedDetails: strings.default([]),
   facts: strings,
   visited: strings,
   asked: strings,
@@ -60,18 +62,29 @@ const schema = z.object({
 });
 const key = 'interrogation-save-v1';
 export async function saveGame(state: GameState) {
-  await set(key, { version: 1, state });
+  await set(key, { version: 2, state });
 }
 export function parseStoredGame(raw: unknown): GameState | null {
   if (raw === undefined) return null;
   const parsed = z
-    .object({ version: z.literal(1), state: schema })
+    .object({ version: z.union([z.literal(1), z.literal(2)]), state: schema })
     .parse(raw).state;
   if (
     parsed.current >= parsed.players.length ||
     parsed.caseId !== 'case-001-blue-owl'
   )
     throw new Error('Invalid save');
+  // Прежние версии выдавали факт при находке. Не отбираем его и не заставляем искать заново.
+  for (const p of parsed.players)
+    for (const cl of pilot.clues) {
+      if (!p.clues.includes(cl.id)) continue;
+      for (const d of cl.inspection?.details ?? [])
+        if (
+          d.revealsFactIds.every((id) => p.facts.includes(id)) &&
+          !p.inspectedDetails.includes(d.id)
+        )
+          p.inspectedDetails.push(d.id);
+    }
   return parsed;
 }
 export async function loadGame(): Promise<GameState | null> {
