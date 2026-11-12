@@ -44,7 +44,10 @@ def clips():
         stale = speech is not None and speech["text"] != clip["text"]
         say = speech["say"] if speech and not stale else clip["text"]
         role = CONFIG["roles"][clip["role"]]
-        rows.append({**clip, "say": say, "stale": stale, "input": role["direction"] + " " + say})
+        # Жёсткое правило ранбука: цифры в речи запрещены (ElevenLabs путает падежи и формат времени).
+        digits = speech is not None and not stale and re.search(r"\d", say) is not None
+        rows.append({**clip, "say": say, "stale": stale, "digits": digits,
+                     "input": role["direction"] + " " + say})
     return rows
 
 
@@ -141,6 +144,8 @@ def cmd_sample(key, pairs, clip_id="briefing-preview"):
     if not 1 <= len(pairs) <= 3:
         raise SystemExit("Нужно от 1 до 3 голосов --voice OWNER:VOICE")
     clip = next(c for c in clips() if c["id"] == clip_id)
+    if clip["digits"] or clip["id"] not in CONFIG["speech"]:
+        raise SystemExit(clip["id"] + ": в произносимом тексте цифры или его нет — перепишите словами")
     report = []
     for pair in pairs:
         owner, _, vid = pair.partition(":")
@@ -171,6 +176,9 @@ def cmd_all(key, narrator, chief):
     stale = [c["id"] for c in rows if c["stale"] or c["id"] not in CONFIG["speech"]]
     if stale:
         raise SystemExit("Тексты дела изменились, обновите content/narration/elevenlabs.json: " + ", ".join(stale))
+    digits = [c["id"] for c in rows if c["digits"]]
+    if digits:
+        raise SystemExit("В произносимом тексте цифры, перепишите словами: " + ", ".join(digits))
     voices = {"narrator": voice_id(narrator), "chief": voice_id(chief)}
     case_id = json.loads((ROOT / "content/narration/plan.json").read_text(encoding="utf-8"))["caseId"]
     folder = ORIGINALS / case_id
@@ -227,7 +235,7 @@ def main():
     args = parser.parse_args()
     if args.list or not (args.voices or args.sample or args.all):
         for c in clips():
-            flag = " [УСТАРЕЛО: текст дела изменился]" if c["stale"] else ""
+            flag = " [УСТАРЕЛО: текст дела изменился]" if c["stale"] else (" [ЦИФРЫ: перепишите словами]" if c["digits"] else "")
             print(f"{c['id']} [{c['role']}, {len(c['input'])} знаков]{flag}: {c['input']}")
         print("Всего знаков (без пробы):", sum(len(c["input"]) for c in clips() if c["id"] != "briefing-preview"))
         return
