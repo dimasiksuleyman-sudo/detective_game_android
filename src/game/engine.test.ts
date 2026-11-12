@@ -1,4 +1,5 @@
 /** Правила проверяются действиями движка, без UI, сети и LLM. */
+import { parseStoredGame } from '../persistence/save';
 import { MockAiClient } from '../ai/client';
 import { describe, it, expect } from 'vitest';
 import { pilot as c } from '../content/loader';
@@ -61,7 +62,7 @@ const accuse = (
   });
 describe('правила партии', () => {
   it('валидирует начало и JSON roundtrip; без состояния действия безопасны', () => {
-    for (const names of [[], [''], Array(5).fill('X'), ['x'.repeat(31)]])
+    for (const names of [[], [''], Array(6).fill('X'), ['x'.repeat(31)]])
       expect(
         reduce(c, null, { type: 'START_GAME', names, roundLimit: 8 }),
       ).toBeNull();
@@ -285,4 +286,38 @@ describe('правила партии', () => {
     expect(player(s).facts).toEqual(['f-gleb-left']);
     expect(player(s).stress['s-gleb']).toBe(2);
   });
+});
+
+it('В обоих режимах три реплики; новый ход сбрасывает бюджет', () => {
+  for (const mode of ['ai', 'classic'] as const) {
+    let s = run(game(), { type: 'BEGIN_TURN' });
+    s.mode = mode;
+    const action: Action = {
+      type: 'ASK_AI_QUESTION_RESULT',
+      suspectId: 's-gleb',
+      reply: 'Ответ',
+      factIds: [],
+      stressDelta: 0,
+      tone: 'neutral',
+      valid: true,
+    };
+    const limit = 3;
+    for (let i = 0; i < limit; i++) s = run(s, action);
+    expect(s.action?.used).toBe(limit);
+    expect(run(s, action)).toBe(s);
+    s = run(s, { type: 'END_TURN' });
+    s = run(s, { type: 'BEGIN_TURN' });
+    expect(run(s, action).action?.used).toBe(1);
+  }
+});
+it('пять игроков имеют разные цвета и проходят передачу по очереди', () => {
+  let s = run(game(5), { type: 'BEGIN_TURN' });
+  expect(new Set(s.players.map((p) => p.color)).size).toBe(5);
+  expect(parseStoredGame({ version: 1, state: s })?.players).toHaveLength(5);
+  for (let i = 0; i < 5; i++) {
+    s = run(s, { type: 'BEGIN_TURN' });
+    expect(s.current).toBe(i);
+    s = run(s, { type: 'END_TURN' });
+  }
+  expect(s.round).toBe(2);
 });

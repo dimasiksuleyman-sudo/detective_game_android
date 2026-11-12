@@ -1,6 +1,10 @@
 import { test, expect, type Page } from '@playwright/test';
 const click = async (p: Page, name: string) => {
-  const b = p.getByRole('button', { name, exact: true });
+  const b = p.getByRole('button', { name, exact: true, includeHidden: true });
+  await expect(b).toBeAttached();
+  const details = b.locator('xpath=ancestor::details');
+  if ((await details.count()) && !(await b.isVisible()))
+    await details.locator('summary').click();
   await expect(b).toBeEnabled();
   await b.click();
 };
@@ -24,9 +28,16 @@ async function setup(page: Page, fixture = '') {
     '',
   );
   await page.screenshot({
-    path: `docs/devlog/assets/m2/${test.info().project.name}-key-checked.png`,
+    path: `docs/devlog/assets/m2-fixes/${test.info().project.name}-key-checked.png`,
     fullPage: true,
   });
+  await page.reload();
+  await expect(
+    page.getByLabel('Ключ aitunnel', { exact: true }),
+  ).toHaveAttribute('placeholder', '•••••••• — ключ сохранён');
+  await expect(page.getByLabel('Ключ aitunnel', { exact: true })).toHaveValue(
+    '',
+  );
   await click(page, 'В меню');
   await click(page, 'Новое дело');
   await click(page, 'Синяя сова');
@@ -64,7 +75,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   ).toBeVisible();
   await page.getByText('Стоимость последней попытки', { exact: true }).click();
   await page.screenshot({
-    path: `docs/devlog/assets/m2/${info.project.name}-ai-dialogue.png`,
+    path: `docs/devlog/assets/m2-fixes/${info.project.name}-ai-dialogue.png`,
     fullPage: true,
   });
   await page.getByRole('combobox', { name: 'Тон' }).selectOption('pressure');
@@ -97,7 +108,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   });
   expect(stored).not.toContain('e2e-dummy-credential');
   await page.screenshot({
-    path: `docs/devlog/assets/m2/${info.project.name}-ai-facts.png`,
+    path: `docs/devlog/assets/m2-fixes/${info.project.name}-ai-facts.png`,
     fullPage: true,
   });
 });
@@ -133,7 +144,7 @@ test('ключ удаляется; AI отключён в новой парти�
     ),
   ).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m2/${info.project.name}-settings.png`,
+    path: `docs/devlog/assets/m2-fixes/${info.project.name}-settings.png`,
     fullPage: true,
   });
   await click(page, 'В меню');
@@ -208,4 +219,34 @@ test('ожидание видно, сворачивание отменяет з�
   await expect(
     page.getByRole('button', { name: 'Кому выгодна смерть Аркадия?' }),
   ).toBeDisabled();
+});
+
+test('ИИ-форма первая, готовые вопросы свёрнуты; три запроса и новый ход', async ({
+  page,
+}) => {
+  await setup(page);
+  await click(page, 'Допрос');
+  await click(page, 'Глеб Соколов');
+  const ready = page.getByRole('button', {
+    name: 'Где вы были после 23:00?',
+    exact: true,
+  });
+  await expect(ready).not.toBeVisible();
+  const field = page.getByRole('textbox', { name: 'Свободный вопрос' });
+  for (let i = 0; i < 3; i++) {
+    await field.fill('Расскажите о себе');
+    await click(page, 'Спросить ИИ');
+    await expect(page.getByRole('blockquote')).toHaveCount(i + 1);
+  }
+  await field.fill('Ещё вопрос');
+  await expect(
+    page.getByRole('button', { name: 'Спросить ИИ', exact: true }),
+  ).toBeDisabled();
+  await click(page, 'Назад');
+  await click(page, 'Завершить ход');
+  await click(page, 'Допрос');
+  await click(page, 'Глеб Соколов');
+  await field.fill('Новый ход');
+  await click(page, 'Спросить ИИ');
+  await expect(page.getByRole('blockquote')).toHaveCount(4);
 });
