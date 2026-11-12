@@ -20,7 +20,7 @@ test('главное меню, инструкция, настройки и вы�
       page.getByRole('heading', { name: title, exact: true }),
     ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/m2-fixes/classic/${test.info().project.name}-${title === ru.game.help ? 'S16-help' : 'S15-settings'}.png`,
+      path: `docs/devlog/assets/m3/classic/${test.info().project.name}-${title === ru.game.help ? 'S16-help' : 'S15-settings'}.png`,
       fullPage: true,
     });
     await page.getByRole('button', { name: ru.game.menu, exact: true }).click();

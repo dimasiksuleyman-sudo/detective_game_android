@@ -15,7 +15,7 @@ async function capture(p: Page, name: string) {
       p.getByRole('heading', { name: titles[name], exact: true }),
     ).toBeVisible();
   await p.screenshot({
-    path: `docs/devlog/assets/m2-fixes/classic/${test.info().project.name}-${name}.png`,
+    path: `docs/devlog/assets/m3/classic/${test.info().project.name}-${name}.png`,
     fullPage: true,
   });
 }
@@ -100,7 +100,7 @@ test('одиночная партия офлайн до победы; сохра
   ).toBeVisible();
   await expect(page.getByText('Победители: Детектив 1')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m2-fixes/classic/${info.project.name}-final.png`,
+    path: `docs/devlog/assets/m3/classic/${info.project.name}-final.png`,
     fullPage: true,
   });
 });
@@ -122,7 +122,7 @@ test('два игрока: защита передачи, ошибочное о�
   await accusation(page, 's-gleb', 'Тайная бухгалтерия');
   await expect(page.getByText('Победители: Детектив 2')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m2-fixes/classic/${info.project.name}-two-players.png`,
+    path: `docs/devlog/assets/m3/classic/${info.project.name}-two-players.png`,
     fullPage: true,
   });
 });
@@ -174,7 +174,7 @@ test('допрос: давление, слом, канонический фак�
         page.getByRole('heading', { name: title, exact: true }),
       ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/m2-fixes/classic/${info.project.name}-${name}.png`,
+      path: `docs/devlog/assets/m3/classic/${info.project.name}-${name}.png`,
       fullPage: true,
     });
     expect(
@@ -218,4 +218,44 @@ test('допрос: давление, слом, канонический фак�
   await click(page, 'Общая доска');
   await expect(page.getByText(/Я должна денег очень неприятным/)).toBeHidden();
   await shot('board');
+});
+
+test('иллюстрации локаций загружаются; зоны прозрачны и совпадают с новой разметкой', async ({
+  page,
+}, info) => {
+  await start(page);
+  for (const [name, id] of [
+    ['Зал бара', 'l-hall'],
+    ['Кабинет', 'l-office'],
+    ['Переулок у чёрного хода', 'l-alley'],
+  ] as const) {
+    await click(page, 'Обыск');
+    await click(page, name);
+    const image = page.getByRole('img', { name, exact: true });
+    await expect(image).toBeVisible();
+    await expect
+      .poll(() => image.evaluate((el: HTMLImageElement) => el.naturalWidth))
+      .toBe(1080);
+    const zones = page
+      .locator('section')
+      .filter({ has: image })
+      .getByRole('button');
+    expect(await zones.count()).toBeGreaterThanOrEqual(4);
+    for (const zone of await zones.all()) {
+      expect(
+        await zone.evaluate((el) => getComputedStyle(el).backgroundColor),
+      ).toBe('rgba(0, 0, 0, 0)');
+    }
+    await page.screenshot({
+      path: `docs/devlog/assets/m3/${info.project.name}-${id}.png`,
+      fullPage: true,
+    });
+    await click(page, 'Назад');
+  }
+  await click(page, 'Обыск');
+  await click(page, 'Кабинет');
+  await click(page, 'Пол у стола');
+  await expect(
+    page.getByRole('heading', { name: 'Бронзовая статуэтка', exact: true }),
+  ).toBeVisible();
 });

@@ -5,6 +5,7 @@ import { isAiTestBuild } from '../ai/factory';
 import styles from './GameApp.module.css';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
+import { isFinishedIllustration } from '../content/illustrations';
 import { pilot as c } from '../content/loader';
 import { useGame } from '../store/gameStore';
 import { ru } from '../i18n/ru';
@@ -14,13 +15,16 @@ import type { Tone } from '../game/engine';
 const t = ru.game;
 function Art({ src, label }: { src: string; label: string }) {
   return (
-    <figure>
+    <figure
+      className={isFinishedIllustration(src) ? styles.finishedArt : undefined}
+    >
       <img
         src={src.startsWith('/troupe') ? src : `/cases/${c.id}/${src}`}
         alt=""
       />
       <figcaption>
-        {t.placeholder}: {label}
+        {!isFinishedIllustration(src) && t.placeholder + ': '}
+        {label}
       </figcaption>
     </figure>
   );
@@ -327,6 +331,7 @@ export default function GameApp() {
                           {l.hotspots.map((h) => (
                             <button
                               key={h.id}
+                              className={styles.hotspot}
                               style={{
                                 position: 'absolute',
                                 left: h.rect.x * 100 + '%',
@@ -354,12 +359,14 @@ export default function GameApp() {
                                 }
                               }}
                             >
-                              {h.label}
-                              {p.visited.includes(h.id) ? ' ✓' : ''}
-                              {h.requiresFactId &&
-                              !p.facts.includes(h.requiresFactId)
-                                ? ' · ' + t.locked
-                                : ''}
+                              <span className={styles.hotspotLabel}>
+                                {h.label}
+                                {p.visited.includes(h.id) ? ' ✓' : ''}
+                                {h.requiresFactId &&
+                                !p.facts.includes(h.requiresFactId)
+                                  ? ' · ' + t.locked
+                                  : ''}
+                              </span>
                             </button>
                           ))}
                         </div>

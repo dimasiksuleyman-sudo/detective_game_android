@@ -1,0 +1,29 @@
+{
+  "caseId": "case-001-blue-owl",
+  "files": [
+    {
+      "source": "cover.png",
+      "output": "images/cover.webp",
+      "width": 720,
+      "height": 1080
+    },
+    {
+      "source": "l-hall.png",
+      "output": "images/locations/l-hall.webp",
+      "width": 1080,
+      "height": 1620
+    },
+    {
+      "source": "l-office.png",
+      "output": "images/locations/l-office.webp",
+      "width": 1080,
+      "height": 1620
+    },
+    {
+      "source": "l-alley.png",
+      "output": "images/locations/l-alley.webp",
+      "width": 1080,
+      "height": 1620
+    }
+  ]
+}
