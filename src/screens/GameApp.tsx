@@ -38,7 +38,7 @@ export default function GameApp() {
   const [privacy, setPrivacy] = useState(false);
   const [count, setCount] = useState(1),
     [names, setNames] = useState(
-      [1, 2, 3, 4].map((n) => t.defaultName + ' ' + n),
+      [1, 2, 3, 4, 5].map((n) => t.defaultName + ' ' + n),
     ),
     [rounds, setRounds] = useState(8),
     [location, setLocation] = useState(''),
@@ -158,7 +158,7 @@ export default function GameApp() {
                   value={count}
                   onChange={(e) => setCount(+e.target.value)}
                 >
-                  {[1, 2, 3, 4].map((n) => (
+                  {[1, 2, 3, 4, 5].map((n) => (
                     <option key={n}>{n}</option>
                   ))}
                 </select>
@@ -451,29 +451,6 @@ export default function GameApp() {
                               <blockquote>{h.answer}</blockquote>
                             </article>
                           ))}
-                        {s.offlineQA
-                          .filter(
-                            (q) =>
-                              !p.asked.includes(q.id) &&
-                              (!q.requiresClueId ||
-                                p.clues.includes(q.requiresClueId)) &&
-                              (!q.requiresFactId ||
-                                p.facts.includes(q.requiresFactId)),
-                          )
-                          .map((q) =>
-                            button(
-                              q.question,
-                              () =>
-                                act({
-                                  type: 'ASK_OFFLINE_QUESTION',
-                                  suspectId: s.id,
-                                  questionId: q.id,
-                                  tone,
-                                }),
-                              (g.action?.used ?? 0) >= 3 ||
-                                p.blocked[s.id] !== undefined,
-                            ),
-                          )}
                         {g.mode === 'ai' && (
                           <section>
                             {!settings.hasKey ? (
@@ -506,6 +483,32 @@ export default function GameApp() {
                             )}
                           </section>
                         )}
+                        <details open={g.mode === 'classic'}>
+                          <summary>{ru.ai.offlineQuestions}</summary>
+                          {s.offlineQA
+                            .filter(
+                              (q) =>
+                                !p.asked.includes(q.id) &&
+                                (!q.requiresClueId ||
+                                  p.clues.includes(q.requiresClueId)) &&
+                                (!q.requiresFactId ||
+                                  p.facts.includes(q.requiresFactId)),
+                            )
+                            .map((q) =>
+                              button(
+                                q.question,
+                                () =>
+                                  act({
+                                    type: 'ASK_OFFLINE_QUESTION',
+                                    suspectId: s.id,
+                                    questionId: q.id,
+                                    tone,
+                                  }),
+                                (g.action?.used ?? 0) >= 3 ||
+                                  p.blocked[s.id] !== undefined,
+                              ),
+                            )}
+                        </details>
                         <h3>{t.present}</h3>
                         {g.mode === 'ai' && (
                           <label>

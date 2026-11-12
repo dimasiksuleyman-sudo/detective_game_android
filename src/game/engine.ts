@@ -102,7 +102,7 @@ export type Action =
     }
   | { type: 'LOCK' };
 const unique = (a: string[]) => [...new Set(a)];
-const colors = ['#D2691E', '#52b6b6', '#bc6575', '#d6b644'];
+const colors = ['#D2691E', '#52b6b6', '#bc6575', '#d6b644', '#a58cdb'];
 function grant(c: CaseFile, p: Player, clues: string[], facts: string[]) {
   for (const id of clues) {
     if (!p.clues.includes(id) && c.clues.find((x) => x.id === id)?.isKey)
@@ -212,7 +212,7 @@ export function reduce(
   if (a.type === 'START_GAME') {
     if (
       a.names.length < 1 ||
-      a.names.length > 4 ||
+      a.names.length > 5 ||
       ![6, 8, 10].includes(a.roundLimit) ||
       a.names.some((x) => !x.trim() || x.length > 30)
     )

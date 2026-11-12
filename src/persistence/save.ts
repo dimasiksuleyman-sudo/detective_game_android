@@ -42,7 +42,7 @@ const schema = z.object({
     })
     .default(emptyAiUsage),
   mode: z.enum(['classic', 'ai']).default('classic'),
-  players: z.array(player).min(1).max(4),
+  players: z.array(player).min(1).max(5),
   current: num,
   round: num.positive(),
   roundLimit: z.union([z.literal(6), z.literal(8), z.literal(10)]),

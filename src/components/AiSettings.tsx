@@ -23,6 +23,7 @@ export function AiSettings() {
         <input
           type="password"
           value={key}
+          placeholder={s.hasKey ? t.keyMask : ''}
           maxLength={512}
           autoComplete="off"
           spellCheck={false}
