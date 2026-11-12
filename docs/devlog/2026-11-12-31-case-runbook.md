@@ -15,11 +15,13 @@
   - реализация, ревью, проверка на телефоне;
   - чек-лист готовности, затраты, стартовый промпт для нового чата-планировщика.
 - Ссылки: `AGENTS.md` (пункт 12 списка чтения), `docs/08-content-pipeline.md`.
+- По просьбе владельца: агент может генерировать музыку, эффекты и речь через ElevenLabs API, **одна попытка на файл** — ADR-025, `AGENTS.md` §7, ранбук (шаг 3), AUDIO-PLAN.
 
 ## Изменённые файлы
 
 - `docs/CASE-RUNBOOK.md` — новый ранбук.
 - `AGENTS.md`, `docs/08-content-pipeline.md` — ссылки.
+- `docs/decisions/025-elevenlabs-agent-one-attempt.md`, `docs/AUDIO-PLAN.md` — генерация аудио агентом.
 - `docs/devlog/INDEX.md`, эта запись.
 
 ## Команды
