@@ -1,3 +1,5 @@
+import { DocumentRender } from '../components/DocumentRender';
+import { watchBackButton, exitApp } from '../platform/backButton';
 import { ClueInspection } from '../components/ClueInspection';
 import { NarrationPlayer } from '../components/NarrationPlayer';
 import {
@@ -10,7 +12,7 @@ import { useSettings } from '../store/settingsStore';
 import { useAi, askAi, cancelAi, resetAiUsage } from '../ai/coordinator';
 import { isAiTestBuild } from '../ai/factory';
 import styles from './GameApp.module.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import {
   isFinishedIllustration,
@@ -23,6 +25,12 @@ import { HoldButton } from '../components/HoldButton';
 import { watchLifecycle } from '../platform/appLifecycle';
 import type { Tone } from '../game/engine';
 const t = ru.game;
+const HotspotEditor =
+  import.meta.env.DEV ||
+  import.meta.env.MODE === 'debug' ||
+  import.meta.env.MODE === 'e2e'
+    ? lazy(() => import('../components/HotspotEditor'))
+    : null;
 function Art({ src, label }: { src: string; label: string }) {
   const dimensions = illustrationDimensions(src);
   return (
@@ -49,6 +57,11 @@ export default function GameApp() {
   const initSettings = useSettings((s) => s.init);
   const ai = useAi(),
     settings = useSettings();
+  const [setupAllowed, setSetupAllowed] = useState(false);
+  const [online, setOnline] = useState(false);
+  useEffect(() => {
+    setOnline(g?.mode === 'ai');
+  }, [g?.mode]);
   const [clueReturn, setClueReturn] = useState<'s08' | 's11'>('s08');
   const [narrateClues, setNarrateClues] = useState(true);
   const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
@@ -103,10 +116,64 @@ export default function GameApp() {
         ? 's02'
         : g?.phase === 'finished' && personal
           ? 's14'
-          : g?.phase === 'final' && personal
+          : g?.phase === 'final' && personal && !['s07', 's13'].includes(screen)
             ? 's13'
-            : screen;
-  const go = (s: string) => nav('/' + s);
+            : ['s03', 's04', 's05'].includes(screen) &&
+                g &&
+                g.phase !== 'briefing' &&
+                !setupAllowed
+              ? g.phase === 'handover'
+                ? 's06'
+                : g.phase === 'finished'
+                  ? 's14'
+                  : 's07'
+              : screen;
+  const screenRef = useRef(screen);
+  const go = (s: string) => {
+    screenRef.current = s;
+    useGame.getState().clearMessage();
+    nav('/' + s, { replace: true });
+  };
+  const systemBack = () => {
+    cancelAi();
+    // popstate может синхронно перерисовать Router до нашего слушателя.
+    // Политика исходит из последнего собственного перехода, а не уже изменённого URL.
+    let current = screenRef.current;
+    const phase = useGame.getState().game?.phase;
+    if (['s07', 's08', 's09', 's10', 's11', 's12', 's13'].includes(current)) {
+      if (phase === 'handover' || privacy) {
+        go('s07');
+        return;
+      } else if (phase === 'finished') current = 's14';
+    }
+    if (['s08', 's09', 's10', 's11', 's12', 's13'].includes(current)) go('s07');
+    else if (current === 's07' || current === 's06') {
+      if (confirm(t.exit)) {
+        act({ type: 'LOCK' });
+        go('s02');
+      } else go(current);
+    } else if (current === 's02') {
+      go('s02');
+      exitApp();
+    } else go(current === 's04' ? 's03' : 's02');
+  };
+  const backRef = useRef(systemBack);
+  useEffect(() => {
+    backRef.current = systemBack;
+  });
+  useEffect(
+    () =>
+      watchBackButton(() => {
+        const action = backRef.current;
+        // React Router сначала обработает popstate; затем применяем политику игры.
+        setTimeout(action, 0);
+      }),
+    [],
+  );
+  useEffect(() => {
+    useGame.getState().clearMessage();
+  }, [path]);
+
   const button = (label: string, fn: () => void, disabled = false) => (
     <button type="button" disabled={disabled || busy || ai.busy} onClick={fn}>
       {label}
@@ -115,13 +182,17 @@ export default function GameApp() {
   const act = (a: Parameters<typeof dispatch>[0]) => {
     void dispatch(a);
   };
+  const chooseLocation = (id: string) => {
+    useGame.getState().clearMessage();
+    setLocation(id);
+  };
   const back = () => go('s07');
   if (!ready) return <p role="status">{ru.loading}</p>;
   return (
-    <div className={styles.game}>
+    <div className={styles.game} data-screen={effective}>
       <header>
         <h1>{ru.appName}</h1>
-        {p && g && effective !== 's06' && personal && (
+        {p && g && effective !== 's06' && effective !== 's14' && personal && (
           <p style={{ color: p.color }}>
             {p.name} · {t.round} {g.round}/{g.roundLimit}
           </p>
@@ -135,7 +206,10 @@ export default function GameApp() {
             <>
               <h2>{ru.screens.S02.title}</h2>
               {button(t.newGame, () => {
-                if (!g || confirm(t.overwrite)) go('s03');
+                if (!g || confirm(t.overwrite)) {
+                  setSetupAllowed(true);
+                  go('s03');
+                }
               })}
               {button(
                 t.continue,
@@ -157,6 +231,11 @@ export default function GameApp() {
               {button(t.help, () => go('s16'))}
             </>
           )}
+          {effective === 's17' && HotspotEditor && (
+            <Suspense fallback={<p>{ru.loading}</p>}>
+              <HotspotEditor />
+            </Suspense>
+          )}
           {effective === 's03' && (
             <>
               <h2>{t.choose}</h2>
@@ -166,6 +245,7 @@ export default function GameApp() {
                 {c.estimatedMinutes} · {t.classic}
               </p>
               {button(c.title, () => go('s04'))}
+              {button(t.back, () => go('s02'))}
             </>
           )}
           {effective === 's04' && (
@@ -207,36 +287,48 @@ export default function GameApp() {
                   ))}
                 </select>
               </label>
-              <label>
-                {ru.ai.mode}
-                <select
-                  value={mode}
-                  onChange={(e) =>
-                    setMode(e.target.value === 'ai' ? 'ai' : 'classic')
-                  }
+              <section aria-label={ru.ai.mode} className="modeSwitch">
+                <p>{ru.qa.modeHelp}</p>
+                <button
+                  aria-pressed={mode === 'classic'}
+                  onClick={() => setMode('classic')}
                 >
-                  <option value="classic">{t.classic}</option>
-                  <option value="ai" disabled={!settings.hasKey}>
-                    {ru.ai.enabled}
-                  </option>
-                </select>
-              </label>
-              {!settings.hasKey && <p>{ru.ai.noKey}</p>}
+                  {t.classic}
+                </button>
+                <button
+                  disabled={!settings.hasKey}
+                  aria-pressed={mode === 'ai'}
+                  onClick={() => setMode('ai')}
+                >
+                  {ru.ai.enabled}
+                </button>
+                {!settings.hasKey && (
+                  <button onClick={() => go('s15')}>{ru.qa.addKey}</button>
+                )}
+              </section>
               {button(
                 t.brief,
                 () => {
+                  if (g && !setupAllowed && !confirm(t.overwrite)) return;
                   resetAiUsage();
                   void dispatch({
                     type: 'START_GAME',
+                    overwrite: !!g,
                     mode: settings.hasKey ? mode : 'classic',
                     names: names.slice(0, count),
                     roundLimit: rounds,
-                  }).then(() => go('s05'));
+                  }).then(() => {
+                    setSetupAllowed(false);
+                    go('s05');
+                  });
                 },
                 names.slice(0, count).some((n) => !n.trim()),
               )}
             </>
           )}
+          {effective === 's04' && button(t.back, () => go('s03'))}
+          {['s15', 's16', 's17'].includes(effective) &&
+            button(t.back, () => go('s02'))}
           {effective === 's05' && g && (
             <>
               <h2>{ru.screens.S05.title}</h2>
@@ -326,7 +418,12 @@ export default function GameApp() {
                 });
                 go('s13');
               })}
-              {button(t.end, () => act({ type: 'END_TURN' }))}
+              <div className="turnControls">
+                {button(t.end, () => {
+                  if ((g.action?.used ?? 0) > 0 || confirm(ru.qa.unused))
+                    act({ type: 'END_TURN' });
+                })}
+              </div>
             </>
           )}
           {effective === 's08' && g && p && (
@@ -393,14 +490,15 @@ export default function GameApp() {
                         </div>
                       </section>
                     ))}
-              {button(t.back, back)}
+              {g.message && <p role="status">{g.message}</p>}
+              {button(t.back, () => (location ? chooseLocation('') : back()))}
             </>
           )}
           {effective === 's09' && g && p && (
             <>
               <h2>{t.found}</h2>
               {closeup && !selectedClue?.inspection && (
-                <Art src={closeup} label={g.message} />
+                <Art src={closeup} label="" />
               )}
               {c.clues
                 .filter((x) => x.id === clue && p.clues.includes(x.id))
@@ -408,9 +506,9 @@ export default function GameApp() {
                   <article key={cl.id}>
                     <h3>{cl.name}</h3>
                     {cl.image && !cl.inspection && (
-                      <Art src={cl.image} label={cl.name} />
+                      <Art src={cl.image} label="" />
                     )}
-                    <p>{cl.description}</p>
+                    {!cl.document && <p>{cl.description}</p>}
                     {cl.inspection && (
                       <ClueInspection
                         key={cl.id}
@@ -427,14 +525,13 @@ export default function GameApp() {
                       />
                     )}
                     {cl.document && (
-                      <section className={styles.document}>
-                        {Object.entries(cl.document.fields).map(([k, v]) => (
-                          <p key={k}>{Array.isArray(v) ? v.join('\n') : v}</p>
-                        ))}
-                      </section>
+                      <DocumentRender document={cl.document} title={cl.name} />
                     )}
                   </article>
                 ))}
+              {selectedClue?.inspection && g.message && (
+                <p role="status">{g.message}</p>
+              )}
               {button(t.back, () => go(clueReturn))}
             </>
           )}
@@ -453,7 +550,7 @@ export default function GameApp() {
                 : c.suspects
                     .filter((s) => s.id === suspect)
                     .map((s) => (
-                      <section key={s.id}>
+                      <section key={s.id} className={styles.interrogation}>
                         <h3>{s.name}</h3>
                         <Art
                           src={
@@ -468,43 +565,48 @@ export default function GameApp() {
                                   : 'neutral'))) +
                             '.webp'
                           }
-                          label={p.broken.includes(s.id) ? t.broken : s.name}
+                          label={p.broken.includes(s.id) ? t.broken : ''}
                         />
-                        <label>
-                          {t.stress} {p.stress[s.id] ?? 0}/10
-                          <progress value={p.stress[s.id] ?? 0} max={10} />
-                        </label>
-                        <label>
-                          {t.tone}
-                          <select
-                            value={tone}
-                            onChange={(e) => setTone(e.target.value as Tone)}
+                        <div className="chat" role="log">
+                          {p.history
+                            .filter((h) => h.suspect === s.id)
+                            .map((h, i) => (
+                              <article key={i}>
+                                <p>{h.question}</p>
+                                <blockquote>{h.answer}</blockquote>
+                              </article>
+                            ))}
+                        </div>
+                        <div className="modeSwitch">
+                          <button
+                            aria-pressed={online}
+                            disabled={!settings.hasKey}
+                            onClick={() => {
+                              setOnline(true);
+                              act({ type: 'SET_INPUT_MODE', mode: 'ai' });
+                            }}
                           >
-                            {(['neutral', 'pressure', 'empathy'] as const).map(
-                              (v) => (
-                                <option key={v} value={v}>
-                                  {t[v]}
-                                </option>
-                              ),
-                            )}
-                          </select>
-                        </label>
-                        {p.blocked[s.id] !== undefined && <p>{t.blocked}</p>}
-                        {p.history
-                          .filter((h) => h.suspect === s.id)
-                          .map((h, i) => (
-                            <article key={i}>
-                              <p>{h.question}</p>
-                              <blockquote>{h.answer}</blockquote>
-                            </article>
-                          ))}
-                        {g.mode === 'ai' && (
-                          <section>
+                            {ru.qa.online}
+                          </button>
+                          <button
+                            aria-pressed={!online}
+                            onClick={() => setOnline(false)}
+                          >
+                            {ru.qa.offline}
+                          </button>
+                        </div>
+                        {g.mode === 'ai' && online && (
+                          <section className="questionComposer">
                             {!settings.hasKey ? (
                               <p>{ru.ai.noKey}</p>
                             ) : (
                               <>
-                                <p>{ru.ai.paidNotice}</p>
+                                <details>
+                                  <summary>
+                                    {ru.ai.paidNotice.split('.')[0]}
+                                  </summary>
+                                  {ru.ai.paidNotice}
+                                </details>
                                 <label>
                                   {ru.ai.question}
                                   <textarea
@@ -530,7 +632,27 @@ export default function GameApp() {
                             )}
                           </section>
                         )}
-                        <details open={g.mode === 'classic'}>
+                        <label>
+                          {t.stress} {p.stress[s.id] ?? 0}/10
+                          <progress value={p.stress[s.id] ?? 0} max={10} />
+                        </label>
+                        <label>
+                          {t.tone}
+                          <select
+                            value={tone}
+                            onChange={(e) => setTone(e.target.value as Tone)}
+                          >
+                            {(['neutral', 'pressure', 'empathy'] as const).map(
+                              (v) => (
+                                <option key={v} value={v}>
+                                  {t[v]}
+                                </option>
+                              ),
+                            )}
+                          </select>
+                        </label>
+                        {p.blocked[s.id] !== undefined && <p>{t.blocked}</p>}
+                        <details open={g.mode === 'classic' || !online}>
                           <summary>{ru.ai.offlineQuestions}</summary>
                           {s.offlineQA
                             .filter(
@@ -557,6 +679,7 @@ export default function GameApp() {
                             )}
                         </details>
                         <h3>{t.present}</h3>
+                        {!p.clues.length && <p>{ru.qa.emptyEvidence}</p>}
                         {g.mode === 'ai' && (
                           <label>
                             <input
@@ -577,6 +700,7 @@ export default function GameApp() {
                               cl.name,
                               () => {
                                 if (
+                                  online &&
                                   g.mode === 'ai' &&
                                   settings.hasKey &&
                                   narrateClues
@@ -596,7 +720,7 @@ export default function GameApp() {
                           )}
                       </section>
                     ))}
-              {button(t.back, back)}
+              {button(t.back, () => (suspect ? setSuspect('') : back()))}
             </>
           )}
           {effective === 's11' && g && p && (
@@ -664,7 +788,10 @@ export default function GameApp() {
                     aria-label={t.notes}
                     value={note}
                     maxLength={5000}
-                    onChange={(e) => setNote(e.target.value)}
+                    onChange={(e) => {
+                      setNote(e.target.value);
+                      void dispatch({ type: 'ADD_NOTE', text: e.target.value });
+                    }}
                   />
                   {button(t.save, () => act({ type: 'ADD_NOTE', text: note }))}
                 </>
@@ -675,6 +802,7 @@ export default function GameApp() {
           {effective === 's12' && g && (
             <>
               <h2>{t.board}</h2>
+              {!g.board.length && <p>{ru.qa.emptyBoard}</p>}
               {g.board.map((x) => (
                 <article key={x.id}>
                   <p>
@@ -690,6 +818,7 @@ export default function GameApp() {
           {effective === 's13' && g && p && (
             <>
               <h2>{g.finalMode ? t.final : t.accuse}</h2>
+              {g.message && <p role="status">{g.message}</p>}
               <p>{step + 1}/4</p>
               {step === 0 && (
                 <label>
@@ -843,10 +972,18 @@ export default function GameApp() {
               ))}
             </>
           )}
+          {effective === 's14' &&
+            button(ru.qa.replay, () => {
+              if (confirm(t.overwrite)) {
+                setSetupAllowed(true);
+                go('s03');
+              }
+            })}
           {effective === 's15' && (
             <>
               <h2>{t.settings}</h2>
               <AiSettings />
+              {HotspotEditor && button(ru.qa.editor, () => go('s17'))}
               {button(t.reset, () => {
                 if (confirm(t.resetConfirm)) void reset().then(() => go('s02'));
               })}
@@ -883,16 +1020,13 @@ export default function GameApp() {
           </details>
         </aside>
       )}
-      {g?.message && ['s08', 's09', 's10', 's13'].includes(effective) && (
-        <p role="status">{g.message}</p>
-      )}
-      {effective !== 's06' &&
-        button(t.menu, () => {
-          if (!personal || confirm(t.exit)) {
-            act({ type: 'LOCK' });
-            go('s02');
-          }
-        })}
+      {button(t.menu, () => {
+        if (!personal || confirm(t.exit)) {
+          cancelAi();
+          act({ type: 'LOCK' });
+          go('s02');
+        }
+      })}
       {!busy && g && <small>{t.saved}</small>}
     </div>
   );

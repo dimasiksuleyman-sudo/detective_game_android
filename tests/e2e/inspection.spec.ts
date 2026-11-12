@@ -1,4 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
+test.beforeEach(async ({ page }) => {
+  page.on('dialog', (d) => {
+    if (d.message().includes('не использовали действия')) void d.accept();
+  });
+});
 async function click(page: Page, name: string) {
   await page.getByRole('button', { name, exact: true }).click();
 }
@@ -93,7 +98,7 @@ test('предмет → самостоятельный осмотр → фак�
     await region.evaluate((el) => getComputedStyle(el).backgroundColor),
   ).toBe('rgba(0, 0, 0, 0)');
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/inspection/${info.project.name}-before.png`,
+    path: `test-results/screens/inspection/${info.project.name}-before.png`,
     fullPage: true,
   });
   await region.click();
@@ -111,7 +116,7 @@ test('предмет → самостоятельный осмотр → фак�
     'd-statuette-chip',
   ]);
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/inspection/${info.project.name}-found.png`,
+    path: `test-results/screens/inspection/${info.project.name}-found.png`,
     fullPage: true,
   });
   await page.reload();
@@ -139,6 +144,7 @@ test('из блокнота открывается нужная улика бе�
   ).toBeVisible();
   await click(page, 'Назад');
   await click(page, 'Назад');
+  await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Ежедневник Аркадия');
   await expect(
@@ -162,6 +168,7 @@ test('публикация предмета не открывает скол д�
   await expect(
     page.getByText('Наблюдение добавлено в блокнот.', { exact: true }),
   ).toBeVisible();
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Блокнот');

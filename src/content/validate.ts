@@ -7,6 +7,16 @@ export function validateCase(c: CaseFile) {
   const check = (ok: boolean, msg: string) => {
     if (!ok) errors.push(msg);
   };
+  const punctuation = (value: unknown, at: string) => {
+    if (typeof value === 'string') {
+      if (/; [А-ЯЁA-Z]|\?\.(?!\.)/u.test(value))
+        errors.push('punctuation ' + at);
+    } else if (value && typeof value === 'object') {
+      for (const [key, child] of Object.entries(value))
+        punctuation(child, at + '.' + key);
+    }
+  };
+  punctuation(c, 'case');
   const all = [
     ...c.facts,
     ...c.clues,
@@ -216,10 +226,10 @@ export function validateCase(c: CaseFile) {
     [...new Intl.Segmenter('ru', { granularity: 'sentence' }).segment(text)]
       .length;
   for (const s of c.suspects)
-    for (const line of [
-      ...s.offlineQA.map((q) => q.answer),
-      ...s.breakpoints.map((b) => b.confession),
-    ])
+    for (const line of [...s.offlineQA.map((q) => q.answer)])
       check(sentences(line) <= 3, 'reply too long ' + s.id);
+  for (const s of c.suspects)
+    for (const b of s.breakpoints)
+      check(sentences(b.confession) <= 4, 'confession too long ' + s.id);
   return { errors, graph: [...new Set(graph)], reached: [...reached] };
 }

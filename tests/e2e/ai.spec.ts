@@ -1,4 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
+test.beforeEach(async ({ page }) => {
+  page.on('dialog', (d) => {
+    if (d.message().includes('не использовали действия')) void d.accept();
+  });
+});
 const click = async (p: Page, name: string) => {
   const b = p.getByRole('button', { name, exact: true, includeHidden: true });
   await expect(b).toBeAttached();
@@ -28,7 +33,7 @@ async function setup(page: Page, fixture = '') {
     '',
   );
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/${test.info().project.name}-key-checked.png`,
+    path: `test-results/screens/${test.info().project.name}-key-checked.png`,
     fullPage: true,
   });
   await page.reload();
@@ -42,8 +47,8 @@ async function setup(page: Page, fixture = '') {
   await click(page, 'Новое дело');
   await click(page, 'Синяя сова');
   await page
-    .getByRole('combobox', { name: 'Режим допроса' })
-    .selectOption('ai');
+    .getByRole('button', { name: 'ИИ · свободные вопросы', exact: true })
+    .click();
   await click(page, 'К брифингу');
   await click(page, 'Начать расследование');
   await expect(page.getByRole('heading', { name: 'Хаб хода' })).toBeVisible();
@@ -58,6 +63,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   await expect(
     page.getByRole('heading', { name: 'Ежедневник Аркадия' }),
   ).toBeVisible();
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Завершить ход');
@@ -75,18 +81,20 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   ).toBeVisible();
   await page.getByText('Стоимость последней попытки', { exact: true }).click();
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-ai-dialogue.png`,
+    path: `test-results/screens/${info.project.name}-ai-dialogue.png`,
     fullPage: true,
   });
   await page.getByRole('combobox', { name: 'Тон' }).selectOption('pressure');
   await click(page, 'Из-за чего вы ругались?');
   await click(page, 'Вам нужны деньги?');
   await click(page, 'Назад');
+  await click(page, 'Назад');
   await click(page, 'Завершить ход');
   await click(page, 'Допрос');
   await click(page, 'Вера Орлова');
   await click(page, 'Ежедневник Аркадия');
   await expect(page.getByText('Сломлен', { exact: true })).toBeVisible();
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Факты');
@@ -108,7 +116,7 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   });
   expect(stored).not.toContain('e2e-dummy-credential');
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-ai-facts.png`,
+    path: `test-results/screens/${info.project.name}-ai-facts.png`,
     fullPage: true,
   });
 });
@@ -144,14 +152,14 @@ test('ключ удаляется; AI отключён в новой парти�
     ),
   ).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/${info.project.name}-settings.png`,
+    path: `test-results/screens/${info.project.name}-settings.png`,
     fullPage: true,
   });
   await click(page, 'В меню');
   await click(page, 'Новое дело');
   await click(page, 'Синяя сова');
   await expect(
-    page.getByRole('option', { name: 'ИИ · свободные вопросы' }),
+    page.getByRole('button', { name: 'ИИ · свободные вопросы', exact: true }),
   ).toBeDisabled();
 });
 
@@ -168,6 +176,7 @@ test('предъявление в ИИ-партии работает офлай�
   ).toBeVisible();
   await click(page, 'Назад');
   await click(page, 'Назад');
+  await click(page, 'Назад');
   await click(page, 'Завершить ход');
   await click(page, 'Допрос');
   await click(page, 'Ольга Лебедева');
@@ -177,6 +186,7 @@ test('предъявление в ИИ-партии работает офлай�
   await context.setOffline(true);
   await click(page, 'Билет на поезд');
   await expect(page.getByText('Сломлен', { exact: true })).toBeVisible();
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Факты');
@@ -242,6 +252,7 @@ test('ИИ-форма первая, готовые вопросы свёрнут
   await expect(
     page.getByRole('button', { name: 'Спросить ИИ', exact: true }),
   ).toBeDisabled();
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Завершить ход');
   await click(page, 'Допрос');
