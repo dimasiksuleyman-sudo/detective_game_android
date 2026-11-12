@@ -30,6 +30,8 @@ jobs:
         run: npm run typecheck
       - name: Unit-тесты
         run: npm run test:coverage
+      - name: Исходники ассетов в Git LFS
+        run: npm run lfs:check
       - name: Валидация пилотного дела
         run: npm run case:validate
       - name: Сборка web

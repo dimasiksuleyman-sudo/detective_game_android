@@ -22,7 +22,8 @@
     "test:coverage": "vitest run --coverage",
     "build:e2e": "vite build --mode e2e --outDir dist-e2e",
     "ai:smoke": "tsx --env-file-if-exists=.env.local tools/ai-smoke.ts",
-    "verify:production": "tsx tools/assert-production.ts"
+    "verify:production": "tsx tools/assert-production.ts",
+    "lfs:check": "tsx tools/check-lfs.ts"
   },
   "dependencies": {
     "@aparajita/capacitor-secure-storage": "8.0.1",
