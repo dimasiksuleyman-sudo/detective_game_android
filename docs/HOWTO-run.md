@@ -195,3 +195,21 @@ npm run case:validate
 ## Серверы
 
 Раздача паков (сервер №1) и производство дел (сервер №2) появятся на M5. Уже работают: валидатор дела, production-проверка и ручной AI smoke.
+
+## QA-интерфейс и S17 в Android Studio
+
+APK этого PR агент не собирает. Обычная production-подготовка: `npm.cmd run android:sync` (S17 исключён).
+
+Для **debug с редактором S17**, из PowerShell в корне проекта:
+
+```powershell
+npm.cmd run typecheck
+npx.cmd vite build --mode debug
+npx.cmd cap sync android
+```
+
+Далее в Android Studio дождаться Sync и Run на телефоне. Debug-режим включает только инструменты разработчика; ИИ остаётся настоящим BYOK-клиентом, MockAiClient туда не входит. Перед release снова выполнить `npm.cmd run android:sync`, чтобы заменить debug-ресурсы production-ресурсами.
+
+S17: Настройки → Редактор хотспотов → локация → тап → координаты/размер → «Скопировать JSON». Это подготовка правки case.json на ПК; сам файл на телефоне не изменяется.
+
+E2E сохраняют снимки в `test-results/screens/` (игнорируется git); для отчёта агент отдельно копирует только выбранные снимки в `docs/devlog/assets/qa-pass/`.

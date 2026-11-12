@@ -163,3 +163,52 @@ audio {
   vertical-align: middle;
   margin-inline-end: 0.5rem;
 }
+
+.interrogation {
+  display: flex;
+  flex-direction: column;
+}
+.interrogation > figure img {
+  height: 20dvh;
+  max-height: 40dvh;
+  width: auto;
+  max-width: 100%;
+  margin: auto;
+  object-fit: contain;
+}
+.interrogation > h3 {
+  margin: 0.25rem 0;
+  text-align: center;
+}
+.interrogation > figure {
+  margin: 0;
+}
+.interrogation > figure figcaption:empty {
+  display: none;
+}
+.interrogation :global(.chat) {
+  max-height: 14dvh;
+  overflow-y: auto;
+  min-height: 1rem;
+}
+.interrogation :global(.chat) article {
+  margin: 0.2rem 0;
+  padding: 0.35rem;
+}
+.interrogation :global(.chat) p,
+.interrogation blockquote {
+  margin: 0.25rem;
+}
+.interrogation textarea {
+  height: 3.2rem;
+  resize: vertical;
+}
+.interrogation :global(.questionComposer) label {
+  margin: 0.2rem 0;
+}
+.interrogation :global(.modeSwitch) {
+  margin: 0.25rem 0;
+}
+.interrogation :global(.questionComposer) details {
+  font-size: 0.75rem;
+}

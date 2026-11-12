@@ -63,6 +63,7 @@ export type Action =
       names: string[];
       roundLimit: number;
       mode?: 'classic' | 'ai';
+      overwrite?: boolean;
     }
   | { type: 'RECORD_AI_USAGE'; usage: AiUsage }
   | { type: 'BEGIN_TURN' }
@@ -103,6 +104,7 @@ export type Action =
       methodId: string;
       evidence: string[];
     }
+  | { type: 'SET_INPUT_MODE'; mode: 'classic' | 'ai' }
   | { type: 'LOCK' };
 const unique = (a: string[]) => [...new Set(a)];
 const colors = ['#D2691E', '#52b6b6', '#bc6575', '#d6b644', '#a58cdb'];
@@ -216,6 +218,7 @@ export function reduce(
   a: Action,
 ): GameState | null {
   if (a.type === 'START_GAME') {
+    if (state && !a.overwrite) return state;
     if (
       a.names.length < 1 ||
       a.names.length > 5 ||
@@ -281,6 +284,10 @@ export function reduce(
       attempts: s.aiUsage.attempts + a.usage.attempts,
       unknownCost: s.aiUsage.unknownCost || a.usage.unknownCost,
     };
+    return s;
+  }
+  if (a.type === 'SET_INPUT_MODE') {
+    s.mode = a.mode;
     return s;
   }
   if (a.type === 'LOCK') {

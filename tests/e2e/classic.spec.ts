@@ -1,4 +1,9 @@
 import { test, expect, type Page } from '@playwright/test';
+test.beforeEach(async ({ page }) => {
+  page.on('dialog', (d) => {
+    if (d.message().includes('не использовали действия')) void d.accept();
+  });
+});
 async function capture(p: Page, name: string) {
   const titles: Record<string, string> = {
     'S02-menu': 'Главное меню',
@@ -15,7 +20,7 @@ async function capture(p: Page, name: string) {
       p.getByRole('heading', { name: titles[name], exact: true }),
     ).toBeVisible();
   await p.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/classic/${test.info().project.name}-${name}.png`,
+    path: `test-results/screens/classic/${test.info().project.name}-${name}.png`,
     fullPage: true,
   });
 }
@@ -66,6 +71,7 @@ async function diary(p: Page) {
   await capture(p, 'S09-clue');
   await click(p, 'Назад');
   await click(p, 'Назад');
+  await click(p, 'Назад');
 }
 async function accusation(p: Page, suspect: string, evidence?: string) {
   await click(p, 'Обвинить');
@@ -100,7 +106,7 @@ test('одиночная партия офлайн до победы; сохра
   ).toBeVisible();
   await expect(page.getByText('Победители: Детектив 1')).toBeVisible();
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/classic/${info.project.name}-final.png`,
+    path: `test-results/screens/classic/${info.project.name}-final.png`,
     fullPage: true,
   });
 });
@@ -151,9 +157,19 @@ test('два игрока: защита передачи, ошибочное о�
   await expect(tracks.nth(1)).toHaveJSProperty('currentTime', 0);
 
   await page.screenshot({
-    path: `docs/devlog/assets/m3-art/screens/classic/${info.project.name}-two-players.png`,
+    path: `test-results/screens/classic/${info.project.name}-two-players.png`,
     fullPage: true,
   });
+  await expect(page.locator('header')).not.toContainText('Раунд');
+  page.once('dialog', (d) => d.accept());
+  await click(page, 'Сыграть ещё');
+  await expect(
+    page.getByRole('heading', { name: 'Выбрать дело', exact: true }),
+  ).toBeVisible();
+  await click(page, 'Назад');
+  await expect(
+    page.getByRole('heading', { name: 'Главное меню' }),
+  ).toBeVisible();
 });
 test('сворачивание закрывает блокнот и прямой адрес не обходит передачу', async ({
   page,
@@ -203,7 +219,7 @@ test('допрос: давление, слом, канонический фак�
         page.getByRole('heading', { name: title, exact: true }),
       ).toBeVisible();
     await page.screenshot({
-      path: `docs/devlog/assets/m3-art/screens/classic/${info.project.name}-${name}.png`,
+      path: `test-results/screens/classic/${info.project.name}-${name}.png`,
       fullPage: true,
     });
     expect(
@@ -239,6 +255,7 @@ test('допрос: давление, слом, канонический фак�
   await click(page, 'Ежедневник Аркадия');
   await expect(page.getByText('Сломлен', { exact: false })).toBeVisible();
   await shot('broken');
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Факты');
@@ -276,9 +293,10 @@ test('иллюстрации локаций загружаются; зоны п�
       ).toBe('rgba(0, 0, 0, 0)');
     }
     await page.screenshot({
-      path: `docs/devlog/assets/m3-art/screens/${info.project.name}-${id}.png`,
+      path: `test-results/screens/${info.project.name}-${id}.png`,
       fullPage: true,
     });
+    await click(page, 'Назад');
     await click(page, 'Назад');
   }
   await click(page, 'Обыск');
