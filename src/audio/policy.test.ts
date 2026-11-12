@@ -10,7 +10,8 @@ it('готовые роли выбираются по экранам, перед
         track.id,
       );
     }
-  for (const track of manifest.planned)
+  const planned: { id: string; screens: string[] }[] = manifest.planned;
+  for (const track of planned)
     for (const screen of track.screens) {
       if (!manifest.music.some((t) => t.id === track.id))
         expect(selectMusic(screen, track.id === 'music-solved')?.id).toBe(

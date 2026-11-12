@@ -240,9 +240,12 @@ test('семантические эффекты: ui-tap, paper, new-fact и ош
 test('сворачивание отменяет таймер удержания вместе со звуком и не открывает личный экран', async ({
   page,
 }) => {
-  await start(page, 2);
+  // Часы ставим до загрузки страницы (так советует Playwright): установка
+  // посреди сессии давала гонку в CI — dispatchEvent висел 30 с.
   await page.clock.install();
+  await start(page, 2);
   const button = page.getByRole('button', { name: 'Детектив 1', exact: true });
+  await expect(button).toBeVisible();
   await button.dispatchEvent('pointerdown');
   await page.evaluate(() => {
     Object.defineProperty(document, 'hidden', {

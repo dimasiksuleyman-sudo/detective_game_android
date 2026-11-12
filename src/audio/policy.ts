@@ -1,5 +1,8 @@
 /** Детерминированные роли экрана, запасной трек и уровни фонового звука. */
 import manifest from '../../public/audio/manifest.json';
+/** Роль, ещё не готовая как MP3; список может быть пустым, поэтому тип задан явно. */
+type PlannedTrack = { id: string; loop: boolean; screens: string[] };
+const planned: PlannedTrack[] = manifest.planned;
 export interface AudioPreferences {
   music: boolean;
   musicVolume: number;
@@ -28,11 +31,7 @@ export function selectMusic(screen: string, solved = false) {
     (desired
       ? undefined
       : manifest.music.find(
-          (t) =>
-            t.id ===
-            manifest.planned.find((p) =>
-              (p.screens as string[]).includes(screen),
-            )?.id,
+          (t) => t.id === planned.find((p) => p.screens.includes(screen))?.id,
         )) ??
     manifest.music.find((t) => t.id === 'music-menu') ??
     manifest.music[0]

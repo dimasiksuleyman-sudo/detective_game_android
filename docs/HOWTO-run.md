@@ -80,14 +80,9 @@ sdkmanager --sdk_root="$ANDROID_HOME" "platform-tools" "platforms;android-36" "b
 - `./gradlew :app:connectedDebugAndroidTest` запускает тесты на подключённом телефоне.
 - Пишите именно `:app:`. Без этого префикса задача собирает тестовые APK всех библиотек и упирается в известный конфликт сгенерированного Cordova-модуля.
 
-## Когда CI выдаёт готовый APK
+## APK собирает только владелец
 
-По ADR-007 CI собирает APK, только если изменились `android/`, `package.json`, `package-lock.json` или `capacitor.config.ts`. После правок одного веб-кода или документов APK в CI нет. В этом случае:
-
-- либо откройте Actions → «Проверки и debug APK» → **Run workflow** на `main`;
-- либо соберите локально (см. ниже).
-
-**Последний APK:** 0.3.0 / code 4 — [CI 43230369981](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43230369981), [android-debug ZIP](https://github.com/dimasiksuleyman-sudo/detective_game_android/actions/runs/43230369981/artifacts/13949718101). Внутри ZIP лежит `app-debug.apk`. Чтобы скачать, нужно войти в GitHub.
+С 2026-11-12 (ADR-024) APK в облаке не собирается: CI проверяет только веб-часть (lint, типы, unit, валидатор, сборка, e2e), а агент сам APK тоже не собирает. Все сборки и будущая публикация — в Android Studio владельца по инструкции ниже. Старые CI-артефакты с APK (0.0.1–0.3.1) больше не используются.
 
 ## Обновить телефон на Windows (локальная сборка)
 
@@ -118,8 +113,7 @@ npm.cmd run android:sync
 
 ## Установка APK файлом
 
-1. Скачайте ZIP по ссылке выше и распакуйте `app-debug.apk`.
-2. Откройте его на телефоне и разрешите установку из этого источника.
+Обычно достаточно **Run** в Android Studio. Если нужен файл: после `npm.cmd run android:debug` или Build → Build APK(s) он лежит в `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 Можно установить и через USB (нужна отладка по USB):
 
@@ -127,7 +121,7 @@ npm.cmd run android:sync
 adb install -r android/app/build/outputs/apk/debug/app-debug.apk
 ```
 
-**Если Android пишет `INSTALL_FAILED_UPDATE_INCOMPATIBLE`:** прежняя сборка подписана другим debug-ключом (CI и локальная Android Studio подписывают разными ключами). Удалите старое приложение и установите заново.
+**Если Android пишет `INSTALL_FAILED_UPDATE_INCOMPATIBLE`:** на телефоне стоит сборка с другим ключом подписи (например, старый APK из CI). Удалите старое приложение и установите заново.
 
 Удаление стирает сохранённые партии и ключ. Ключ после этого введите заново. Сохранения v2 (с версии 0.3.0) старые версии приложения не открывают.
 
@@ -198,7 +192,7 @@ npm run case:validate
 
 ## QA-интерфейс и S17 в Android Studio
 
-APK этого PR агент не собирает. Обычная production-подготовка: `npm.cmd run android:sync` (S17 исключён).
+APK собирает только владелец (ADR-024). Обычная production-подготовка: `npm.cmd run android:sync` (S17 исключён).
 
 Для **debug с редактором S17**, из PowerShell в корне проекта:
 
@@ -218,6 +212,6 @@ E2E сохраняют снимки в `test-results/screens/` (игнориру
 
 Музыка/эффекты включены в `public/audio/`, сеть не нужна. Настройки — Настройки → Звук: Музыка и громкость, Звуки, Дождь. Они независимы от ручной озвучки Sergei. Браузер ждёт первого жеста; после перезагрузки это нормальное поведение, а не потеря настройки.
 
-Для обновления в Windows: перейти на ветку этого PR, `npm.cmd ci`, `npm.cmd run android:sync`, затем Run в Android Studio. Для S17 по-прежнему используется подготовка `vite build --mode debug` из раздела выше. APK 0.3.2 / code 6 владелец собирает в Android Studio. Автоматический CI больше не собирает APK; отдельный ручной workflow_dispatch с build_apk=true оставлен на случай явного запроса.
+Для обновления в Windows: `git switch main`, `git pull --ff-only`, `npm.cmd ci`, `npm.cmd run android:sync`, затем Run в Android Studio. Для S17 по-прежнему используется подготовка `vite build --mode debug` из раздела выше. APK 0.3.2 / code 6 владелец собирает в Android Studio. CI APK не собирает вовсе, даже вручную (ADR-024).
 
 Документы — исходные записи, выводы остаются во вкладке «Факты». Вопрос с afterBreak даёт правду только по уже раскрытому truthId текущего игрока. Старую историю реплик это не переписывает.

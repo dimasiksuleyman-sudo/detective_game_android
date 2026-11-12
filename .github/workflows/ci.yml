@@ -1,14 +1,9 @@
-name: Проверки (APK только вручную)
+name: Проверки
 
 on:
   push:
   pull_request:
   workflow_dispatch:
-    inputs:
-      build_apk:
-        description: Собрать debug APK
-        type: boolean
-        default: false
 
 permissions:
   contents: read
@@ -24,21 +19,6 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - name: Нужна ли нативная сборка
-        id: native
-        env:
-          CI_EVENT_NAME: ${{ github.event_name }}
-        run: |
-          python3 - <<'PYCODE'
-          import json, os
-          event = json.load(open(os.environ['GITHUB_EVENT_PATH']))
-          needed = os.environ['CI_EVENT_NAME'] == 'workflow_dispatch' and str(event.get('inputs', {}).get('build_apk', False)).lower() == 'true'
-          with open(os.environ['GITHUB_OUTPUT'], 'a') as output:
-              output.write('apk=' + str(needed).lower() + '\n')
-          print('Native APK required:', needed)
-          PYCODE
       - uses: actions/setup-node@v4
         with:
           node-version: 24
@@ -68,29 +48,3 @@ jobs:
             playwright-report/
             test-results/
             docs/devlog/assets/
-      - uses: actions/setup-java@v4
-        if: steps.native.outputs.apk == 'true'
-        with:
-          distribution: temurin
-          java-version: 21
-      - uses: android-actions/setup-android@v3
-        if: steps.native.outputs.apk == 'true'
-        with:
-          packages: platform-tools
-          log-accepted-android-sdk-licenses: false
-      - name: Android SDK
-        if: steps.native.outputs.apk == 'true'
-        run: sdkmanager "platform-tools" "platforms;android-36" "build-tools;35.0.0"
-      - name: Синхронизация Capacitor
-        if: steps.native.outputs.apk == 'true'
-        run: npx cap sync android
-      - name: Debug APK
-        if: steps.native.outputs.apk == 'true'
-        working-directory: android
-        run: ./gradlew --no-daemon assembleDebug
-      - uses: actions/upload-artifact@v4
-        if: steps.native.outputs.apk == 'true'
-        with:
-          name: android-debug
-          path: android/app/build/outputs/apk/debug/app-debug.apk
-          if-no-files-found: error
