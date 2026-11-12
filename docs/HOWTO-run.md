@@ -142,3 +142,7 @@ ADR-015: текущий постоянный блок ошибок времен�
 ## Подготовка арта M3
 
 Ветка codex/m3-pilot-art наследует пакет M2. Для повторной конвертации четырёх оригиналов выполнить `npx tsx tools/build-pack.ts --art-only` из корня проекта, затем `npm run case:validate`. Манифест art/pilot/manifest.json задаёт входы/выходы и размеры. Оригиналы находятся вне public и в APK не попадают. Скрипт не генерирует изображения и не обращается к сети; сборка ZIP/публикация ещё не реализованы. Изменение PNG требует повторной конвертации. После изменения ассетов для телефона нужен обычный android:sync и Run; пока владелец отложил физические проверки MT-014/011.
+
+## Ручная проба Cartesia
+
+Документ NARRATION-PLAN.md содержит фразы и правила. Ключ только в GitHub → Settings → Secrets and variables → Actions → New repository secret, имя CARTESIA_API_KEY. Никогда не добавлять его в Variables, исходники или сообщения. Для одной пробы на PR ветки codex/cartesia-narration добавить метку cartesia-sample; workflow выдаст артефакт WAV+JSON. Обычный push/unit/e2e TTS не запускает. Локально без сети: python3 tools/generate-narration.py --list. Генерация доступна только с env-ключом и --sample --allow-paid, полный набор отдельным --all --allow-paid --voice ID после оценки голоса. На Windows команда python вместо python3 при соответствующей установке Python; владельцу сейчас не требуется настраивать Python на ПК.

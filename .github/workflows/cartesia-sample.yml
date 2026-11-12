@@ -1,0 +1,36 @@
+name: Cartesia — одна пробная фраза
+
+on:
+  pull_request:
+    types: [labeled]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: cartesia-sample-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  sample:
+    if: github.event.label.name == 'cartesia-sample' && github.event.pull_request.head.ref == 'codex/cartesia-narration' && github.event.pull_request.head.repo.full_name == github.repository
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          persist-credentials: false
+      - name: Одна пробная фраза, без автоматических повторов
+        env:
+          CARTESIA_API_KEY: ${{ secrets.CARTESIA_API_KEY }}
+          CARTESIA_VOICE_ID: ${{ vars.CARTESIA_VOICE_ID }}
+        run: python3 tools/generate-narration.py --sample --allow-paid
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cartesia-sample
+          path: |
+            work/cartesia/*.wav
+            work/cartesia/*.json
+          if-no-files-found: error
+          retention-days: 14
