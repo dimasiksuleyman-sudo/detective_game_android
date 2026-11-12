@@ -2,3 +2,79 @@
 *.bat text eol=crlf
 *.png binary
 *.jar binary
+
+# Исходники ассетов (art/) — в Git LFS (ADR-027). Готовые файлы игры в public/ — обычный git.
+art/**/*.png filter=lfs diff=lfs merge=lfs -text
+art/**/*.jpg filter=lfs diff=lfs merge=lfs -text
+art/**/*.jpeg filter=lfs diff=lfs merge=lfs -text
+art/**/*.webp filter=lfs diff=lfs merge=lfs -text
+art/**/*.mp3 filter=lfs diff=lfs merge=lfs -text
+art/**/*.wav filter=lfs diff=lfs merge=lfs -text
+
+# Файлы, закоммиченные до перехода на LFS, остаются обычными (историю не переписываем).
+# Новые файлы сюда НЕ добавлять: проверка tools/check-lfs.ts требует LFS для всего остального.
+art/music/music-interrogation.mp3 -filter -diff -merge binary
+art/music/music-investigation.mp3 -filter -diff -merge binary
+art/music/music-menu.mp3 -filter -diff -merge binary
+art/music/music-solved.mp3 -filter -diff -merge binary
+art/music/music-unsolved.mp3 -filter -diff -merge binary
+art/narration/elevenlabs/samples/TUQNWEvVPBLzMBSVDPUA-briefing-preview.mp3 -filter -diff -merge binary
+art/narration/elevenlabs/samples/pM78bgjPVk0JXtaEnFoj-chief-hint-1.mp3 -filter -diff -merge binary
+art/pilot/a01-arkady-angry.png -filter -diff -merge binary
+art/pilot/a01-arkady-broken.png -filter -diff -merge binary
+art/pilot/a01-arkady-nervous.png -filter -diff -merge binary
+art/pilot/a01-arkady-neutral.png -filter -diff -merge binary
+art/pilot/a01-arkady-sad.png -filter -diff -merge binary
+art/pilot/a01-arkady-smug.png -filter -diff -merge binary
+art/pilot/a02-gleb-angry.png -filter -diff -merge binary
+art/pilot/a02-gleb-broken.png -filter -diff -merge binary
+art/pilot/a02-gleb-nervous.png -filter -diff -merge binary
+art/pilot/a02-gleb-neutral.png -filter -diff -merge binary
+art/pilot/a02-gleb-sad.png -filter -diff -merge binary
+art/pilot/a02-gleb-smug.png -filter -diff -merge binary
+art/pilot/a03-vera-angry.png -filter -diff -merge binary
+art/pilot/a03-vera-broken.png -filter -diff -merge binary
+art/pilot/a03-vera-nervous.png -filter -diff -merge binary
+art/pilot/a03-vera-neutral.png -filter -diff -merge binary
+art/pilot/a03-vera-sad.png -filter -diff -merge binary
+art/pilot/a03-vera-smug.png -filter -diff -merge binary
+art/pilot/a04-timur-angry.png -filter -diff -merge binary
+art/pilot/a04-timur-broken.png -filter -diff -merge binary
+art/pilot/a04-timur-nervous.png -filter -diff -merge binary
+art/pilot/a04-timur-neutral.png -filter -diff -merge binary
+art/pilot/a04-timur-sad.png -filter -diff -merge binary
+art/pilot/a04-timur-smug.png -filter -diff -merge binary
+art/pilot/a05-olga-angry.png -filter -diff -merge binary
+art/pilot/a05-olga-broken.png -filter -diff -merge binary
+art/pilot/a05-olga-nervous.png -filter -diff -merge binary
+art/pilot/a05-olga-neutral.png -filter -diff -merge binary
+art/pilot/a05-olga-sad.png -filter -diff -merge binary
+art/pilot/a05-olga-smug.png -filter -diff -merge binary
+art/pilot/a16-chief-angry.png -filter -diff -merge binary
+art/pilot/a16-chief-broken.png -filter -diff -merge binary
+art/pilot/a16-chief-nervous.png -filter -diff -merge binary
+art/pilot/a16-chief-neutral.png -filter -diff -merge binary
+art/pilot/a16-chief-sad.png -filter -diff -merge binary
+art/pilot/a16-chief-smug.png -filter -diff -merge binary
+art/pilot/c-diary.png -filter -diff -merge binary
+art/pilot/c-ledger.png -filter -diff -merge binary
+art/pilot/c-photo.png -filter -diff -merge binary
+art/pilot/c-whisky-crate.png -filter -diff -merge binary
+art/pilot/cover.png -filter -diff -merge binary
+art/pilot/h-board.png -filter -diff -merge binary
+art/pilot/h-counter.png -filter -diff -merge binary
+art/pilot/h-desk.png -filter -diff -merge binary
+art/pilot/h-door.png -filter -diff -merge binary
+art/pilot/h-dumpster.png -filter -diff -merge binary
+art/pilot/h-photos.png -filter -diff -merge binary
+art/pilot/h-puddle.png -filter -diff -merge binary
+art/pilot/h-safe.png -filter -diff -merge binary
+art/pilot/h-sofa.png -filter -diff -merge binary
+art/pilot/l-alley.png -filter -diff -merge binary
+art/pilot/l-hall.png -filter -diff -merge binary
+art/pilot/l-office.png -filter -diff -merge binary
+art/pilot/reconstruction-1.png -filter -diff -merge binary
+art/pilot/reconstruction-2.png -filter -diff -merge binary
+art/pilot/reconstruction-3.png -filter -diff -merge binary
+art/pilot/statuette-closeup.png -filter -diff -merge binary
+art/pilot/statuette-item.png -filter -diff -merge binary
