@@ -1,0 +1,81 @@
+name: Озвучка ElevenLabs (вручную)
+
+# Платная генерация. Запускается ТОЛЬКО вручную (Actions → «Озвучка ElevenLabs» → Run workflow).
+# Одна попытка на файл: уже сгенерированные файлы скрипт не трогает (ADR-025, ADR-026).
+# Результат коммитится в ветку audio/elevenlabs-narration, откуда открывается PR в main.
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'voices — список голосов и бесплатные превью; sample — одна проба на голос; all — все дорожки'
+        type: choice
+        options: [voices, sample, all]
+        default: voices
+      voices:
+        description: 'Для sample: до 3 голосов через пробел, формат OWNER:VOICE (из voices.json)'
+        type: string
+        default: ''
+      narrator:
+        description: 'Для all: ID голоса рассказчика'
+        type: string
+        default: ''
+      chief:
+        description: 'Для all: ID голоса Шефа'
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+
+concurrency:
+  group: narration-elevenlabs
+  cancel-in-progress: false
+
+jobs:
+  generate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Ветка результатов
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if git ls-remote --exit-code --heads origin audio/elevenlabs-narration >/dev/null; then
+            git fetch origin audio/elevenlabs-narration
+            git switch audio/elevenlabs-narration
+          else
+            git switch -c audio/elevenlabs-narration
+          fi
+      - name: ffmpeg
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
+      - name: Генерация
+        env:
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          MODE: ${{ inputs.mode }}
+          VOICES: ${{ inputs.voices }}
+          NARRATOR: ${{ inputs.narrator }}
+          CHIEF: ${{ inputs.chief }}
+        run: |
+          case "$MODE" in
+            voices) python3 tools/generate-narration-elevenlabs.py --voices ;;
+            sample)
+              args=()
+              for v in $VOICES; do args+=(--voice "$v"); done
+              python3 tools/generate-narration-elevenlabs.py --sample --allow-paid "${args[@]}" ;;
+            all) python3 tools/generate-narration-elevenlabs.py --all --allow-paid --narrator "$NARRATOR" --chief "$CHIEF" ;;
+          esac
+      - name: Коммит результатов
+        env:
+          MODE: ${{ inputs.mode }}
+        run: |
+          git add art/narration docs/devlog/assets/narration-elevenlabs public/cases/*/audio 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Нет новых файлов"
+          else
+            git commit -m "ElevenLabs narration: $MODE"
+            git push origin audio/elevenlabs-narration
+          fi

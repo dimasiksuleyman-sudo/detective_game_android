@@ -163,6 +163,16 @@ npm run case:validate
 - Готовые петли собираются командой `python3 tools/prepare-music.py [id]` (нужен ffmpeg) и попадают в `public/audio/music/`. Точки петли каждого трека задаются в `TRACKS` в скрипте.
 - Звуки интерфейса пересобираются командой `python3 tools/generate-sfx.py` (нужны numpy и ffmpeg) в `public/audio/sfx/`. Сид фиксирован, поэтому результат повторяется до бита.
 
+## Озвучка ElevenLabs (ADR-026)
+
+Платно, одна попытка на файл. Нужен секрет `ELEVENLABS_API_KEY`: GitHub → Settings → Secrets and variables → Actions.
+
+1. **Голоса (бесплатно):** Actions → «Озвучка ElevenLabs (вручную)» → Run workflow → `mode: voices`. В ветке `audio/elevenlabs-narration` появятся `docs/devlog/assets/narration-elevenlabs/voices.json` и `previews/*.mp3` — превью голосов.
+2. **Пробы:** `mode: sample`, `voices` — до трёх `OWNER:VOICE` из `voices.json` через пробел. Одна фраза «Ветрогорск. Ночь с пятницы на субботу… проливной дождь» на каждый голос, файлы — `art/narration/elevenlabs/samples/`.
+3. **Все дорожки:** `mode: all`, `narrator` и `chief` — ID выбранных голосов. MP3 и манифест — в `public/cases/<дело>/audio/`.
+
+Проверить тексты без сети: `python3 tools/generate-narration-elevenlabs.py --list`. Если текст дела изменился, скрипт пометит дорожку «УСТАРЕЛО» и не будет её генерировать.
+
 ## Озвучка (Cartesia)
 
 - Готовые 8 MP3 лежат в `public/cases/case-001-blue-owl/audio/` и входят в APK. Ни ключ, ни интернет для прослушивания не нужны.
