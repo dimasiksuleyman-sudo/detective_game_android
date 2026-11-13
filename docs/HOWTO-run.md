@@ -324,3 +324,18 @@ npm.cmd run android:sync
 В S03 два настоящих дела. Пакет телефонной проверки — MT-024. «Номер семь» работает офлайн с общей музыкой; речевые кнопки появятся после работы планировщика. Отсутствие речи сейчас ожидаемо.
 
 Для разработчика: `git lfs pull --include="art/case-002-room-seven/**"`, `npx tsx tools/build-pack.ts --art-only --case case-002-room-seven`, затем `npm run case:validate`. Без аргумента валидатор проверяет оба дела. Планировщику: `python tools/generate-narration-elevenlabs.py --case case-002-room-seven --list`; это просмотр девяти источников без генерации. Платный ручной workflow запускается отдельно с выбором дела, по одной попытке на дорожку.
+
+## Правила хода и блиц (0.4.1 / code 11)
+
+В PowerShell из корня проекта:
+
+```powershell
+git fetch origin
+git switch main
+git pull --ff-only origin main
+npm.cmd ci
+npm.cmd run android:sync
+& 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
+```
+
+В Android Studio дождаться Sync, выбрать телефон и Run ▶. Приложение и данные не удалять. Новые нативные плагины не добавлялись. Проверка — MT-025.

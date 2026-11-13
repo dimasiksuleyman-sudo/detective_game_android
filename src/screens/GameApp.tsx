@@ -1,4 +1,10 @@
 import { hideLaunchSplash } from '../platform/launchSplash';
+import { TurnTimer } from '../components/TurnTimer';
+import { TALK_LIMIT, TURN_SECONDS, turnBudget } from '../game/rules/turn';
+import {
+  accusationOutcome,
+  type AccusationOutcome,
+} from '../game/rules/accusation';
 import { playEffect } from '../platform/soundscape';
 import { SafePuzzle } from '../components/SafePuzzle';
 import { Soundscape } from '../components/Soundscape';
@@ -66,6 +72,10 @@ export default function GameApp() {
     nav = useNavigate(),
     path = useLocation().pathname;
   const [setupAllowed, setSetupAllowed] = useState(false);
+  const [turnSeconds, setTurnSeconds] =
+    useState<(typeof TURN_SECONDS)[number]>(0);
+  const [verdict, setVerdict] = useState<AccusationOutcome | null>(null);
+  const [timeUp, setTimeUp] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState(() => {
     const first = listCases()[0];
     if (!first) throw new Error('No built-in cases');
@@ -76,6 +86,20 @@ export default function GameApp() {
     selecting ? selectedCaseId : (g?.caseId ?? selectedCaseId),
   );
   const briefing = c.briefing;
+  const budget = g ? turnBudget(c, g) : ({ kind: 'none' } as const);
+  const budgetText =
+    budget.kind === 'search'
+      ? ru.turn.budgetSearch(
+          c.locations.find((l) => l.id === budget.target)?.name ?? '',
+          budget.used,
+        )
+      : budget.kind === 'talk'
+        ? ru.turn.budgetTalk(
+            c.suspects.find((x) => x.id === budget.target)?.name ?? '',
+            budget.used,
+            budget.limit,
+          )
+        : ru.turn.budgetNone;
   const initSettings = useSettings((s) => s.init);
   const ai = useAi(),
     settings = useSettings();
@@ -243,6 +267,13 @@ export default function GameApp() {
     setLocation(id);
   };
   const back = () => go('s07');
+  // В одиночной партии передачи нет: после конца хода возвращаемся в хаб, а не остаёмся на экране действия.
+  const endTurn = () => {
+    setLocation('');
+    setSuspect('');
+    act({ type: 'END_TURN' });
+    go('s07');
+  };
   if (!ready) return <p role="status">{ru.loading}</p>;
   return (
     <div className={styles.game} data-screen={effective}>
@@ -256,10 +287,59 @@ export default function GameApp() {
         {p && g && effective !== 's06' && effective !== 's14' && personal && (
           <p style={{ color: p.color }}>
             {p.name} · {t.round} {g.round}/{g.roundLimit}
+            {g.turnSeconds > 0 && !g.finalMode && g.phase === 'turn' && (
+              <>
+                {' · '}
+                <TurnTimer
+                  turnKey={`${g.round}-${g.current}-${p.turns}`}
+                  seconds={g.turnSeconds}
+                  running={!busy && !ai.busy && !timeUp && !verdict}
+                  onExpire={() => setTimeUp(true)}
+                />
+              </>
+            )}
           </p>
         )}
       </header>
       {error && <p role="alert">{error}</p>}
+      {verdict && verdict !== 'win' && (
+        <div
+          className={styles.dialog}
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="verdict-title"
+        >
+          <section>
+            <h2 id="verdict-title">{ru.turn.verdict[verdict].title}</h2>
+            <p>{ru.turn.verdict[verdict].text}</p>
+            <button autoFocus onClick={() => setVerdict(null)}>
+              {ru.turn.verdict.ok}
+            </button>
+          </section>
+        </div>
+      )}
+      {timeUp && (
+        <div
+          className={styles.dialog}
+          role="alertdialog"
+          aria-modal="true"
+          aria-labelledby="timeup-title"
+        >
+          <section>
+            <h2 id="timeup-title">{ru.turn.timeUpTitle}</h2>
+            <p>{ru.turn.timeUpText}</p>
+            <button
+              autoFocus
+              onClick={() => {
+                setTimeUp(false);
+                endTurn();
+              }}
+            >
+              {ru.turn.passTurn}
+            </button>
+          </section>
+        </div>
+      )}
       <fieldset disabled={busy || ai.busy}>
         <main>
           {effective === 's01' && <>{button(t.menu, () => go('s02'))}</>}
@@ -370,6 +450,23 @@ export default function GameApp() {
                   ))}
                 </select>
               </label>
+              <label>
+                {ru.turn.timer}
+                <select
+                  value={turnSeconds}
+                  onChange={(e) =>
+                    setTurnSeconds(
+                      TURN_SECONDS.find((n) => n === +e.target.value) ?? 0,
+                    )
+                  }
+                >
+                  {TURN_SECONDS.map((n) => (
+                    <option key={n} value={n}>
+                      {n ? ru.turn.timerOption(n) : ru.turn.timerOff}
+                    </option>
+                  ))}
+                </select>
+              </label>
               <section aria-label={ru.ai.mode} className="modeSwitch">
                 <p>{ru.qa.modeHelp}</p>
                 <button
@@ -401,6 +498,7 @@ export default function GameApp() {
                     mode: settings.hasKey ? mode : 'classic',
                     names: names.slice(0, count),
                     roundLimit: rounds,
+                    turnSeconds,
                   }).then(() => {
                     setSetupAllowed(false);
                     go('s05');
@@ -471,9 +569,7 @@ export default function GameApp() {
                   <NarrationPlayer clip={hintNarration(c.id, g.hint)} />
                 </aside>
               )}
-              <p>
-                {t.usage}: {g.action?.used ?? 0}
-              </p>
+              <p role="status">{budgetText}</p>
               {button(
                 t.search,
                 () => {
@@ -482,6 +578,7 @@ export default function GameApp() {
                 },
                 g.action?.kind === 'talk',
               )}
+              {g.action?.kind === 'talk' && <small>{ru.turn.busyTalk}</small>}
               {button(
                 t.talk,
                 () => {
@@ -489,6 +586,9 @@ export default function GameApp() {
                   go('s10');
                 },
                 g.action?.kind === 'search',
+              )}
+              {g.action?.kind === 'search' && (
+                <small>{ru.turn.busySearch}</small>
               )}
               {button(t.notebook, () => {
                 setNote(p.notes);
@@ -545,8 +645,7 @@ export default function GameApp() {
                               }}
                               disabled={
                                 !p.openedLocks.includes(h.id) &&
-                                (p.visited.includes(h.id) ||
-                                  (g.action?.used ?? 0) >= 2)
+                                p.visited.includes(h.id)
                               }
                               onClick={() => {
                                 if (h.lock) {
@@ -587,7 +686,23 @@ export default function GameApp() {
                         </div>
                       </section>
                     ))}
+              {!location && g.action?.kind === 'search' && (
+                <p role="status">
+                  {ru.turn.oneLocation(
+                    c.locations.find((l) => l.id === g.action?.target)?.name ??
+                      '',
+                  )}
+                </p>
+              )}
               {g.message && <p role="status">{g.message}</p>}
+              {budget.kind === 'search' &&
+                budget.target === location &&
+                budget.exhausted && (
+                  <aside role="alert">
+                    {ru.turn.searchDone}
+                    {button(t.end, endTurn)}
+                  </aside>
+                )}
               {button(t.back, () => (location ? chooseLocation('') : back()))}
             </>
           )}
@@ -614,8 +729,7 @@ export default function GameApp() {
                     (p.openedLocks.includes(safeId) ||
                       !g.action ||
                       (g.action.kind === 'search' &&
-                        g.action.target === location &&
-                        g.action.used < 2))
+                        g.action.target === location))
                   }
                   submit={async (code) => {
                     await dispatch({
@@ -801,7 +915,7 @@ export default function GameApp() {
                                     showSuspect();
                                   },
                                   !freeQuestion.trim() ||
-                                    (g.action?.used ?? 0) >= 3 ||
+                                    (g.action?.used ?? 0) >= TALK_LIMIT ||
                                     p.blocked[s.id] !== undefined,
                                 )}
                               </>
@@ -849,7 +963,7 @@ export default function GameApp() {
                                     questionId: q.id,
                                     tone,
                                   }),
-                                (g.action?.used ?? 0) >= 3 ||
+                                (g.action?.used ?? 0) >= TALK_LIMIT ||
                                   p.blocked[s.id] !== undefined,
                               ),
                             )}
@@ -891,12 +1005,30 @@ export default function GameApp() {
                                     tone,
                                   });
                               },
-                              (g.action?.used ?? 0) >= 3 ||
+                              (g.action?.used ?? 0) >= TALK_LIMIT ||
                                 p.blocked[s.id] !== undefined,
                             ),
                           )}
                       </section>
                     ))}
+              {!suspect && g.action?.kind === 'talk' && (
+                <p role="status">
+                  {ru.turn.oneSuspect(
+                    c.suspects.find((x) => x.id === g.action?.target)?.name ??
+                      '',
+                  )}
+                </p>
+              )}
+              {budget.kind === 'talk' &&
+                budget.target === suspect &&
+                budget.exhausted && (
+                  <aside role="alert">
+                    {p.blocked[suspect] !== undefined
+                      ? ru.turn.lawyerDone
+                      : ru.turn.talkDone}
+                    {button(t.end, endTurn)}
+                  </aside>
+                )}
               {button(t.back, () => (suspect ? setSuspect('') : back()))}
             </>
           )}
@@ -1089,8 +1221,14 @@ export default function GameApp() {
                     () => setStep(step + 1),
                     ![acc.suspectId, acc.motiveId, acc.methodId][step],
                   )
-                : button(t.submit, () => {
-                    act({ type: 'ACCUSE', ...acc });
+                : button(t.submit, async () => {
+                    const outcome = accusationOutcome(c, g, p, acc);
+                    await dispatch({ type: 'ACCUSE', ...acc });
+                    if (
+                      outcome !== 'win' &&
+                      useGame.getState().game?.phase !== 'finished'
+                    )
+                      setVerdict(outcome);
                     setStep(0);
                     setAcc({
                       suspectId: '',

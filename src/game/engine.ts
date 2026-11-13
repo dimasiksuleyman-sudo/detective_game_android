@@ -2,6 +2,8 @@
 import { hiddenInspectionFactIds } from '../content/inspectionKnowledge';
 import { ru } from '../i18n/ru';
 import type { CaseFile } from '../content/schema';
+import { judgeAccusation } from './rules/accusation';
+import { TALK_LIMIT, TURN_SECONDS, type TurnSeconds } from './rules/turn';
 export type Emotion =
   'neutral' | 'nervous' | 'angry' | 'sad' | 'smug' | 'broken';
 export type Tone = 'neutral' | 'pressure' | 'empathy';
@@ -48,6 +50,8 @@ export type GameState = {
   current: number;
   round: number;
   roundLimit: number;
+  /** Режим блиц: секунды на ход, 0 — без ограничения (ADR-034). Время считает экран, не движок. */
+  turnSeconds: TurnSeconds;
   phase: 'briefing' | 'handover' | 'turn' | 'final' | 'finished';
   finalMode: boolean;
   finalDone: number[];
@@ -64,6 +68,7 @@ export type Action =
       caseId?: string;
       names: string[];
       roundLimit: number;
+      turnSeconds?: TurnSeconds;
       mode?: 'classic' | 'ai';
       overwrite?: boolean;
     }
@@ -227,6 +232,7 @@ export function reduce(
       a.names.length < 1 ||
       a.names.length > 5 ||
       ![6, 8, 10].includes(a.roundLimit) ||
+      !TURN_SECONDS.includes(a.turnSeconds ?? 0) ||
       a.names.some((x) => !x.trim() || x.length > 30)
     )
       return state;
@@ -258,6 +264,7 @@ export function reduce(
       current: 0,
       round: 1,
       roundLimit: a.roundLimit,
+      turnSeconds: a.turnSeconds ?? 0,
       phase: 'briefing',
       finalMode: false,
       finalDone: [],
@@ -354,7 +361,7 @@ export function reduce(
     const h = loc?.hotspots.find((h) => h.id === a.hotspotId);
     if (!h?.lock || !h.container) return state;
     if (p.openedLocks.includes(h.id)) return state;
-    if (!canUse(s, p, 'search', a.locationId, 2)) return state;
+    if (!canUse(s, p, 'search', a.locationId, Infinity)) return state;
     if (a.code !== h.lock.code) {
       s.message = ru.safe.wrong;
       return s;
@@ -386,7 +393,7 @@ export function reduce(
     if (
       !h ||
       h.lock ||
-      !canUse(s, p, 'search', a.locationId, 2) ||
+      !canUse(s, p, 'search', a.locationId, Infinity) ||
       p.visited.includes(h.id)
     )
       return state;
@@ -408,7 +415,7 @@ export function reduce(
     const suspect = c.suspects.find((x) => x.id === a.suspectId);
     if (
       !suspect ||
-      !canUse(s, p, 'talk', a.suspectId, 3) ||
+      !canUse(s, p, 'talk', a.suspectId, TALK_LIMIT) ||
       p.blocked[a.suspectId] !== undefined
     )
       return state;
@@ -513,11 +520,7 @@ export function reduce(
       !a.evidence.every((id) => p.clues.includes(id) || p.facts.includes(id))
     )
       return state;
-    const correct =
-      a.suspectId === c.solution.culpritId &&
-      a.motiveId === c.solution.motiveId &&
-      a.methodId === c.solution.methodId;
-    const proven = a.evidence.some((id) => c.solution.keyEvidence.includes(id));
+    const { correct, proven } = judgeAccusation(c, a);
     if (correct && proven) {
       p.score += 10;
       s.winners.push(s.current);

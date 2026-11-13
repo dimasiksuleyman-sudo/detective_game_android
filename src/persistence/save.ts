@@ -49,6 +49,10 @@ const schema = z.object({
   current: num,
   round: num.positive(),
   roundLimit: z.union([z.literal(6), z.literal(8), z.literal(10)]),
+  turnSeconds: z
+    .union([z.literal(0), z.literal(60), z.literal(120)])
+    .optional()
+    .default(0),
   phase: z.enum(['briefing', 'handover', 'turn', 'final', 'finished']),
   finalMode: z.boolean(),
   finalDone: z.array(num),
