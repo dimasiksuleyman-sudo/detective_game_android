@@ -211,3 +211,11 @@ Book-cover style key art for a detective case titled (do not render the title) "
 ## Дополнение сейфа (ADR-028)
 
 Пять ресурсов по STYLE_CORE: `closeups/h-safe-open.webp` (открытый сейф, четыре предмета в отдельных областях), `closeups/h-ledger-spread.webp` (разворот без сгенерированного текста), `clues/c-envelope.webp`, `clues/c-will.webp`, `clues/c-lawyer-card.webp` (прозрачные предметы). Полные промпты и использованные референсы — `art/pilot/safe-prompts.json`, статусы и размеры — `art/ASSETS.md`. Надписи «Вере — НЕТ», «переписать?», «Пн, 10:00», таблица и подпись рисуются кодом. Крупные планы 1024², предметы 512²; оригиналы PNG в art/pilot. Контакт-листы — docs/devlog/assets/safe-puzzle/. Всего 63 ресурса, заглушек нет; одобрение владельца ещё не получено.
+
+## Иконка приложения и сплэш (ADR-029)
+
+Мастер art/app/app-icon.png: лупа с одной настольной лампой, акцент #D2691E, фон #1E2A33. Foreground и monochrome — отдельные прозрачные 1024²; значимое содержимое вписано в центральный круг диаметром 590 px, внутри безопасного круга 66/108. Monochrome — одноцветное кольцо с ручкой, центр прозрачный. Background — однотонный #1E2A33. Сплэш #12181D: PNG 2732², foreground по центру, мотив меньше 25% ширины, splash-dark идентичен. Текста/букв нет.
+
+Android 12+ использует системную иконку на #12181D, Android 8–11 — ресурсы legacy и совместимую тему. Размеры: assets/ → @capacitor/assets 4.0.0 → Android, затем воспроизводимое дополнение XML/monochrome; входы готовит tools/prepare-app-assets.ts, дополнение — tools/finalize-app-assets.ts. Монохромный слой и запускная иконка также генерируются скриптом. Android-ресурсы — обычный git, исходные PNG art/app и art/store — LFS.
+
+Магазины: art/store/icon-512.png — RGBA с alpha=255, без скруглений; feature-1024x500.png — пустая «Синяя сова», центральная лампа, без надписей. Контакт-лист — docs/devlog/assets/app-icon/contact-sheet.jpg.
