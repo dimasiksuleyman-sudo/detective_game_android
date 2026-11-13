@@ -1,0 +1,60 @@
+{
+  "browser": "Chromium headless",
+  "note": "Technical decode/playback, muted; not a listening check",
+  "clips": [
+    {
+      "id": "briefing",
+      "duration": 39.76,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "chief-hint-1",
+      "duration": 5.2,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "chief-hint-2",
+      "duration": 4.48,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "chief-hint-3",
+      "duration": 4.64,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "chief-hint-4",
+      "duration": 4.32,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "solution-explanation",
+      "duration": 59.28,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "reconstruction-1",
+      "duration": 3.92,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "reconstruction-2",
+      "duration": 5.12,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    },
+    {
+      "id": "reconstruction-3",
+      "duration": 3.28,
+      "decodedAndPlayed": true,
+      "mutedForTechnicalCheck": true
+    }
+  ]
+}

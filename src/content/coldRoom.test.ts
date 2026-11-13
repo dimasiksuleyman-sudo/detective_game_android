@@ -283,3 +283,65 @@ it('изображение осмотра — полноценный ренде�
   delete clue.inspection;
   expect(validateCase(copy).errors).toContain('clue has no rendering');
 });
+
+it('девять MP3 соответствуют текущим текстам, одобренным голосам, размерам и хешам', async () => {
+  const { createHash } = await import('node:crypto');
+  const { narrationFor, hintNarration } = await import('./narration');
+  const manifest = JSON.parse(
+    readFileSync('public/cases/' + c.id + '/audio/manifest.json', 'utf8'),
+  ) as {
+    voices: Record<string, string>;
+    clips: {
+      id: string;
+      text: string;
+      file: string;
+      bytes: number;
+      sha256: string;
+      seconds: number;
+    }[];
+  };
+  expect(manifest.voices).toEqual({
+    narrator: 'TUQNWEvVPBLzMBSVDPUA',
+    chief: 'pM78bgjPVk0JXtaEnFoj',
+  });
+  expect(manifest.clips).toHaveLength(9);
+  expect(new Set(manifest.clips.map((clip) => clip.id)).size).toBe(9);
+  for (const clip of manifest.clips) {
+    const bytes = readFileSync('public/cases/' + c.id + '/audio/' + clip.file);
+    expect(bytes.length).toBe(clip.bytes);
+    expect(createHash('sha256').update(bytes).digest('hex')).toBe(clip.sha256);
+    expect(clip.seconds).toBeGreaterThan(1);
+    expect(narrationFor(c.id, clip.id, clip.text)).toBeDefined();
+    expect(narrationFor(c.id, clip.id, 'Изменённый текст')).toBeUndefined();
+  }
+  expect(narrationFor(c.id, 'briefing', c.briefing)).toBeDefined();
+  for (const hint of c.hints)
+    expect(hintNarration(c.id, hint.text)).toBeDefined();
+  expect(
+    narrationFor(c.id, 'solution-explanation', c.solution.explanation),
+  ).toBeDefined();
+  c.solution.reconstruction.forEach((frame, i) =>
+    expect(
+      narrationFor(c.id, 'reconstruction-' + (i + 1), frame.caption),
+    ).toBeDefined(),
+  );
+});
+it('все произносимые версии актуальны и не содержат цифр', () => {
+  const config = JSON.parse(
+    readFileSync('content/narration/elevenlabs.json', 'utf8'),
+  ) as {
+    cases: Record<
+      string,
+      { speech: Record<string, { text: string; say: string }> }
+    >;
+  };
+  const manifest = JSON.parse(
+    readFileSync('public/cases/' + c.id + '/audio/manifest.json', 'utf8'),
+  ) as { clips: { id: string; text: string }[] };
+  const speech = config.cases[c.id]?.speech;
+  expect(Object.keys(speech ?? {})).toHaveLength(9);
+  for (const clip of manifest.clips) {
+    expect(speech?.[clip.id]?.text).toBe(clip.text);
+    expect(speech?.[clip.id]?.say).not.toMatch(/\d/u);
+  }
+});

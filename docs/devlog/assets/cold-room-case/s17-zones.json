@@ -1,0 +1,284 @@
+{
+  "viewport": {
+    "width": 360,
+    "height": 800
+  },
+  "locations": [
+    {
+      "id": "l-yard",
+      "image": "images/locations/yard.webp",
+      "imageBox": {
+        "x": 16,
+        "y": 182.890625,
+        "width": 328,
+        "height": 492
+      },
+      "zones": [
+        {
+          "id": "h-booth",
+          "label": "Окно будки",
+          "rect": {
+            "x": 0.195,
+            "y": 0.55,
+            "w": 0.185,
+            "h": 0.17
+          },
+          "phone360": {
+            "width": 60.7,
+            "height": 83.6
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-booth-table",
+          "label": "Столик в будке",
+          "rect": {
+            "x": 0.015,
+            "y": 0.53,
+            "w": 0.16,
+            "h": 0.15
+          },
+          "phone360": {
+            "width": 52.5,
+            "height": 73.8
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-truck-cab",
+          "label": "Кабина рефрижератора",
+          "rect": {
+            "x": 0.17,
+            "y": 0.29,
+            "w": 0.21,
+            "h": 0.2
+          },
+          "phone360": {
+            "width": 68.9,
+            "height": 98.4
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-truck-back",
+          "label": "Кузов рефрижератора",
+          "rect": {
+            "x": 0.775,
+            "y": 0.28,
+            "w": 0.18,
+            "h": 0.195
+          },
+          "phone360": {
+            "width": 59,
+            "height": 95.9
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-gate",
+          "label": "Ворота",
+          "rect": {
+            "x": 0.405,
+            "y": 0.53,
+            "w": 0.58,
+            "h": 0.46
+          },
+          "phone360": {
+            "width": 190.2,
+            "height": 226.3
+          },
+          "s17Hit": true
+        }
+      ]
+    },
+    {
+      "id": "l-shop",
+      "image": "images/locations/shop.webp",
+      "imageBox": {
+        "x": 16,
+        "y": 182.890625,
+        "width": 328,
+        "height": 492
+      },
+      "zones": [
+        {
+          "id": "h-scales",
+          "label": "Платформенные весы",
+          "rect": {
+            "x": 0.02,
+            "y": 0.75,
+            "w": 0.58,
+            "h": 0.19
+          },
+          "phone360": {
+            "width": 190.2,
+            "height": 93.5
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-desk",
+          "label": "Стол учётчика и сейф",
+          "rect": {
+            "x": 0.205,
+            "y": 0.445,
+            "w": 0.335,
+            "h": 0.23
+          },
+          "phone360": {
+            "width": 109.9,
+            "height": 113.2
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-schedule",
+          "label": "График смен",
+          "rect": {
+            "x": 0.025,
+            "y": 0.218,
+            "w": 0.26,
+            "h": 0.155
+          },
+          "phone360": {
+            "width": 85.3,
+            "height": 76.3
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-repair-board",
+          "label": "Доска механика",
+          "rect": {
+            "x": 0.3,
+            "y": 0.175,
+            "w": 0.245,
+            "h": 0.245
+          },
+          "phone360": {
+            "width": 80.4,
+            "height": 120.5
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-thermograph",
+          "label": "Термограф",
+          "rect": {
+            "x": 0.545,
+            "y": 0.235,
+            "w": 0.155,
+            "h": 0.19
+          },
+          "phone360": {
+            "width": 50.8,
+            "height": 93.5
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-chamber-door",
+          "label": "Дверь морозильной камеры",
+          "rect": {
+            "x": 0.705,
+            "y": 0.17,
+            "w": 0.28,
+            "h": 0.51
+          },
+          "phone360": {
+            "width": 91.8,
+            "height": 250.9
+          },
+          "s17Hit": true
+        }
+      ]
+    },
+    {
+      "id": "l-chamber",
+      "image": "images/locations/chamber.webp",
+      "imageBox": {
+        "x": 16,
+        "y": 182.890625,
+        "width": 328,
+        "height": 492
+      },
+      "zones": [
+        {
+          "id": "h-outline",
+          "label": "Контур у стеллажа",
+          "rect": {
+            "x": 0.24,
+            "y": 0.535,
+            "w": 0.59,
+            "h": 0.245
+          },
+          "phone360": {
+            "width": 193.5,
+            "height": 120.5
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-frost-floor",
+          "label": "Иней у входа",
+          "rect": {
+            "x": 0.1,
+            "y": 0.8,
+            "w": 0.34,
+            "h": 0.195
+          },
+          "phone360": {
+            "width": 111.5,
+            "height": 95.9
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-inner-door",
+          "label": "Дверь изнутри",
+          "rect": {
+            "x": 0.04,
+            "y": 0.3,
+            "w": 0.16,
+            "h": 0.14
+          },
+          "phone360": {
+            "width": 52.5,
+            "height": 68.9
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-racks",
+          "label": "Стеллажи с ящиками",
+          "rect": {
+            "x": 0.7,
+            "y": 0.35,
+            "w": 0.29,
+            "h": 0.18
+          },
+          "phone360": {
+            "width": 95.1,
+            "height": 88.5
+          },
+          "s17Hit": true
+        },
+        {
+          "id": "h-lamp",
+          "label": "Лампа под решёткой",
+          "rect": {
+            "x": 0.415,
+            "y": 0.025,
+            "w": 0.19,
+            "h": 0.13
+          },
+          "phone360": {
+            "width": 62.3,
+            "height": 64
+          },
+          "s17Hit": true
+        }
+      ]
+    }
+  ]
+}

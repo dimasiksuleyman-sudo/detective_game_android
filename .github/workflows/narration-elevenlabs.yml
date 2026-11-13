@@ -2,7 +2,7 @@ name: Озвучка ElevenLabs (вручную)
 
 # Платная генерация. Запускается ТОЛЬКО вручную (Actions → «Озвучка ElevenLabs» → Run workflow).
 # Одна попытка на файл: уже сгенерированные файлы скрипт не трогает (ADR-025, ADR-026).
-# Результат коммитится в отдельную ветку audio/elevenlabs-<caseId>, откуда открывается PR в main.
+# Результат коммитится в target_branch текущего PR или в отдельную audio/elevenlabs-<caseId>.
 
 on:
   workflow_dispatch:
