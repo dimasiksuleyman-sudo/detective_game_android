@@ -208,6 +208,6 @@ Book-cover style key art for a detective case titled (do not render the title) "
 
 Добавлены art/pilot/statuette-closeup.png (на полу) и statuette-item.png (прозрачный фон), сгенерированные через image_gen по кабинету и друг другу. Оригиналы 1254×1254. Первый конвертируется в closeups/h-floor.webp 1024×1024 q80, второй в clues/c-statuette.webp 512×512 q85. Скол рисуется как естественная деталь материала без подсветки/врезки. Манифест подготовки теперь задаёт реальные размеры источника и quality для каждого файла; старые размеры остаются defaults.
 
-## Дополнение сейфа (ADR-025)
+## Дополнение сейфа (ADR-028)
 
 Пять ресурсов по STYLE_CORE: `closeups/h-safe-open.webp` (открытый сейф, четыре предмета в отдельных областях), `closeups/h-ledger-spread.webp` (разворот без сгенерированного текста), `clues/c-envelope.webp`, `clues/c-will.webp`, `clues/c-lawyer-card.webp` (прозрачные предметы). Полные промпты и использованные референсы — `art/pilot/safe-prompts.json`, статусы и размеры — `art/ASSETS.md`. Надписи «Вере — НЕТ», «переписать?», «Пн, 10:00», таблица и подпись рисуются кодом. Крупные планы 1024², предметы 512²; оригиналы PNG в art/pilot. Контакт-листы — docs/devlog/assets/safe-puzzle/. Всего 63 ресурса, заглушек нет; одобрение владельца ещё не получено.

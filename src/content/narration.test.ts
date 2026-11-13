@@ -43,3 +43,22 @@ it('тексты всех восьми записей совпадают с те
     expect(narrationFor('reconstruction-' + (i + 1), r.caption)).toBeDefined(),
   );
 });
+
+it('план будущей озвучки сохраняет источники прежних подсказок и включает новую без цифр в речи', () => {
+  const plan = JSON.parse(
+    readFileSync('content/narration/plan.json', 'utf8'),
+  ) as { clips: { id: string; role: string; source: (string | number)[] }[] };
+  const config = JSON.parse(
+    readFileSync('content/narration/elevenlabs.json', 'utf8'),
+  ) as { speech: Record<string, { text: string; say: string }> };
+  const hints = plan.clips.filter((clip) => clip.role === 'chief');
+  expect(hints).toHaveLength(pilot.hints.length);
+  for (const clip of hints) {
+    const speech = config.speech[clip.id];
+    const source = pilot.hints[Number(clip.source[1])];
+    expect(speech?.text).toBe(source?.text);
+    expect(speech?.say).not.toMatch(/\d/);
+    const recorded = manifest.clips.find((item) => item.id === clip.id);
+    if (recorded) expect(speech?.text).toBe(recorded.text);
+  }
+});
