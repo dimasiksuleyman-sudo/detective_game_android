@@ -191,9 +191,8 @@ test('предъявление в ИИ-партии работает офлай�
   await click(page, 'Завершить ход');
   await click(page, 'Допрос');
   await click(page, 'Ольга Лебедева');
-  await page
-    .getByRole('checkbox', { name: 'Озвучивать предъявление через ИИ' })
-    .uncheck();
+  // Галочки больше нет: режим «Офлайн» под портретом даёт готовый ответ без запроса.
+  await click(page, 'Офлайн');
   await context.setOffline(true);
   await click(page, 'Билет на поезд');
   await expect(page.getByText('Сломлен', { exact: true })).toBeVisible();

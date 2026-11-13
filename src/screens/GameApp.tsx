@@ -125,7 +125,6 @@ export default function GameApp() {
   const briefcase = safeHotspot?.label.toLocaleLowerCase('ru') === 'портфель';
   const containerInside = briefcase ? ru.safe.insideBriefcase : ru.safe.inside;
   const containerBack = briefcase ? ru.safe.backBriefcase : ru.safe.back;
-  const [narrateClues, setNarrateClues] = useState(true);
   const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
     [freeQuestion, setFreeQuestion] = useState('');
   const [privacy, setPrivacy] = useState(false);
@@ -1033,19 +1032,6 @@ export default function GameApp() {
                         </details>
                         <h3>{t.present}</h3>
                         {!p.clues.length && <p>{ru.qa.emptyEvidence}</p>}
-                        {g.mode === 'ai' && (
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={narrateClues}
-                              onChange={(e) =>
-                                setNarrateClues(e.target.checked)
-                              }
-                            />
-                            {ru.ai.narrateClues}
-                            <p>{ru.ai.offlinePresent}</p>
-                          </label>
-                        )}
                         {c.clues
                           .filter((cl) => p.clues.includes(cl.id))
                           .map((cl) =>
@@ -1055,8 +1041,7 @@ export default function GameApp() {
                                 if (
                                   online &&
                                   g.mode === 'ai' &&
-                                  settings.hasKey &&
-                                  narrateClues
+                                  settings.hasKey
                                 ) {
                                   void askAi(s.id, '', tone, cl.id);
                                   showSuspect();
