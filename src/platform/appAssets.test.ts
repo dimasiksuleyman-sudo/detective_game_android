@@ -4,20 +4,31 @@ import sharp from 'sharp';
 import { expect, it } from 'vitest';
 import config from '../../capacitor.config';
 const res = 'android/app/src/main/res';
-it('все плотности и круглые иконки заменены; adaptive поддерживает monochrome', async () => {
-  for (const density of ['ldpi', 'mdpi', 'hdpi', 'xhdpi', 'xxhdpi', 'xxxhdpi'])
-    for (const name of [
-      'ic_launcher',
-      'ic_launcher_round',
-      'ic_launcher_foreground',
-      'ic_launcher_background',
-      'ic_launcher_monochrome',
-    ]) {
+/** Множитель плотности Android: px = dp × scale. */
+const densities = {
+  ldpi: 0.75,
+  mdpi: 1,
+  hdpi: 1.5,
+  xhdpi: 2,
+  xxhdpi: 3,
+  xxxhdpi: 4,
+};
+it('все плотности в точном размере: обычная иконка 48dp, слои adaptive 108dp; есть monochrome', async () => {
+  for (const [density, scale] of Object.entries(densities))
+    for (const [name, dp] of [
+      ['ic_launcher', 48],
+      ['ic_launcher_round', 48],
+      // Слой меньше 108dp Android растягивает, и иконка на рабочем столе мылится.
+      ['ic_launcher_foreground', 108],
+      ['ic_launcher_background', 108],
+      ['ic_launcher_monochrome', 108],
+    ] as const) {
       const meta = await sharp(
         `${res}/mipmap-${density}/${name}.png`,
       ).metadata();
-      expect(meta.width).toBeGreaterThan(0);
-      expect(meta.height).toBe(meta.width);
+      expect(`${density}/${name} ${meta.width}×${meta.height}`).toBe(
+        `${density}/${name} ${dp * scale}×${dp * scale}`,
+      );
     }
   for (const name of ['ic_launcher', 'ic_launcher_round']) {
     const xml = readFileSync(`${res}/mipmap-anydpi-v26/${name}.xml`, 'utf8');

@@ -302,6 +302,6 @@ npm.cmd run android:sync
 & 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
 ```
 
-Дождаться Gradle Sync, выбрать телефон и нажать Run ▶. После слияния PR использовать `git switch main` и `git pull --ff-only origin main`. Не удалять приложение/его данные: проверяется перенос старой партии. APK агент не собирает. Пакет проверки — MT-022. В production остаётся один пилот, тестовое дело доступно только `npm.cmd run e2e`.
+Дождаться Gradle Sync, выбрать телефон и нажать Run ▶. После слияния PR использовать `git switch main` и `git pull --ff-only origin main`. Не удалять приложение/его данные: проверяется перенос старой партии. APK агент не собирает. Пакет проверки — MT-023. В production остаётся один пилот, тестовое дело доступно только `npm.cmd run e2e`.
 
 Новое встроенное дело: добавить `public/cases/<id>/case.json` с совпадающим id; изображения — в этом каталоге, озвучка — `audio/manifest.json`. `npm.cmd run build` обновит список S03. Сервер/скачивание паков ещё не подключены.

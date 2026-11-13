@@ -20,6 +20,32 @@ it('готовность приложения скрывает заставку 
   await Promise.all([hideLaunchSplash(), hideLaunchSplash()]);
   expect(hide).toHaveBeenCalledExactlyOnceWith({ fadeOutDuration: 0 });
 });
+it('страховочный таймер скрывает заставку, даже если загрузка зависла', async () => {
+  vi.useFakeTimers();
+  try {
+    native.mockReturnValue(true);
+    const { armLaunchSplashFallback, SPLASH_FALLBACK_MS } =
+      await import('./launchSplash');
+    armLaunchSplashFallback();
+    await vi.advanceTimersByTimeAsync(SPLASH_FALLBACK_MS - 1);
+    expect(hide).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(1);
+    expect(hide).toHaveBeenCalledExactlyOnceWith({ fadeOutDuration: 0 });
+  } finally {
+    vi.useRealTimers();
+  }
+});
+it('в вебе страховочный таймер не ставится', async () => {
+  vi.useFakeTimers();
+  try {
+    native.mockReturnValue(false);
+    const { armLaunchSplashFallback } = await import('./launchSplash');
+    armLaunchSplashFallback();
+    expect(vi.getTimerCount()).toBe(0);
+  } finally {
+    vi.useRealTimers();
+  }
+});
 it('ошибка моста не ломает загрузку и допускает повтор скрытия', async () => {
   native.mockReturnValue(true);
   hide.mockRejectedValueOnce(new Error('bridge'));

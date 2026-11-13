@@ -1,23 +1,30 @@
-/** Дополнение генератора: monochrome и XML адаптивных иконок, без ручной правки плотностей. */
-import {
-  readdir,
-  readFile,
-  writeFile,
-  mkdir,
-  copyFile,
-} from 'node:fs/promises';
+/** Дополнение генератора: слои adaptive-icon в 108dp, monochrome и XML, без ручной правки плотностей. */
+import { readFile, writeFile, mkdir, copyFile } from 'node:fs/promises';
 import sharp from 'sharp';
 const root = 'android/app/src/main/res';
-for (const entry of await readdir(root)) {
-  if (!/^mipmap-(ldpi|mdpi|hdpi|xhdpi|xxhdpi|xxxhdpi)$/.test(entry)) continue;
-  const meta = await sharp(
-    `${root}/${entry}/ic_launcher_foreground.png`,
-  ).metadata();
-  await sharp('art/app/icon-monochrome.png')
-    .resize(meta.width, meta.height)
-    .png()
-    .toFile(`${root}/${entry}/ic_launcher_monochrome.png`);
-}
+/**
+ * Слои adaptive-icon — 108dp, а не 48dp, как у обычной иконки. Генератор кладёт их
+ * в размере 48dp, и Android растягивает картинку в 2,25 раза (мыльная иконка).
+ * Поэтому все три слоя нарезаем заново из исходников 1024² в точном размере 108dp.
+ */
+const ADAPTIVE_LAYER_PX: Record<string, number> = {
+  ldpi: 81,
+  mdpi: 108,
+  hdpi: 162,
+  xhdpi: 216,
+  xxhdpi: 324,
+  xxxhdpi: 432,
+};
+for (const [density, size] of Object.entries(ADAPTIVE_LAYER_PX))
+  for (const [source, target] of [
+    ['icon-foreground', 'ic_launcher_foreground'],
+    ['icon-background', 'ic_launcher_background'],
+    ['icon-monochrome', 'ic_launcher_monochrome'],
+  ])
+    await sharp(`art/app/${source}.png`)
+      .resize(size, size, { kernel: 'lanczos3' })
+      .png({ compressionLevel: 9 })
+      .toFile(`${root}/mipmap-${density}/${target}.png`);
 const xml = `<?xml version="1.0" encoding="utf-8"?>
 <adaptive-icon xmlns:android="http://schemas.android.com/apk/res/android">
     <background android:drawable="@mipmap/ic_launcher_background" />
