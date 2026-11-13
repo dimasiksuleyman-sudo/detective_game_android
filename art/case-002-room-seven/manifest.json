@@ -17,7 +17,8 @@
       "height": 1620,
       "sourceWidth": 1024,
       "sourceHeight": 1536,
-      "quality": 80
+      "quality": 80,
+      "sourceSha256": "2ac322d11878d8c8a12122dbc972e89c2f56fd1f491a7cd99cd3c579dedddcc6"
     },
     {
       "source": "l-corridor.png",
@@ -89,7 +90,8 @@
       "height": 1024,
       "sourceWidth": 1254,
       "sourceHeight": 1254,
-      "quality": 80
+      "quality": 80,
+      "sourceSha256": "1f1daaf31c3544b8ab28ee422d9b50fba09c3b022f40a996d521b02d8391ebde"
     },
     {
       "source": "h-tea-tray.png",
