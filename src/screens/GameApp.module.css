@@ -218,3 +218,10 @@ audio {
 .game[data-screen='s02'] main > button {
   margin-block: 1rem;
 }
+
+/* «Подозреваемый печатает…» — прямо под портретом, где игрок ждёт ответ. */
+.interrogation :global(.typing) {
+  margin: 0.5rem 0 0;
+  font-style: italic;
+  opacity: 0.8;
+}
