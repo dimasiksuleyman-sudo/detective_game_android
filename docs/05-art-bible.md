@@ -172,7 +172,7 @@ Book-cover style key art for a detective case titled (do not render the title) "
 | `closeups/h-sofa.webp` | under an old leather sofa / a small paper ticket stub half-hidden in the dust |
 | `closeups/h-floor.webp` | an office floor next to a desk with a chalk outline edge visible / a heavy bronze saxophone statuette lying on the floor, wiped clean, its marble base slightly chipped |
 | `closeups/h-door.webp` | the lock of a metal back door / no scratches on the lock, a clean key mark — it was opened with a key |
-| `closeups/h-dumpster.webp` | behind a dumpster in a wet alley / a cardboard crate with whisky bottles hidden under a black plastic bag |
+| `closeups/h-dumpster.webp` | an overflowing open dumpster in a wet alley at night, black garbage bags and many crushed empty beer and soda cans inside; among the cans one small crumpled scrap of pale paper stands out (receipt-sized, no readable text); beside the dumpster a cardboard crate with whisky bottles half hidden under a black tarp (ADR-035: point-and-click detail — the paper must be findable but not highlighted) |
 | `closeups/h-puddle.webp` | a puddle near a back door at night / a soaked small paper parking stub floating in the puddle |
 
 ### 5.3. Улики-предметы (прозрачный фон)

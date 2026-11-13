@@ -339,3 +339,7 @@ npm.cmd run android:sync
 ```
 
 В Android Studio дождаться Sync, выбрать телефон и Run ▶. Приложение и данные не удалять. Новые нативные плагины не добавлялись. Проверка — MT-025.
+
+## Цепочка доказательств (0.4.2 / code 12)
+
+Обновление — те же команды, что в разделе 0.4.1 (`git switch main`, `git pull --ff-only origin main`, `npm.cmd ci`, `npm.cmd run android:sync`, Run в Android Studio). Новых нативных плагинов нет. Проверка — MT-026.

@@ -1,4 +1,5 @@
 import { collectLedger, backFromSafeItem } from './safeHelpers';
+import { checkPilotProof, grantPilotProof } from './proofHelpers';
 import { test, expect, type Page } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   page.on('dialog', (d) => {
@@ -84,7 +85,7 @@ async function diary(p: Page) {
   await click(p, 'Назад');
   await click(p, 'Назад');
 }
-async function accusation(p: Page, suspect: string, evidence?: string) {
+async function accusation(p: Page, suspect: string, proven = false) {
   await click(p, 'Обвинить');
   await capture(p, 'S13-accusation');
   await p.getByLabel('Виновный').selectOption(suspect);
@@ -97,7 +98,7 @@ async function accusation(p: Page, suspect: string, evidence?: string) {
     .getByRole('combobox', { name: 'Способ', exact: true })
     .selectOption('w-statuette');
   await click(p, 'Далее');
-  if (evidence) await p.getByLabel(evidence, { exact: true }).check();
+  if (proven) await checkPilotProof(p);
   await click(p, 'Предъявить обвинение');
 }
 test('одиночная партия офлайн до победы; сохранение и повторный запуск', async ({
@@ -106,12 +107,10 @@ test('одиночная партия офлайн до победы; сохра
 }, info) => {
   await start(page);
   await diary(page);
-  await page.goto('/');
-  await click(page, 'Продолжить');
-  await handover(page);
-  await expect(page.getByRole('heading', { name: 'Хаб хода' })).toBeVisible();
+  // Сохранение и повторный запуск: grantPilotProof перезагружает страницу и продолжает партию.
+  await grantPilotProof(page);
   await context.setOffline(true);
-  await accusation(page, 's-gleb', 'Тайная бухгалтерия');
+  await accusation(page, 's-gleb', true);
   await expect(
     page.getByRole('heading', { name: 'Как всё было' }),
   ).toBeVisible();
@@ -143,7 +142,8 @@ test('два игрока: защита передачи, ошибочное о�
   ).toBeVisible();
   await handover(page);
   await diary(page);
-  await accusation(page, 's-gleb', 'Тайная бухгалтерия');
+  await grantPilotProof(page, 1);
+  await accusation(page, 's-gleb', true);
   await expect(page.getByText('Победители: Детектив 2')).toBeVisible();
   const panels = page.locator('figure img');
   await expect(panels).toHaveCount(3);

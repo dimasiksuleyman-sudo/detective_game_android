@@ -241,8 +241,12 @@ describe('правила партии', () => {
   });
   it('победа и очки; неправильное обвинение исключает, следующий игрок получает ход', () => {
     let s = active();
-    player(s).clues = ['c-ledger'];
-    s = accuse(s, { evidence: ['c-ledger'] });
+    // ADR-035: мотив, возможность и признание — по одному доказательству на звено.
+    player(s).clues = ['c-ledger', 'c-parking-stub'];
+    player(s).facts = ['f-gleb-confessed'];
+    s = accuse(s, {
+      evidence: ['c-ledger', 'c-parking-stub', 'f-gleb-confessed'],
+    });
     expect(s.winners).toEqual([0]);
     expect(player(s).score).toBe(10);
     expect(s.phase).toBe('finished');
@@ -253,7 +257,11 @@ describe('правила партии', () => {
   });
   it('отвергает поддельные, повторные и слишком многочисленные доказательства и варианты', () => {
     const s = active();
-    for (const evidence of [['c-ledger'], ['x', 'x'], ['a', 'b', 'c', 'd']])
+    for (const evidence of [
+      ['c-ledger'],
+      ['x', 'x'],
+      ['a', 'b', 'c', 'd', 'e', 'f'],
+    ])
       expect(accuse(s, { evidence })).toEqual(s);
     for (const field of ['suspectId', 'motiveId', 'methodId'])
       expect(accuse(s, { [field]: 'bad' })).toEqual(s);
@@ -266,8 +274,12 @@ describe('правила партии', () => {
     expect(s.finalMode).toBe(true);
     for (let i = 0; i < 2; i++) {
       s = run(s, { type: 'BEGIN_TURN' });
-      player(s).facts = ['f-keys-holders'];
-      s = accuse(s, { evidence: ['f-keys-holders'] });
+      player(s).facts = [
+        'f-ledger-signature',
+        'f-parking-2331',
+        'f-gleb-confessed',
+      ];
+      s = accuse(s, { evidence: [...player(s).facts] });
     }
     expect(s.phase).toBe('finished');
     expect(s.winners).toEqual([0, 1]);

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { loadCase } from '../../content/loader';
 import { reduce, type GameState, type Action } from '../engine';
 import { parseStoredGame } from '../../persistence/save';
-import { accusationOutcome } from './accusation';
+import { accusationOutcome, judgeAccusation } from './accusation';
 import { TALK_LIMIT, turnBudget } from './turn';
 
 const c = loadCase('case-001-blue-owl');
@@ -108,5 +108,56 @@ describe('режим блиц', () => {
     const s = start(1, 120) as Partial<GameState>;
     delete s.turnSeconds;
     expect(parseStoredGame({ version: 4, state: s })?.turnSeconds).toBe(0);
+  });
+});
+
+describe('цепочка доказательств и признание (ADR-035)', () => {
+  const present = (s: GameState) =>
+    run(s, {
+      type: 'PRESENT_CLUE',
+      suspectId: 's-gleb',
+      clueId: 'c-statuette',
+      tone: 'neutral',
+    });
+  it('статуэтка ломает Глеба только после денег и возвращения', () => {
+    let s = start(1);
+    const p = s.players[0];
+    if (!p) throw Error('player');
+    p.clues = ['c-statuette', 'c-ledger', 'c-parking-stub'];
+    p.facts = ['f-statuette-weapon'];
+    p.stress['s-gleb'] = 6;
+    s = present(s);
+    expect(s.players[0]?.facts).not.toContain('f-gleb-confessed');
+    const q = s.players[0];
+    if (!q) throw Error('player');
+    q.facts.push('f-gleb-returned', 'f-gleb-took-money');
+    q.stress['s-gleb'] = 6;
+    s = present(s);
+    expect(s.players[0]?.facts).toContain('f-gleb-confessed');
+    expect(s.players[0]?.truths).toContain('t-killed');
+  });
+  it('верная версия без признания — прокурор называет незакрытое звено', () => {
+    const s = start(2);
+    const p = s.players[0];
+    if (!p) throw Error('player');
+    const partial = {
+      ...right,
+      evidence: ['c-ledger', 'c-parking-stub'],
+    };
+    expect(accusationOutcome(c, s, p, partial)).toBe('grace');
+    expect(judgeAccusation(c, partial).missing).toEqual(['Признание']);
+    expect(
+      judgeAccusation(c, {
+        ...partial,
+        evidence: [...partial.evidence, 'f-gleb-confessed'],
+      }).proven,
+    ).toBe(true);
+  });
+  it('мутная квитанция не оправдывает и не обвиняет Тимура сама по себе', () => {
+    const f = c.facts.find((x) => x.id === 'f-key-copy');
+    expect(f?.importance).toBe('red_herring');
+    expect(c.solution.proofChain?.flatMap((l) => l.evidenceIds)).not.toContain(
+      'f-key-copy',
+    );
   });
 });

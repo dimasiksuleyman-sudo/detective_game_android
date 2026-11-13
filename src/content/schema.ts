@@ -57,7 +57,12 @@ const breakpoint = z.object({
 });
 export const caseSchema = z
   .object({
-    schemaVersion: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+    schemaVersion: z.union([
+      z.literal(1),
+      z.literal(2),
+      z.literal(3),
+      z.literal(4),
+    ]),
     id: identifier,
     version: z.number().int().positive(),
     minAppVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
@@ -94,6 +99,18 @@ export const caseSchema = z
       motiveId: identifier,
       methodId: identifier,
       keyEvidence: ids.min(1),
+      /**
+       * v4, ADR-035: цепочка доказательств. Обвинение побеждает, только если в каждом
+       * звене есть хотя бы одна приложенная улика/факт. Без цепочки (v1–v3) хватает
+       * одной улики из keyEvidence.
+       */
+      proofChain: z
+        .array(
+          z.object({ id: identifier, label: text, evidenceIds: ids.min(1) }),
+        )
+        .min(2)
+        .max(4)
+        .optional(),
       explanation: text,
       reconstruction: z
         .array(z.object({ image: text, caption: text }))
@@ -120,7 +137,8 @@ export const caseSchema = z
           z.object({ id: identifier, topic: text, lie: text, truth: text }),
         ),
         breakThreshold: z.number().int().min(0).max(10),
-        breakpoints: z.array(breakpoint).min(1).max(2),
+        // Три ступени — для цепочки признания виновного (ADR-035): деньги → встреча → сознание.
+        breakpoints: z.array(breakpoint).min(1).max(3),
         clueReactions: z.array(
           z.object({ clueId: identifier, reaction: text }),
         ),
@@ -235,6 +253,10 @@ export const caseSchema = z
           (cl) => cl.inspection?.overlays || cl.explanationFactIds,
         )),
     'Замки, надписи и объяснения требуют schemaVersion=3',
+  )
+  .refine(
+    (c) => c.schemaVersion >= 4 === !!c.solution.proofChain,
+    'Цепочка доказательств — ровно в schemaVersion=4',
   )
   .refine(
     (c) => c.players.min <= c.players.max,

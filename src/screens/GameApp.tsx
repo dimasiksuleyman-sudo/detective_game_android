@@ -3,6 +3,8 @@ import { TurnTimer } from '../components/TurnTimer';
 import { TALK_LIMIT, TURN_SECONDS, turnBudget } from '../game/rules/turn';
 import {
   accusationOutcome,
+  evidenceLimit,
+  judgeAccusation,
   type AccusationOutcome,
 } from '../game/rules/accusation';
 import { playEffect } from '../platform/soundscape';
@@ -75,6 +77,7 @@ export default function GameApp() {
   const [turnSeconds, setTurnSeconds] =
     useState<(typeof TURN_SECONDS)[number]>(0);
   const [verdict, setVerdict] = useState<AccusationOutcome | null>(null);
+  const [verdictMissing, setVerdictMissing] = useState<string[]>([]);
   const [timeUp, setTimeUp] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState(() => {
     const first = listCases()[0];
@@ -311,7 +314,11 @@ export default function GameApp() {
         >
           <section>
             <h2 id="verdict-title">{ru.turn.verdict[verdict].title}</h2>
-            <p>{ru.turn.verdict[verdict].text}</p>
+            <p>
+              {verdict === 'grace' && verdictMissing.length
+                ? ru.turn.verdict.grace.missing(verdictMissing.join(', '))
+                : ru.turn.verdict[verdict].text}
+            </p>
             <button autoFocus onClick={() => setVerdict(null)}>
               {ru.turn.verdict.ok}
             </button>
@@ -1186,7 +1193,14 @@ export default function GameApp() {
               )}
               {step === 3 && (
                 <>
-                  <p>{t.evidence}</p>
+                  <p>{t.evidence(evidenceLimit(c))}</p>
+                  {c.solution.proofChain && (
+                    <p>
+                      {t.chain(
+                        c.solution.proofChain.map((l) => l.label).join(' · '),
+                      )}
+                    </p>
+                  )}
                   {[
                     ...c.clues
                       .filter((cl) => p.clues.includes(cl.id))
@@ -1199,7 +1213,7 @@ export default function GameApp() {
                         checked={acc.evidence.includes(f.id)}
                         disabled={
                           !acc.evidence.includes(f.id) &&
-                          acc.evidence.length >= 3
+                          acc.evidence.length >= evidenceLimit(c)
                         }
                         onChange={(e) =>
                           setAcc({
@@ -1223,6 +1237,7 @@ export default function GameApp() {
                   )
                 : button(t.submit, async () => {
                     const outcome = accusationOutcome(c, g, p, acc);
+                    setVerdictMissing(judgeAccusation(c, acc).missing);
                     await dispatch({ type: 'ACCUSE', ...acc });
                     if (
                       outcome !== 'win' &&

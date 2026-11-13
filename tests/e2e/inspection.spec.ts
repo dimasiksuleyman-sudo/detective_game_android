@@ -210,3 +210,84 @@ test('публикация предмета не открывает скол д�
     'd-statuette-chip',
   ]);
 });
+
+test('увеличение — вокруг центра; увеличенную картинку можно двигать, перетаскивание не жмёт участок', async ({
+  page,
+}) => {
+  await start(page);
+  await click(page, 'Пол у стола');
+  const viewport = page
+    .getByRole('region', { name: 'Осмотр предмета' })
+    .locator('div[data-zoomed], div:has(> div > img)')
+    .last();
+  await click(page, 'Увеличить');
+  await click(page, 'Увеличить');
+  await expect(
+    page.getByLabel('Масштаб изображения', { exact: true }),
+  ).toHaveText('200%');
+  // Раньше увеличение шло от левого верхнего угла (scroll 0,0); теперь центр остаётся центром.
+  const centered = await viewport.evaluate((v) => ({
+    x: (v.scrollLeft + v.clientWidth / 2) / v.scrollWidth,
+    y: (v.scrollTop + v.clientHeight / 2) / v.scrollHeight,
+  }));
+  expect(centered.x).toBeCloseTo(0.5, 1);
+  // Увеличенный осмотр сам прокручивается в зону видимости.
+  await expect(viewport).toBeInViewport({ ratio: 0.9 });
+  const box = await viewport.boundingBox();
+  if (!box) throw new Error('viewport');
+  const before = await viewport.evaluate((v) => [v.scrollLeft, v.scrollTop]);
+  // Тащим мышью от участка со сколом (левый нижний угол) — это перетаскивание, а не нажатие.
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(
+    box.x + box.width / 2 + 120,
+    box.y + box.height / 2 + 80,
+    {
+      steps: 6,
+    },
+  );
+  await page.mouse.up();
+  const after = await viewport.evaluate((v) => [v.scrollLeft, v.scrollTop]);
+  expect(after[0]).toBeLessThan(before[0] ?? 0);
+  expect(after[1]).toBeLessThan(before[1] ?? 0);
+  await expect(
+    page.getByText('Наблюдение добавлено в блокнот.', { exact: true }),
+  ).toHaveCount(0);
+  await click(page, 'Уменьшить');
+  await click(page, 'Уменьшить');
+  await expect(
+    page.getByLabel('Масштаб изображения', { exact: true }),
+  ).toHaveText('100%');
+});
+
+test('мусорный бак: среди банок — скомканная квитанция; Тимура можно о ней спросить', async ({
+  page,
+}) => {
+  await start(page);
+  await click(page, 'Назад');
+  await click(page, 'Переулок у чёрного хода');
+  await click(page, 'Мусорный бак');
+  await expect(
+    page.getByRole('heading', { name: 'Ящик виски', exact: true }),
+  ).toBeVisible();
+  // Деталь не подсвечена и не названа заранее.
+  await expect(page.locator('main')).not.toContainText('квитанц');
+  await page
+    .getByRole('button', { name: 'Осмотреть участок 1', exact: true })
+    .click();
+  await expect(page.locator('main')).toContainText('Ключ-Сервис');
+  const s = await saved(page);
+  expect(s.state.players[0]?.facts).toContain('f-key-copy');
+  await click(page, 'Назад');
+  await click(page, 'Назад');
+  await click(page, 'Назад');
+  await click(page, 'Завершить ход');
+  await click(page, 'Допрос');
+  await click(page, 'Тимур Галиев');
+  await expect(
+    page.getByRole('button', {
+      name: 'Квитанция за дубликат ключа из бака — ваша?',
+      exact: true,
+    }),
+  ).toBeAttached();
+});
