@@ -13,9 +13,10 @@ it('устаревший текст/неизвестная подсказка н
   expect(briefingText).not.toContain('восемь раундов');
 });
 
-it('восемь встроенных MP3 соответствуют манифесту по размеру и хешу', () => {
-  expect(manifest.clips).toHaveLength(8);
-  expect(new Set(manifest.clips.map((c) => c.id)).size).toBe(8);
+it('встроенные MP3 соответствуют манифесту по размеру и хешу', () => {
+  // Брифинг, 4 подсказки Шефа, 3 подписи реконструкции, объяснение (ADR-026).
+  expect(manifest.clips).toHaveLength(9);
+  expect(new Set(manifest.clips.map((c) => c.id)).size).toBe(9);
   for (const clip of manifest.clips) {
     expect(clip.file).toMatch(/^[a-z0-9-]+\.mp3$/);
     const audio = readFileSync(
@@ -27,15 +28,13 @@ it('восемь встроенных MP3 соответствуют маниф�
   }
 });
 
-it('тексты всех восьми записей совпадают с текущим каноном игры', () => {
+it('тексты всех записей совпадают с текущим каноном игры', () => {
   expect(narrationFor('briefing', briefingText)).toBeDefined();
   for (const clip of manifest.clips.filter((c) => c.role === 'chief'))
     expect(pilot.hints.some((h) => h.text === clip.text)).toBe(true);
-  expect(
-    hintNarration(
-      pilot.hints.find((h) => h.unlessAnyPlayerHas === 'c-ledger')?.text ?? '',
-    ),
-  ).toBeUndefined();
+  // Каждая подсказка Шефа, включая подсказку про сейф, озвучена.
+  for (const hint of pilot.hints)
+    expect(hintNarration(hint.text)).toBeDefined();
   expect(
     narrationFor('solution-explanation', pilot.solution.explanation),
   ).toBeDefined();

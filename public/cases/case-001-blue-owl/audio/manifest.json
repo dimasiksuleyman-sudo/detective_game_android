@@ -1,96 +1,101 @@
 {
   "caseId": "case-001-blue-owl",
-  "provider": "Cartesia",
-  "voice": "Sergei",
-  "voiceId": "1e4176b1-3db9-44d6-a601-4fe68b041942",
+  "provider": "ElevenLabs",
+  "model": "eleven_v4",
+  "voices": {
+    "narrator": "TUQNWEvVPBLzMBSVDPUA",
+    "chief": "pM78bgjPVk0JXtaEnFoj"
+  },
   "clips": [
     {
       "id": "briefing",
       "role": "narrator",
       "text": "Ветрогорск, ночь с пятницы на субботу, проливной дождь. В 7 утра уборщица джаз-бара «Синяя сова» нашла в кабинете владельца, Аркадия Лебедева (52), мёртвым. Удар тяжёлым предметом по голове. Смерть наступила между 23:30 и 00:15. Бар закрылся в 23:00; следов взлома на входе нет. В тот вечер с Аркадием виделись четверо: его партнёр по бизнесу, певица бара, бармен, которого он уволил, и сестра, которая, как считалось, живёт в другом городе. Найдите убийцу — и докажите.",
       "file": "briefing.mp3",
-      "seconds": 33.92,
-      "bytes": 271926,
-      "sha256": "9248890357824a2eb8b56c2882e3eeadc600ecab99d87af8469b45fa09bc39c1",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 35.87,
+      "bytes": 287181,
+      "sha256": "1bf54146e093603a368889b3060c96932081652e8ece89b92c6d645f8a199657",
+      "model": "eleven_v4"
     },
     {
       "id": "chief-hint-1",
       "role": "chief",
       "text": "Покойный всё записывал. Его стол кто-нибудь смотрел?",
       "file": "chief-hint-1.mp3",
-      "seconds": 3.2,
-      "bytes": 26166,
-      "sha256": "8f8050cc3f204a7f33d22ae7c0222c465d380f61bb77c8c970f1ffab1eeb4b92",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 4.68,
+      "bytes": 37660,
+      "sha256": "c13f2ff4f4459339b4d3bce5fcbaab6c68d3cb0cfa3d55d528f12c80f590b986",
+      "model": "eleven_v4"
     },
     {
       "id": "chief-hint-2",
       "role": "chief",
       "text": "Переулок осмотрели? Дождь смывает многое, но не всё.",
       "file": "chief-hint-2.mp3",
-      "seconds": 3.68,
-      "bytes": 29928,
-      "sha256": "d05cd1eee7e06c8e8a942cad5cdaf564a9013441c71e400f0815bc384323677a",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 5.72,
+      "bytes": 46019,
+      "sha256": "f74150b5c96a0b9c29d2dee381061edc7c515c01027cdb25d5101ba5ec5e2784",
+      "model": "eleven_v4"
     },
     {
       "id": "chief-hint-3",
       "role": "chief",
       "text": "Бармен что-то недоговаривает. Выясните, зачем он возвращался.",
       "file": "chief-hint-3.mp3",
-      "seconds": 4.24,
-      "bytes": 34525,
-      "sha256": "d97aaacaebc79fd9c327d1548436f1870e0dd6ee2ba98aeefb49c0b0b6d4b06f",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 5.49,
+      "bytes": 44138,
+      "sha256": "6c3eccecb7d2c2fc5ea896f8a57d91ef6d7036a9429376ba5f7896df51cc2004",
+      "model": "eleven_v4"
+    },
+    {
+      "id": "chief-hint-4",
+      "role": "chief",
+      "text": "У покойного коды — всегда памятные даты. Когда открылась „Сова“?",
+      "file": "chief-hint-4.mp3",
+      "seconds": 5.72,
+      "bytes": 46019,
+      "sha256": "4be7a4c25408329b1f694150c7ca2f394458aa8adf7bbd438f8d9e18923a4c19",
+      "model": "eleven_v4"
     },
     {
       "id": "reconstruction-1",
       "role": "narrator",
       "text": "Глеб вернулся через чёрный ход.",
       "file": "reconstruction-1.mp3",
-      "seconds": 2.08,
-      "bytes": 17180,
-      "sha256": "840841d409501716cc029887a0bc9ca84d9d36517dd4770ffb2b38a6fe31dd04",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 2.59,
+      "bytes": 20941,
+      "sha256": "ceb56b45dc3a3048c0339bf020c80e139e6261e3d3679eeb18306882381ac460",
+      "model": "eleven_v4"
     },
     {
       "id": "reconstruction-2",
       "role": "narrator",
       "text": "Ссора из-за тайной бухгалтерии закончилась ударом статуэткой.",
       "file": "reconstruction-2.mp3",
-      "seconds": 4.08,
-      "bytes": 33271,
-      "sha256": "ad2b464cfcd953b329b7e25defcc226022dc62a47c2b5b0b5bba1180ebe18045",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 4.68,
+      "bytes": 37660,
+      "sha256": "814812e01636c3e3c838de339ef584db3f9d69393a7f60cc777a2f2ea4a24571",
+      "model": "eleven_v4"
     },
     {
       "id": "reconstruction-3",
       "role": "narrator",
       "text": "Уходя, Глеб обронил парковочный талон.",
       "file": "reconstruction-3.mp3",
-      "seconds": 2.72,
-      "bytes": 22404,
-      "sha256": "263a4b4a7f95fb48e2b8997eb822c3f1b248e86101144cc773b3a8cbdc449b4a",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 3.32,
+      "bytes": 26793,
+      "sha256": "e9f1d2f88f78440895dfcb672d983d5919bac956c33459ea8ec51490baaad568",
+      "model": "eleven_v4"
     },
     {
       "id": "solution-explanation",
       "role": "narrator",
       "text": "Глеб Соколов два года выводил деньги «Синей совы» на свою фирму. Аркадий нашёл тайную бухгалтерию, спрятал её в сейф и назначил встречу с юристом. В 23:00 Глеб показательно уехал — но Аркадий позвонил и потребовал вернуться. В 23:31 машина Глеба встала на парковке на Портовой; через чёрный ход, ключ от которого был только у партнёров, Глеб вошёл в кабинет. Тимур, вернувшийся за украденным виски, видел его машину и слышал ссору. В 23:45 Глеб ударил Аркадия бронзовой статуэткой, стёр её и ушёл переулком, обронив в луже парковочный талон. Сейф он открыть не смог — и тайная бухгалтерия его выдала.",
       "file": "solution-explanation.mp3",
-      "seconds": 38.88,
-      "bytes": 311632,
-      "sha256": "3da668fe3e0fa833ed9e1bb7af5a7cb38934ddbf33610dda0b045491a42b64fc",
-      "model": "sonic-3.6",
-      "apiVersion": "2026-08-14"
+      "seconds": 42.19,
+      "bytes": 337755,
+      "sha256": "486a843455a724b27e9346f068c471347de98873dd987e29916a27fb22fad346",
+      "model": "eleven_v4"
     }
   ]
 }
