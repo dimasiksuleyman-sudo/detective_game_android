@@ -1,8 +1,17 @@
 import { test, expect, type Page } from '@playwright/test';
 import type { GameState } from '../../src/game/engine';
-import caseData from '../../public/cases/case-002-room-seven/case.json';
-const click = (p: Page, name: string) =>
-  p.getByRole('button', { name, exact: true }).click();
+import caseData from '../../public/cases/case-002-room-seven/case.json' with { type: 'json' };
+async function click(p: Page, name: string) {
+  await p.getByRole('button', { name, exact: true }).click();
+  // S08/S10 change nested views without changing URL or h2. Wait for React's
+  // next paint before resolving another identically named Back button.
+  await p.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      }),
+  );
+}
 async function saved(p: Page): Promise<GameState> {
   return p.evaluate(async () => {
     const db = await new Promise<IDBDatabase>((resolve, reject) => {
@@ -47,10 +56,13 @@ async function start(p: Page, count = 1) {
   if (count > 1) await handover(p, 1);
 }
 async function hub(p: Page) {
-  const heading = p.getByRole('heading', { name: 'Хаб хода', exact: true });
-  for (let i = 0; i < 4 && !(await heading.isVisible()); i++)
+  const title = p.locator('main h2');
+  for (let i = 0; i < 4; i++) {
+    await expect(title).toBeVisible();
+    if ((await title.innerText()) === 'Хаб хода') break;
     await click(p, 'Назад');
-  await expect(heading).toBeVisible();
+  }
+  await expect(title).toHaveText('Хаб хода');
 }
 async function nextTurn(p: Page) {
   await hub(p);
@@ -118,11 +130,17 @@ async function accuse(
   evidence = 'f-wet-footprints',
 ) {
   await click(p, 'Обвинить');
-  await p.getByLabel('Виновный', { exact: true }).selectOption(culprit);
+  await p
+    .getByRole('combobox', { name: 'Виновный', exact: true })
+    .selectOption(culprit);
   await click(p, 'Далее');
-  await p.getByLabel('Мотив', { exact: true }).selectOption('m-heirloom');
+  await p
+    .getByRole('combobox', { name: 'Мотив', exact: true })
+    .selectOption('m-heirloom');
   await click(p, 'Далее');
-  await p.getByLabel('Способ', { exact: true }).selectOption('w-sedative');
+  await p
+    .getByRole('combobox', { name: 'Способ', exact: true })
+    .selectOption('w-sedative');
   await click(p, 'Далее');
   if (evidence) {
     const text = caseData.facts.find((f) => f.id === evidence)?.text;
@@ -271,7 +289,9 @@ test.describe('Номер семь', () => {
     await click(page, 'Назад');
     await nextTurn(page);
     await talk(page, 'Надежда Сорокина');
-    await page.getByLabel('Тон', { exact: true }).selectOption('pressure');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('pressure');
     await click(page, 'Перегородка балкона');
     expect((await saved(page)).players[0]?.truths).not.toContain('t-night');
     await click(page, 'У вас с собой лекарства?');
@@ -279,9 +299,13 @@ test.describe('Номер семь', () => {
     await click(page, 'Назад');
     await nextTurn(page);
     await talk(page, 'Руслан Гаев');
-    await page.getByLabel('Тон', { exact: true }).selectOption('pressure');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('pressure');
     await click(page, 'Мокрая куртка портье');
-    await page.getByLabel('Тон', { exact: true }).selectOption('neutral');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('neutral');
     await click(page, 'Мокрая куртка портье');
     expect((await saved(page)).players[0]?.facts).toContain(
       'f-figure-on-balcony',
@@ -293,9 +317,13 @@ test.describe('Номер семь', () => {
     await click(page, 'Назад');
     await nextTurn(page);
     await talk(page, 'Надежда Сорокина');
-    await page.getByLabel('Тон', { exact: true }).selectOption('pressure');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('pressure');
     await click(page, 'Перегородка балкона');
-    await page.getByLabel('Тон', { exact: true }).selectOption('neutral');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('neutral');
     await click(page, 'Перегородка балкона');
     let s = await saved(page);
     expect(s.players[0]?.facts).toContain('f-nadia-confession');
@@ -319,10 +347,14 @@ test.describe('Номер семь', () => {
     await click(page, 'Назад');
     await nextTurn(page);
     await talk(page, 'Надежда Сорокина');
-    await page.getByLabel('Тон', { exact: true }).selectOption('pressure');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('pressure');
     await click(page, 'Расписка 1998 года');
     await click(page, 'Расписка 1998 года');
-    await page.getByLabel('Тон', { exact: true }).selectOption('neutral');
+    await page
+      .getByRole('combobox', { name: 'Тон', exact: true })
+      .selectOption('neutral');
     await click(page, 'Расписка 1998 года');
     await click(page, 'Назад');
     await nextTurn(page);
