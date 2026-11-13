@@ -24,7 +24,8 @@
       "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Avoid photorealism, 3D render look, anime style, glossy skin, distorted hands, signage, gore and visible bodies. Small old hotel guestroom after an unexplained death, but NO BODY and NO PEOPLE. Vertical 2:3 eye-level wide view. Only a slipped empty wool blanket on the unoccupied armchair. Clearly separate seven tap objects: main entrance door and cut security chain at far left; tea tray with teapot, cup, saucer and sugar bowl on low round table in front of armchair; nightstand with blank pill organizer and empty wooden fitted clock case at right back; writing desk with small leather notebook at left middle; brown suit jacket over chair with wallet visible in inner pocket near desk; closed brown leather briefcase near EMPTY armchair at lower right; partly open balcony door upper right with small dried wet shoe traces on floor. Unmade? Bed is neatly made, unused. Stuffy cigar atmosphere and storm blue light with one warm lamp. No digits on lock or writing anywhere.",
       "refs": [],
       "transparent": false,
-      "status": "сгенерировано"
+      "status": "сгенерировано",
+      "revision": "v3 (2026-11-13, физика вещей): правка по прежней картинке — убрана дверная цепочка, композиция и все предметы на прежних местах; выбрано владельцем."
     },
     {
       "key": "l-corridor",
@@ -121,7 +122,8 @@
       "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Avoid photorealism, 3D render look, anime style, glossy skin, distorted hands, signage, gore and visible bodies. Hotel room entrance door with cut metal security chain still attached to intact latch. Square close-up. Both cut ends clearly visible, no forced damage to the lock. No people.",
       "refs": ["l-room7"],
       "transparent": false,
-      "status": "сгенерировано"
+      "status": "сгенерировано",
+      "revision": "v3 (2026-11-13, физика вещей): вид изнутри номера на дверь, выбитую из коридора; засов задвижки выдвинут, ответная скоба вырвана из косяка с шурупами, щепки на полу; цепочки нет. Выбрано владельцем."
     },
     {
       "key": "h-tea-tray",
