@@ -179,38 +179,38 @@
 
 31 изображение по разделу «Арт» в `docs/cases/case-003-cold-room.md`. Размеры — из таблицы дела; WebP q80, предмет с прозрачностью. Оригиналы PNG — Git LFS. Точные промпты, референсы и правки — [prompts.json](case-003-cold-room/prompts.json), параметры экспорта — [manifest.json](case-003-cold-room/manifest.json). Портреты сохраняются в `public/troupe/`, остальные файлы — в `public/cases/case-003-cold-room/`.
 
-| Игровой файл                          | Тип            | Размер    | Оригинал PNG                                     | Промпт / ключ        | Статус                                        |
-| ------------------------------------- | -------------- | --------- | ------------------------------------------------ | -------------------- | --------------------------------------------- |
-| `images/locations/yard.webp`          | location       | 1600×1067 | [PNG](case-003-cold-room/yard.png)               | `yard`               | заглушка (перерисовать вертикально 1080×1620) |
-| `images/locations/shop.webp`          | location       | 1600×1067 | [PNG](case-003-cold-room/shop.png)               | `shop`               | заглушка (перерисовать вертикально 1080×1620) |
-| `images/locations/chamber.webp`       | location       | 1600×1067 | [PNG](case-003-cold-room/chamber.png)            | `chamber`            | заглушка (перерисовать вертикально 1080×1620) |
-| `images/closeups/h-booth.webp`        | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-booth.png)            | `h-booth`            | сгенерировано                                 |
-| `images/closeups/h-booth-table.webp`  | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-booth-table.png)      | `h-booth-table`      | сгенерировано                                 |
-| `images/closeups/h-truck-cab.webp`    | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-truck-cab.png)        | `h-truck-cab`        | сгенерировано                                 |
-| `images/closeups/h-truck-back.webp`   | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-truck-back.png)       | `h-truck-back`       | сгенерировано                                 |
-| `images/closeups/h-scales.webp`       | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-scales.png)           | `h-scales`           | сгенерировано                                 |
-| `images/closeups/h-desk.webp`         | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-desk.png)             | `h-desk`             | сгенерировано                                 |
-| `images/closeups/h-safe-open.webp`    | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-safe-open.png)        | `h-safe-open`        | сгенерировано                                 |
-| `images/closeups/h-schedule.webp`     | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-schedule.png)         | `h-schedule`         | сгенерировано                                 |
-| `images/closeups/h-repair-board.webp` | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-repair-board.png)     | `h-repair-board`     | сгенерировано                                 |
-| `images/closeups/h-thermograph.webp`  | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-thermograph.png)      | `h-thermograph`      | сгенерировано                                 |
-| `images/closeups/h-chamber-door.webp` | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-chamber-door.png)     | `h-chamber-door`     | сгенерировано                                 |
-| `images/closeups/h-seal.webp`         | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-seal.png)             | `h-seal`             | сгенерировано                                 |
-| `images/closeups/h-outline.webp`      | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-outline.png)          | `h-outline`          | сгенерировано                                 |
-| `images/closeups/h-frost-floor.webp`  | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-frost-floor.png)      | `h-frost-floor`      | сгенерировано                                 |
-| `images/closeups/h-inner-door.webp`   | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-inner-door.png)       | `h-inner-door`       | сгенерировано                                 |
-| `images/closeups/h-racks.webp`        | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-racks.png)            | `h-racks`            | сгенерировано                                 |
-| `images/clues/c-bottle.webp`          | clue           | 512×512   | [PNG](case-003-cold-room/c-bottle.png)           | `c-bottle`           | сгенерировано                                 |
-| `images/reconstruction/1.webp`        | reconstruction | 1200×800  | [PNG](case-003-cold-room/reconstruction-1.png)   | `reconstruction-1`   | сгенерировано                                 |
-| `images/reconstruction/2.webp`        | reconstruction | 1200×800  | [PNG](case-003-cold-room/reconstruction-2.png)   | `reconstruction-2`   | сгенерировано                                 |
-| `images/reconstruction/3.webp`        | reconstruction | 1200×800  | [PNG](case-003-cold-room/reconstruction-3.png)   | `reconstruction-3`   | сгенерировано                                 |
-| `images/cover.webp`                   | cover          | 720×1080  | [PNG](case-003-cold-room/cover.png)              | `cover`              | сгенерировано                                 |
-| `troupe/a06-semyon/neutral.webp`      | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-neutral.png) | `a06-semyon-neutral` | сгенерировано                                 |
-| `troupe/a06-semyon/nervous.webp`      | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-nervous.png) | `a06-semyon-nervous` | сгенерировано                                 |
-| `troupe/a06-semyon/angry.webp`        | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-angry.png)   | `a06-semyon-angry`   | сгенерировано                                 |
-| `troupe/a06-semyon/sad.webp`          | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-sad.png)     | `a06-semyon-sad`     | сгенерировано                                 |
-| `troupe/a06-semyon/smug.webp`         | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-smug.png)    | `a06-semyon-smug`    | сгенерировано                                 |
-| `troupe/a06-semyon/broken.webp`       | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-broken.png)  | `a06-semyon-broken`  | сгенерировано                                 |
-| `troupe/a10-pavel/neutral.webp`       | portrait       | 768×1152  | [PNG](case-003-cold-room/a10-pavel-neutral.png)  | `a10-pavel-neutral`  | сгенерировано                                 |
+| Игровой файл                          | Тип            | Размер    | Оригинал PNG                                     | Промпт / ключ        | Статус        |
+| ------------------------------------- | -------------- | --------- | ------------------------------------------------ | -------------------- | ------------- |
+| `images/locations/yard.webp`          | location       | 1080×1620 | [PNG](case-003-cold-room/yard.png)               | `yard`               | сгенерировано |
+| `images/locations/shop.webp`          | location       | 1080×1620 | [PNG](case-003-cold-room/shop.png)               | `shop`               | сгенерировано |
+| `images/locations/chamber.webp`       | location       | 1080×1620 | [PNG](case-003-cold-room/chamber.png)            | `chamber`            | сгенерировано |
+| `images/closeups/h-booth.webp`        | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-booth.png)            | `h-booth`            | сгенерировано |
+| `images/closeups/h-booth-table.webp`  | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-booth-table.png)      | `h-booth-table`      | сгенерировано |
+| `images/closeups/h-truck-cab.webp`    | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-truck-cab.png)        | `h-truck-cab`        | сгенерировано |
+| `images/closeups/h-truck-back.webp`   | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-truck-back.png)       | `h-truck-back`       | сгенерировано |
+| `images/closeups/h-scales.webp`       | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-scales.png)           | `h-scales`           | сгенерировано |
+| `images/closeups/h-desk.webp`         | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-desk.png)             | `h-desk`             | сгенерировано |
+| `images/closeups/h-safe-open.webp`    | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-safe-open.png)        | `h-safe-open`        | сгенерировано |
+| `images/closeups/h-schedule.webp`     | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-schedule.png)         | `h-schedule`         | сгенерировано |
+| `images/closeups/h-repair-board.webp` | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-repair-board.png)     | `h-repair-board`     | сгенерировано |
+| `images/closeups/h-thermograph.webp`  | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-thermograph.png)      | `h-thermograph`      | сгенерировано |
+| `images/closeups/h-chamber-door.webp` | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-chamber-door.png)     | `h-chamber-door`     | сгенерировано |
+| `images/closeups/h-seal.webp`         | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-seal.png)             | `h-seal`             | сгенерировано |
+| `images/closeups/h-outline.webp`      | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-outline.png)          | `h-outline`          | сгенерировано |
+| `images/closeups/h-frost-floor.webp`  | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-frost-floor.png)      | `h-frost-floor`      | сгенерировано |
+| `images/closeups/h-inner-door.webp`   | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-inner-door.png)       | `h-inner-door`       | сгенерировано |
+| `images/closeups/h-racks.webp`        | closeup        | 1024×1024 | [PNG](case-003-cold-room/h-racks.png)            | `h-racks`            | сгенерировано |
+| `images/clues/c-bottle.webp`          | clue           | 512×512   | [PNG](case-003-cold-room/c-bottle.png)           | `c-bottle`           | сгенерировано |
+| `images/reconstruction/1.webp`        | reconstruction | 1200×800  | [PNG](case-003-cold-room/reconstruction-1.png)   | `reconstruction-1`   | сгенерировано |
+| `images/reconstruction/2.webp`        | reconstruction | 1200×800  | [PNG](case-003-cold-room/reconstruction-2.png)   | `reconstruction-2`   | сгенерировано |
+| `images/reconstruction/3.webp`        | reconstruction | 1200×800  | [PNG](case-003-cold-room/reconstruction-3.png)   | `reconstruction-3`   | сгенерировано |
+| `images/cover.webp`                   | cover          | 720×1080  | [PNG](case-003-cold-room/cover.png)              | `cover`              | сгенерировано |
+| `troupe/a06-semyon/neutral.webp`      | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-neutral.png) | `a06-semyon-neutral` | сгенерировано |
+| `troupe/a06-semyon/nervous.webp`      | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-nervous.png) | `a06-semyon-nervous` | сгенерировано |
+| `troupe/a06-semyon/angry.webp`        | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-angry.png)   | `a06-semyon-angry`   | сгенерировано |
+| `troupe/a06-semyon/sad.webp`          | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-sad.png)     | `a06-semyon-sad`     | сгенерировано |
+| `troupe/a06-semyon/smug.webp`         | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-smug.png)    | `a06-semyon-smug`    | сгенерировано |
+| `troupe/a06-semyon/broken.webp`       | portrait       | 768×1152  | [PNG](case-003-cold-room/a06-semyon-broken.png)  | `a06-semyon-broken`  | сгенерировано |
+| `troupe/a10-pavel/neutral.webp`       | portrait       | 768×1152  | [PNG](case-003-cold-room/a10-pavel-neutral.png)  | `a10-pavel-neutral`  | сгенерировано |
 
-Контакт-листы: [локации](../docs/devlog/assets/cold-room/locations.jpg), [крупные планы](../docs/devlog/assets/cold-room/closeups.jpg), [предмет](../docs/devlog/assets/cold-room/item.jpg), [реконструкция](../docs/devlog/assets/cold-room/reconstruction.jpg), [обложка](../docs/devlog/assets/cold-room/cover.jpg), [портреты](../docs/devlog/assets/cold-room/portraits.jpg). Координаты и передача планировщику — [devlog](../docs/devlog/2026-11-13-16-cold-room-assets.md).
+Контакт-листы: [вертикальные локации](../docs/devlog/assets/cold-room-vertical/locations.jpg), [крупные планы](../docs/devlog/assets/cold-room/closeups.jpg), [предмет](../docs/devlog/assets/cold-room/item.jpg), [реконструкция](../docs/devlog/assets/cold-room/reconstruction.jpg), [обложка](../docs/devlog/assets/cold-room/cover.jpg), [портреты](../docs/devlog/assets/cold-room/portraits.jpg). Актуальные координаты всех 16 зон локаций — [devlog](../docs/devlog/2026-11-13-19-cold-room-vertical-locations.md). Крупные планы и исходный пакет — [devlog](../docs/devlog/2026-11-13-17-cold-room-assets.md).
