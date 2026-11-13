@@ -17,6 +17,8 @@ export function validateCase(c: CaseFile) {
     }
   };
   punctuation(c, 'case');
+  // Число раундов выбирает игрок при настройке партии; текст и озвучка не могут его называть.
+  check(!/раунд/iu.test(c.briefing), 'briefing mentions rounds');
   const all = [
     ...c.facts,
     ...c.clues,

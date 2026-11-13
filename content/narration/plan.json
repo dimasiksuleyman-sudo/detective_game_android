@@ -10,8 +10,7 @@
     {
       "id": "briefing",
       "role": "narrator",
-      "source": ["briefing"],
-      "omit": "Шеф дал вам восемь раундов. "
+      "source": ["briefing"]
     },
     {
       "id": "chief-hint-1",

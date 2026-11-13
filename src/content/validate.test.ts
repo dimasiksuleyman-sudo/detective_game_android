@@ -9,6 +9,11 @@ it('встроенное дело валидно и решаемо без сет
   expect(pilot.facts).toHaveLength(28);
   expect(pilot.clues).toHaveLength(12);
 });
+it('брифинг не называет число раундов: его выбирает игрок', () => {
+  const c = structuredClone(pilot);
+  c.briefing += ' Шеф дал вам восемь раундов.';
+  expect(validateCase(c).errors).toContain('briefing mentions rounds');
+});
 it('невалидный формат отвергается', () =>
   expect(caseSchema.safeParse({ ...pilot, schemaVersion: 4 }).success).toBe(
     false,
