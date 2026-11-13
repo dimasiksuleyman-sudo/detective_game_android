@@ -1,0 +1,47 @@
+[
+  {
+    "id": "briefing",
+    "chars": 617,
+    "characterCost": "247"
+  },
+  {
+    "id": "chief-hint-1",
+    "chars": 110,
+    "characterCost": "44"
+  },
+  {
+    "id": "chief-hint-2",
+    "chars": 111,
+    "characterCost": "44"
+  },
+  {
+    "id": "chief-hint-3",
+    "chars": 119,
+    "characterCost": "48"
+  },
+  {
+    "id": "chief-hint-4",
+    "chars": 122,
+    "characterCost": "49"
+  },
+  {
+    "id": "reconstruction-1",
+    "chars": 94,
+    "characterCost": "38"
+  },
+  {
+    "id": "reconstruction-2",
+    "chars": 125,
+    "characterCost": "50"
+  },
+  {
+    "id": "reconstruction-3",
+    "chars": 101,
+    "characterCost": "40"
+  },
+  {
+    "id": "solution-explanation",
+    "chars": 729,
+    "characterCost": "292"
+  }
+]

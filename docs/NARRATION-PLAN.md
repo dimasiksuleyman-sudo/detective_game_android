@@ -1,6 +1,6 @@
 # План озвучки «Синей совы»
 
-> **С 2026-11-12 озвучка переходит на ElevenLabs Eleven v4 с двумя голосами (рассказчик и Шеф) — [ADR-026](decisions/026-narration-elevenlabs-v4.md).** Произносимые тексты с тегами — `content/narration/elevenlabs.json`, генератор — `tools/generate-narration-elevenlabs.py`, запуск — workflow «Озвучка ElevenLabs (вручную)». Ниже — история пилотной озвучки Cartesia.
+> **С 2026-11-12 озвучка переходит на ElevenLabs Eleven v4 с двумя голосами (рассказчик и Шеф) — [ADR-026](decisions/026-narration-elevenlabs-v4.md).** Произносимые тексты с тегами — `content/narration/elevenlabs.json`, генератор — `tools/generate-narration-elevenlabs.py`, запуск — workflow «Озвучка ElevenLabs (вручную)». **2026-11-13 сгенерирован полный набор: 9 дорожек, рассказчик Alex Bell, Шеф Nester Surovy, 852 кредита.** Ниже — история пилотной озвучки Cartesia.
 
 ## Первая проба
 
