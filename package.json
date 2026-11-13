@@ -1,7 +1,7 @@
 {
   "name": "interrogation-room",
   "private": true,
-  "version": "0.3.3",
+  "version": "0.3.4",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"
@@ -23,7 +23,8 @@
     "build:e2e": "vite build --mode e2e --outDir dist-e2e",
     "ai:smoke": "tsx --env-file-if-exists=.env.local tools/ai-smoke.ts",
     "verify:production": "tsx tools/assert-production.ts",
-    "lfs:check": "tsx tools/check-lfs.ts"
+    "lfs:check": "tsx tools/check-lfs.ts",
+    "assets:android": "tsx tools/prepare-app-assets.ts && capacitor-assets generate --android && tsx tools/finalize-app-assets.ts"
   },
   "dependencies": {
     "@aparajita/capacitor-secure-storage": "8.0.1",
@@ -31,6 +32,7 @@
     "@capacitor/app": "8.1.2",
     "@capacitor/clipboard": "8.0.1",
     "@capacitor/core": "8.6.0",
+    "@capacitor/splash-screen": "8.0.2",
     "@fontsource/pt-mono": "5.3.0",
     "@fontsource/pt-sans": "5.3.0",
     "idb-keyval": "6.3.0",
@@ -41,6 +43,7 @@
     "zustand": "5.1.0"
   },
   "devDependencies": {
+    "@capacitor/assets": "4.0.0",
     "@capacitor/cli": "8.6.0",
     "@eslint/js": "10.0.1",
     "@playwright/test": "1.65.0",

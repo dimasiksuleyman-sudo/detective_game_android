@@ -1,0 +1,10 @@
+{
+  "style": "docs/05-art-bible.md STYLE_CORE + §4.6",
+  "generated": {
+    "master": "exec-e7870d88-09dd-4e26-8b10-d1c4c04a67d3.png",
+    "foreground": "exec-19dffc41-5f5a-44d5-a816-51f81a385e03.png",
+    "monochrome": "exec-c756af96-0fad-4a20-a0cc-e227ebc8f698.png",
+    "feature": "exec-772f14fd-64f4-42c8-a7a0-3ff244af999d.png"
+  },
+  "normalization": "Ресайз до заданных размеров; alpha ниже 9 очищен, геометрия переднего/моно слоя вписана в центральный круг диаметром 590px. Однотонный фон #1E2A33. Сплэш композит на #12181D, без новой рисовки."
+}

@@ -1,0 +1,58 @@
+[
+  {
+    "file": "art/app/app-icon.png",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "sha256": "903029efa47f3b96d11543e28fcf82ade1f2baf097673a99391f7e99bc92201d"
+  },
+  {
+    "file": "art/app/icon-background.png",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGB",
+    "sha256": "1b2bb2b6da382c3711753cbf46d240540b95659e6ebcee60b650e563af3b838c"
+  },
+  {
+    "file": "art/app/icon-foreground.png",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGBA",
+    "sha256": "059dfaf392c6da45b4124f52e9dcfb050fb4eef5869b6cde38422d55e9c36a38"
+  },
+  {
+    "file": "art/app/icon-monochrome.png",
+    "width": 1024,
+    "height": 1024,
+    "mode": "RGBA",
+    "sha256": "5b1370f17b8e2ef218f8a38c92a79408e306e1217e6c74e56fb716dce0550265"
+  },
+  {
+    "file": "art/app/splash-dark.png",
+    "width": 2732,
+    "height": 2732,
+    "mode": "RGB",
+    "sha256": "e1c36fa89a9501db003023e346044680ab913b4d8b8487a0013e384b01791a81"
+  },
+  {
+    "file": "art/app/splash.png",
+    "width": 2732,
+    "height": 2732,
+    "mode": "RGB",
+    "sha256": "e1c36fa89a9501db003023e346044680ab913b4d8b8487a0013e384b01791a81"
+  },
+  {
+    "file": "art/store/feature-1024x500.png",
+    "width": 1024,
+    "height": 500,
+    "mode": "RGB",
+    "sha256": "b3e9a8f0e18159397167039dc4ca9d4cfee3fe1c08008d0eb06e2647daa65908"
+  },
+  {
+    "file": "art/store/icon-512.png",
+    "width": 512,
+    "height": 512,
+    "mode": "RGBA",
+    "sha256": "0f1358cebabcfe3f7596c0cf2deb5543eb70da6e123d1b6a9e9ce31d1a7c9b55"
+  }
+]

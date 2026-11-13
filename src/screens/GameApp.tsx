@@ -1,3 +1,4 @@
+import { hideLaunchSplash } from '../platform/launchSplash';
 import { playEffect } from '../platform/soundscape';
 import { SafePuzzle } from '../components/SafePuzzle';
 import { Soundscape } from '../components/Soundscape';
@@ -111,6 +112,9 @@ export default function GameApp() {
       }),
     [dispatch],
   );
+  useEffect(() => {
+    if (ready) void hideLaunchSplash();
+  }, [ready]);
   const screen = path.split('/')[1] || 's02';
   const personal = ['s07', 's08', 's09', 's10', 's11', 's12', 's13'].includes(
     screen,

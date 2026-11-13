@@ -18,3 +18,4 @@ work/
 dist-e2e/
 __pycache__/
 android/.idea/
+assets/*.png

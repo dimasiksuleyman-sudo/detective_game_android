@@ -261,3 +261,30 @@ npm.cmd run android:sync
 Новый сейф: Обыск → Кабинет → Сейф. В новом деле колёсики начинаются с 0000. Дедукция: фото в зале и ежедневник в кабинете; подробная проверка — MT-019. Старое сохранение может уже содержать открытый сейф/известную подпись — это ожидаемая миграция. Для чистой проверки создать новое дело с подтверждением перезаписи.
 
 Для пересборки только эффекта открытия (не APK): `python3 tools/generate-safe-open.py`, нужен ffmpeg. Для пересборки арта сначала получить оригиналы: `git lfs pull --include="art/pilot/**"`, затем `npx tsx tools/build-pack.ts --art-only` и `npm run case:validate`. Для обычной сборки приложения PNG-оригиналы скачивать не нужно.
+
+## Иконка, сплэш и прокрутка (0.3.4)
+
+Обычное обновление Windows (исходники арта для этого не нужны):
+
+```powershell
+Set-Location 'D:\Projects\detective_game_android'
+git fetch origin
+git switch feature/app-icon-splash
+git pull --ff-only origin feature/app-icon-splash
+npm.cmd ci
+npm.cmd run android:sync
+& 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
+```
+
+В Android Studio дождаться Sync, выбрать телефон и Run ▶. Установка поверх текущего приложения сохраняет партию/ключ. APK агент не собирает. После слияния можно использовать main.
+
+Перегенерация ресурсов при изменении исходников (нужна только разработчику):
+
+```powershell
+git lfs install
+git lfs pull --include="art/app/**"
+npm.cmd run assets:android
+npm.cmd run android:sync
+```
+
+assets:android готовит пять входов в игнорируемом assets/, запускает capacitor-assets generate --android и воспроизводимое дополнение monochrome/XML. Оригиналы в art/app; store — только для публикации в магазинах. Нативный сплэш скрывается после загрузки сохранения, без таймера. Свайп вверх по локации теперь прокручивает к нижним кнопкам; «Назад» остаётся внизу по уточнению владельца.

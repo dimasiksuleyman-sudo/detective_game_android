@@ -2,8 +2,15 @@
   max-width: 44rem;
   margin: auto;
   padding: 1rem;
-  padding-top: max(1rem, env(safe-area-inset-top));
-  padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  padding-top: max(
+    1rem,
+    env(safe-area-inset-top, 0px),
+    var(--safe-area-inset-top, 0px)
+  );
+  padding-bottom: calc(
+    1rem +
+      max(env(safe-area-inset-bottom, 0px), var(--safe-area-inset-bottom, 0px))
+  );
 }
 fieldset {
   border: 0;
@@ -78,7 +85,7 @@ header h1 {
 .location {
   position: relative;
   width: 100%;
-  touch-action: pinch-zoom;
+  touch-action: pan-y pinch-zoom;
 }
 .location > img {
   width: 100%;
