@@ -1,5 +1,6 @@
 import { test, expect, type Page } from '@playwright/test';
 import type { GameState } from '../../src/game/engine';
+import { grantProof, ROOM_SEVEN_PROOF } from './proofHelpers';
 import caseData from '../../public/cases/case-002-room-seven/case.json' with { type: 'json' };
 async function click(p: Page, name: string) {
   await p.getByRole('button', { name, exact: true }).click();
@@ -127,7 +128,7 @@ async function talk(p: Page, name: string) {
 async function accuse(
   p: Page,
   culprit = 's-nadia',
-  evidence = 'f-wet-footprints',
+  evidence: string[] = ['f-wet-footprints'],
 ) {
   await click(p, 'Обвинить');
   await p
@@ -142,32 +143,40 @@ async function accuse(
     .getByRole('combobox', { name: 'Способ', exact: true })
     .selectOption('w-sedative');
   await click(p, 'Далее');
-  if (evidence) {
-    const text = caseData.facts.find((f) => f.id === evidence)?.text;
+  for (const id of evidence) {
+    const text =
+      caseData.facts.find((f) => f.id === id)?.text ??
+      caseData.clues.find((c) => c.id === id)?.name;
     if (!text) throw new Error('Missing evidence');
     await p.getByRole('checkbox', { name: text, exact: true }).check();
   }
   await click(p, 'Предъявить обвинение');
 }
+const chain = [...ROOM_SEVEN_PROOF.clues, ...ROOM_SEVEN_PROOF.facts];
 test.describe('Номер семь', () => {
   test.setTimeout(90000);
-  test('кратчайшая победа: балконная дверь и обвинение в первом раунде', async ({
+  test('ADR-035: одних следов мало — прокурор; с мотивом, возможностью и признанием — победа', async ({
     page,
   }, info) => {
     await start(page);
     await room(page, 'Номер 7');
     await examine(page, 'Балконная дверь');
-    expect((await saved(page)).action?.used).toBe(1);
     await click(page, 'Назад');
     await click(page, 'Назад');
     await hub(page);
     await accuse(page);
+    const verdict = page.getByRole('alertdialog');
+    await expect(verdict).toContainText('Прокурор не примет дело без улик');
+    await expect(verdict).toContainText(
+      'Не доказано: Мотив, Возможность, Признание',
+    );
+    await click(page, 'Понятно');
+    await grantProof(page, ROOM_SEVEN_PROOF);
+    await accuse(page, 's-nadia', chain);
     await expect(
       page.getByRole('heading', { name: 'Как всё было', exact: true }),
     ).toBeVisible();
-    const state = await saved(page);
-    expect(state.winners).toEqual([0]);
-    expect(state.round).toBe(1);
+    expect((await saved(page)).winners).toEqual([0]);
     await expect(page.locator('main')).toContainText(
       'Она не знала, что Каретников принимает сердечные таблетки',
     );
@@ -373,7 +382,7 @@ test.describe('Номер семь', () => {
     page,
   }) => {
     await start(page, 2);
-    await accuse(page, 's-dmitry', '');
+    await accuse(page, 's-dmitry', []);
     await expect(page.getByRole('alertdialog')).toContainText(
       'Обвинение не подтвердилось',
     );
@@ -385,7 +394,8 @@ test.describe('Номер семь', () => {
     await click(page, 'Назад');
     await click(page, 'Назад');
     await hub(page);
-    await accuse(page);
+    await grantProof(page, ROOM_SEVEN_PROOF, 1);
+    await accuse(page, 's-nadia', chain);
     await expect.poll(async () => (await saved(page)).winners).toEqual([1]);
   });
 });

@@ -357,3 +357,7 @@ npm.cmd run android:sync
 ```
 
 Затем открыть папку android в Android Studio, дождаться Sync и нажать Run ▶. После слияния использовать main. Проверка — дополнение к MT-026. Версия 0.4.2 / code 12; приложение и его данные не удалять. APK агент не собирает.
+
+## «Номер семь» на цепочке (0.4.3 / code 13)
+
+Обновление — те же команды, что в разделе 0.4.1 (`git switch main`, `git pull --ff-only origin main`, `npm.cmd ci`, `npm.cmd run android:sync`, Run). Новых плагинов нет. Проверка — MT-027.

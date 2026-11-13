@@ -11,8 +11,27 @@ export const PILOT_PROOF = {
   labels: ['Тайная бухгалтерия', 'Парковочный талон', /^Глеб признался/],
 };
 
-/** Добавляет звенья цепочки текущему игроку и продолжает партию с экрана передачи. */
+/** Звенья цепочки «Номера семь»: расписка (мотив), просьба о соседнем номере (возможность), признание Надежды. */
+export const ROOM_SEVEN_PROOF = {
+  clues: ['c-receipt'],
+  facts: ['f-nadia-asked', 'f-nadia-confession'],
+};
+
+/** Добавляет звенья цепочки «Синей совы» текущему игроку и продолжает партию. */
 export async function grantPilotProof(p: Page, player = 0) {
+  await grantProof(
+    p,
+    { clues: PILOT_PROOF.clues, facts: PILOT_PROOF.facts },
+    player,
+  );
+}
+
+/** Добавляет улики/факты игроку в сохранении и продолжает партию с экрана передачи. */
+export async function grantProof(
+  p: Page,
+  proof: { clues: string[]; facts: string[] },
+  player = 0,
+) {
   await p.evaluate(
     async ({ proof, player }) => {
       const db = await new Promise<IDBDatabase>((resolve, reject) => {
@@ -39,7 +58,7 @@ export async function grantPilotProof(p: Page, player = 0) {
         tx.onerror = () => reject(tx.error);
       });
     },
-    { proof: { clues: PILOT_PROOF.clues, facts: PILOT_PROOF.facts }, player },
+    { proof, player },
   );
   await p.goto('/');
   await p.getByRole('button', { name: 'Продолжить', exact: true }).click();

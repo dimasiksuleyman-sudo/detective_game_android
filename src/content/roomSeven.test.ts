@@ -28,7 +28,7 @@ function search(s: GameState, locationId: string, hotspotId: string) {
 it('все встроенные дела проходят семантический валидатор', () => {
   for (const item of listCases())
     expect(validateCase(item).errors, item.id).toEqual([]);
-  expect(c.facts).toHaveLength(30);
+  expect(c.facts).toHaveLength(31);
   expect(c.clues).toHaveLength(14);
   expect(c.suspects.map((s) => [s.id, s.actorId, s.age])).toEqual([
     ['s-nadia', 'a13-nadia', 39],
@@ -56,9 +56,8 @@ it.each(['f-portfel-hint', 'f-first-shop'])(
     expect(report.errors).toContain('unreachable c-receipt');
   },
 );
-it('кратчайшая победа: один хотспот с ключевым фактом, правильное обвинение', () => {
+it('ADR-035: одна балконная дверь больше не закрывает дело — нужен мотив, возможность и признание', () => {
   let s = search(start(), 'l-room7', 'h-balcony-door');
-  expect(s.action?.used).toBe(1);
   expect(player(s).facts).toContain('f-wet-footprints');
   s = action(s, {
     type: 'ACCUSE',
@@ -67,9 +66,35 @@ it('кратчайшая победа: один хотспот с ключевы
     methodId: 'w-sedative',
     evidence: ['f-wet-footprints'],
   });
+  expect(s.phase).not.toBe('finished');
+  expect(player(s).grace).toBe(true);
+  expect(player(s).eliminated).toBe(false);
+});
+it('полная цепочка с признанием Надежды раскрывает дело', () => {
+  let s = start();
+  player(s).clues.push('c-receipt');
+  player(s).facts.push('f-nadia-asked', 'f-nadia-confession');
+  s = action(s, {
+    type: 'ACCUSE',
+    suspectId: 's-nadia',
+    motiveId: 'm-heirloom',
+    methodId: 'w-sedative',
+    evidence: ['c-receipt', 'f-nadia-asked', 'f-nadia-confession'],
+  });
   expect(s.phase).toBe('finished');
   expect(s.winners).toEqual([0]);
-  expect(s.round).toBe(1);
+});
+it('мутный след: окно в звонках Зои совпадает с «женщиной в сером», но в цепочку не входит', () => {
+  expect(c.facts.find((f) => f.id === 'f-zoya-rounds')?.importance).toBe(
+    'red_herring',
+  );
+  expect(c.solution.proofChain?.flatMap((l) => l.evidenceIds)).not.toContain(
+    'f-zoya-rounds',
+  );
+  const q = c.suspects
+    .find((s) => s.id === 's-zoya')
+    ?.offlineQA.find((x) => x.id === 'q-zoya-8');
+  expect(q?.requiresFactId).toBe('f-figure-on-balcony');
 });
 it('три детали не выдаются при находке и открываются личным осмотром', () => {
   for (const [locationId, hotspotId, clueId, factId, detailId] of [
