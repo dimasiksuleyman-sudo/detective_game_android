@@ -223,7 +223,7 @@ test('соревнование: принявший дело видит свой 
   await takeTurn(page);
   await wrongAccusation(page);
   await expect(
-    page.getByRole('heading', { name: 'Как всё было', exact: true }),
+    page.getByRole('heading', { name: 'Итоги', exact: true }),
   ).toBeVisible();
   const results = page.getByRole('region', { name: 'Итоги' });
   await expect(results).toContainText('Детектив 1 — победитель');

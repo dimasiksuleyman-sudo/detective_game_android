@@ -63,7 +63,7 @@ async function accuse(p: Page) {
   await click(p, 'Предъявить обвинение');
   // ADR-036: убийца, мотив и одна ключевая улика (подпись) — дело принято, без признания очков меньше.
   await expect(
-    p.getByRole('heading', { name: 'Как всё было', exact: true }),
+    p.getByRole('heading', { name: 'Итоги', exact: true }),
   ).toBeVisible();
   const results = p.getByRole('region', { name: 'Итоги' });
   await expect(results).toContainText('дело принято');

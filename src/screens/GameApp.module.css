@@ -199,13 +199,8 @@ audio {
   min-height: 1rem;
   overflow: visible;
 }
-.interrogation :global(.chat) article {
-  margin: 0.2rem 0;
-  padding: 0.35rem;
-}
-.interrogation :global(.chat) p,
-.interrogation blockquote {
-  margin: 0.25rem;
+.interrogation :global(.chat) :global(.exchange) {
+  margin: 0.4rem 0;
 }
 .interrogation textarea {
   height: 3.2rem;
