@@ -3,10 +3,10 @@ import { TurnTimer } from '../components/TurnTimer';
 import { TALK_LIMIT, TURN_SECONDS, turnBudget } from '../game/rules/turn';
 import {
   accusationOutcome,
-  evidenceLimit,
-  judgeAccusation,
   type AccusationOutcome,
 } from '../game/rules/accusation';
+import { EVIDENCE_LIMIT, maxScore } from '../game/rules/scoring';
+import { loadRecords, submitRecord } from '../persistence/records';
 import { playEffect } from '../platform/soundscape';
 import { SafePuzzle } from '../components/SafePuzzle';
 import { Soundscape } from '../components/Soundscape';
@@ -76,10 +76,15 @@ export default function GameApp() {
   const [setupAllowed, setSetupAllowed] = useState(false);
   // Нераскрытое дело не показывает разгадку без спроса: игроки могут захотеть сыграть ещё раз.
   const [revealed, setRevealed] = useState(false);
+  // Счёт принятого обвинения — показывается только самому игроку в окне итога.
+  const [verdictPoints, setVerdictPoints] = useState('');
+  // Личные рекорды по делам и признак «новый рекорд» для завершённой партии.
+  const [records, setRecords] = useState<Record<string, number>>({});
+  const [newRecord, setNewRecord] = useState(false);
+  const recordedGame = useRef('');
   const [turnSeconds, setTurnSeconds] =
     useState<(typeof TURN_SECONDS)[number]>(0);
   const [verdict, setVerdict] = useState<AccusationOutcome | null>(null);
-  const [verdictMissing, setVerdictMissing] = useState<string[]>([]);
   const [timeUp, setTimeUp] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState(() => {
     const first = listCases()[0];
@@ -165,6 +170,21 @@ export default function GameApp() {
   useEffect(() => {
     if (ready) void hideLaunchSplash();
   }, [ready]);
+  useEffect(() => {
+    void loadRecords().then(setRecords);
+  }, []);
+  // Рекорд дела — лучший счёт партии; записывается один раз, когда партия закончилась.
+  useEffect(() => {
+    if (!g || g.phase !== 'finished' || !g.winners.length) return;
+    const id = `${g.caseId}/${g.accusationCount}/${g.players.map((x) => x.score).join(',')}`;
+    if (recordedGame.current === id) return;
+    recordedGame.current = id;
+    const best = Math.max(...g.players.map((x) => x.score));
+    void submitRecord(g.caseId, best).then((r) => {
+      setRecords(r.records);
+      setNewRecord(r.isNew);
+    });
+  }, [g]);
   const screen = path.split('/')[1] || 's02';
   const personal = ['s07', 's08', 's09', 's10', 's11', 's12', 's13'].includes(
     screen,
@@ -312,7 +332,7 @@ export default function GameApp() {
         )}
       </header>
       {error && <p role="alert">{error}</p>}
-      {verdict && verdict !== 'win' && (
+      {verdict && (
         <div
           className={styles.dialog}
           role="alertdialog"
@@ -322,8 +342,8 @@ export default function GameApp() {
           <section>
             <h2 id="verdict-title">{ru.turn.verdict[verdict].title}</h2>
             <p>
-              {verdict === 'grace' && verdictMissing.length
-                ? ru.turn.verdict.grace.missing(verdictMissing.join(', '))
+              {verdict === 'accepted'
+                ? ru.turn.verdict.accepted.text(verdictPoints)
                 : ru.turn.verdict[verdict].text}
             </p>
             <button autoFocus onClick={() => setVerdict(null)}>
@@ -402,6 +422,9 @@ export default function GameApp() {
                     {t.difficulty}: {item.difficulty} · {item.estimatedMinutes}{' '}
                     {t.minutes}
                   </p>
+                  {records[item.id] !== undefined && (
+                    <p>{t.record(records[item.id] ?? 0)}</p>
+                  )}
                   {button(item.title, () => {
                     setSelectedCaseId(item.id);
                     setCount(
@@ -506,6 +529,7 @@ export default function GameApp() {
                   if (g && !setupAllowed && !confirm(t.overwrite)) return;
                   resetAiUsage();
                   setRevealed(false);
+                  setNewRecord(false);
                   void dispatch({
                     type: 'START_GAME',
                     caseId: c.id,
@@ -585,6 +609,7 @@ export default function GameApp() {
                 </aside>
               )}
               <p role="status">{budgetText}</p>
+              {!p.solved && <p>{t.maxHub(maxScore(g))}</p>}
               {button(
                 t.search,
                 () => {
@@ -1225,10 +1250,12 @@ export default function GameApp() {
               )}
               {step === 3 && (
                 <>
-                  <p>{t.evidence(evidenceLimit(c))}</p>
+                  <p>{t.evidence(EVIDENCE_LIMIT)}</p>
+                  <p>{t.scoring}</p>
+                  <p>{t.maxNow(maxScore(g))}</p>
                   {c.solution.proofChain && (
                     <p>
-                      {t.chain(
+                      {t.strong(
                         c.solution.proofChain.map((l) => l.label).join(' · '),
                       )}
                     </p>
@@ -1245,7 +1272,7 @@ export default function GameApp() {
                         checked={acc.evidence.includes(f.id)}
                         disabled={
                           !acc.evidence.includes(f.id) &&
-                          acc.evidence.length >= evidenceLimit(c)
+                          acc.evidence.length >= EVIDENCE_LIMIT
                         }
                         onChange={(e) =>
                           setAcc({
@@ -1269,13 +1296,13 @@ export default function GameApp() {
                   )
                 : button(t.submit, async () => {
                     const outcome = accusationOutcome(c, g, p, acc);
-                    setVerdictMissing(judgeAccusation(c, acc).missing);
+                    const who = g.current;
                     await dispatch({ type: 'ACCUSE', ...acc });
-                    if (
-                      outcome !== 'win' &&
-                      useGame.getState().game?.phase !== 'finished'
-                    )
-                      setVerdict(outcome);
+                    const after = useGame.getState().game;
+                    const breakdown =
+                      after?.players[who]?.accusation?.breakdown;
+                    if (breakdown) setVerdictPoints(t.pointsLine(breakdown));
+                    if (after?.phase !== 'finished') setVerdict(outcome);
                     setStep(0);
                     setAcc({
                       suspectId: '',
@@ -1358,17 +1385,38 @@ export default function GameApp() {
                       </article>
                     ))}
                 </section>
-                {g.players.map((v, i) => (
-                  <article key={i}>
-                    {v.name}: {t.score} {v.score}
-                    <p>
-                      {c.clues
-                        .filter((cl) => cl.isKey && v.clues.includes(cl.id))
-                        .map((cl) => cl.name)
-                        .join(', ')}
-                    </p>
-                  </article>
-                ))}
+                <section aria-label={t.results}>
+                  <h3>{t.results}</h3>
+                  {g.players.map((v, i) => (
+                    <article key={i}>
+                      <p>
+                        <strong>{v.name}</strong>
+                        {g.winners.includes(i) && ` — ${t.winner}`}: {t.score}{' '}
+                        {v.accusation?.accepted
+                          ? t.ofMax(
+                              v.score,
+                              maxScore({
+                                round: v.accusation.round,
+                                roundLimit: g.roundLimit,
+                                finalMode: v.accusation.final,
+                              }),
+                            )
+                          : v.score}
+                      </p>
+                      <p>
+                        {v.accusation?.accepted && v.accusation.breakdown
+                          ? `${t.accepted}: ${t.pointsLine(v.accusation.breakdown)}`
+                          : v.accusation
+                            ? t.rejected
+                            : t.noAccusation}
+                      </p>
+                    </article>
+                  ))}
+                  {records[c.id] !== undefined && (
+                    <p>{t.record(records[c.id] ?? 0)}</p>
+                  )}
+                  {newRecord && <p role="status">{t.newRecord}</p>}
+                </section>
               </>
             )}
           {effective === 's14' &&

@@ -112,7 +112,8 @@ describe('правила партии', () => {
       hotspotId: 'h-safe',
       clueId: 'c-ledger',
     });
-    expect(player(s).score).toBe(4);
+    // ADR-036: очки — только за обвинение, находки их не дают.
+    expect(player(s).score).toBe(0);
     expect(turnBudget(c, s)).toMatchObject({
       kind: 'search',
       exhausted: false,
@@ -173,7 +174,7 @@ describe('правила партии', () => {
     player(s).clues.push('c-diary');
     expect(run(s, a).action?.used).toBe(1);
   });
-  it('брейкпоинт требует улику, факт и стресс; слом даёт очко один раз', () => {
+  it('брейкпоинт требует улику, факт и стресс; слом без очков (ADR-036)', () => {
     let s = active();
     expect(present(s)).toEqual(s);
     player(s).clues = ['c-parking-stub'];
@@ -187,9 +188,8 @@ describe('правила партии', () => {
     player(s).stress['s-gleb'] = 6;
     s = present(s);
     expect(player(s).facts).toContain('f-gleb-returned');
-    expect(player(s).score).toBe(1);
-    s = present(s);
-    expect(player(s).score).toBe(1);
+    expect(player(s).broken).toEqual(['s-gleb']);
+    expect(player(s).score).toBe(0);
   });
   it('ignoreStress; нейтральная реакция; правильный target', () => {
     let s = active();
@@ -225,7 +225,7 @@ describe('правила партии', () => {
     s = search(s, 'h-desk');
     s = run(s, { type: 'PUBLISH_TO_BOARD', id: 'c-diary' });
     s = run(s, { type: 'PUBLISH_TO_BOARD', id: 'c-diary' });
-    expect(player(s).score).toBe(3);
+    expect(player(s).score).toBe(0);
     expect(s.board).toEqual([{ id: 'c-diary', by: 0 }]);
     expect(
       player(run(s, { type: 'ADD_NOTE', text: 'a'.repeat(6000) })).notes.length,
@@ -248,7 +248,9 @@ describe('правила партии', () => {
       evidence: ['c-ledger', 'c-parking-stub', 'f-gleb-confessed'],
     });
     expect(s.winners).toEqual([0]);
-    expect(player(s).score).toBe(10);
+    // (10 + способ 5 + ещё две улики 6 + скорость 6−1 = 5) × 2 за признание.
+    expect(player(s).score).toBe(52);
+    expect(player(s).solved).toBe(true);
     expect(s.phase).toBe('finished');
     let m = active(2);
     m = accuse(m, { suspectId: 's-vera' });
@@ -260,13 +262,13 @@ describe('правила партии', () => {
     for (const evidence of [
       ['c-ledger'],
       ['x', 'x'],
-      ['a', 'b', 'c', 'd', 'e', 'f'],
+      ['a', 'b', 'c', 'd', 'e', 'f', 'g'],
     ])
       expect(accuse(s, { evidence })).toEqual(s);
     for (const field of ['suspectId', 'motiveId', 'methodId'])
       expect(accuse(s, { [field]: 'bad' })).toEqual(s);
   });
-  it('финальные обвинения всех оставшихся без штрафа; несколько победителей', () => {
+  it('финальные обвинения без штрафа; при равенстве очков побеждает обвинивший раньше', () => {
     let s = active(2);
     s.round = 6;
     s.current = 1;
@@ -282,7 +284,9 @@ describe('правила партии', () => {
       s = accuse(s, { evidence: [...player(s).facts] });
     }
     expect(s.phase).toBe('finished');
-    expect(s.winners).toEqual([0, 1]);
+    expect(s.winners).toEqual([0]);
+    // В финале скорости нет: (10 + 5 + 6) × 2.
+    expect(s.players.map((p) => p.score)).toEqual([42, 42]);
   });
   it('финальная ошибка не исключает; финальные END и поиск не доступны', () => {
     let s = active();

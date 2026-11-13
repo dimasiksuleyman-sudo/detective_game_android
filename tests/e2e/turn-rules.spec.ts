@@ -1,5 +1,6 @@
 /** Правила хода ADR-034: вся локация за ход, уведомления о конце попыток, блиц, итог обвинения. */
 import { test, expect, type Page } from '@playwright/test';
+import { grantProof } from './proofHelpers';
 
 const click = (p: Page, name: string) =>
   p.getByRole('button', { name, exact: true }).click();
@@ -188,4 +189,46 @@ test('находка без улики подписана: название зо
   await expect(page.getByRole('listitem')).toContainText(
     'Замок чёрного хода не взломан',
   );
+});
+
+test('соревнование: принявший дело видит свой счёт, остальные продолжают; итоги и рекорд', async ({
+  page,
+}) => {
+  await start(page, 2);
+  // Детектив 1: убийца, мотив и одна ключевая улика — дело принято.
+  await grantProof(page, { clues: ['c-ledger'], facts: [] });
+  await expect(
+    page.getByText(/^Сейчас можно заработать до \d+ очков/),
+  ).toBeVisible();
+  await click(page, 'Обвинить');
+  await page.getByLabel('Виновный').selectOption('s-gleb');
+  await click(page, 'Далее');
+  await page
+    .getByRole('combobox', { name: 'Мотив', exact: true })
+    .selectOption('m-embezzlement');
+  await click(page, 'Далее');
+  await page
+    .getByRole('combobox', { name: 'Способ', exact: true })
+    .selectOption('w-statuette');
+  await click(page, 'Далее');
+  await expect(page.getByText(/признание виновного — ×2/)).toBeVisible();
+  await expect(page.getByText(/^Максимум сейчас: \d+ очков/)).toBeVisible();
+  await page.getByRole('checkbox', { name: 'Тайная бухгалтерия' }).check();
+  await click(page, 'Предъявить обвинение');
+  const dialog = page.getByRole('alertdialog');
+  await expect(dialog).toContainText('Прокурор принял дело');
+  await expect(dialog).toContainText('Ваш счёт: 10 + способ 5');
+  await click(page, 'Понятно');
+  // Детектив 2 продолжает; его неверное обвинение заканчивает партию.
+  await takeTurn(page);
+  await wrongAccusation(page);
+  await expect(
+    page.getByRole('heading', { name: 'Как всё было', exact: true }),
+  ).toBeVisible();
+  const results = page.getByRole('region', { name: 'Итоги' });
+  await expect(results).toContainText('Детектив 1 — победитель');
+  await expect(results).toContainText(/Очки \d+ из \d+ возможных/);
+  await expect(results).toContainText('обвинение не подтвердилось');
+  await expect(results).toContainText(/Рекорд дела: \d+/);
+  await expect(page.getByText('Новый рекорд дела!')).toBeVisible();
 });

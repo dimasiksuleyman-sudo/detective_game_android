@@ -4,6 +4,7 @@ import { loadCase } from '../../content/loader';
 import { reduce, type GameState, type Action } from '../engine';
 import { parseStoredGame } from '../../persistence/save';
 import { accusationOutcome, judgeAccusation } from './accusation';
+import { scoreAccusation } from './scoring';
 import { TALK_LIMIT, turnBudget } from './turn';
 
 const c = loadCase('case-001-blue-owl');
@@ -136,22 +137,81 @@ describe('цепочка доказательств и признание (ADR-0
     expect(s.players[0]?.facts).toContain('f-gleb-confessed');
     expect(s.players[0]?.truths).toContain('t-killed');
   });
-  it('верная версия без признания — прокурор называет незакрытое звено', () => {
+  it('ADR-036: убийца, мотив и одна улика — дело принято; признание удваивает очки', () => {
     const s = start(2);
     const p = s.players[0];
     if (!p) throw Error('player');
-    const partial = {
+    const partial = { ...right, evidence: ['c-ledger'] };
+    expect(accusationOutcome(c, s, p, partial)).toBe('accepted');
+    expect(judgeAccusation(c, partial).missing).toEqual([
+      'Возможность',
+      'Признание',
+    ]);
+    const t = { round: 3, roundLimit: 8, finalMode: false };
+    // 10 + способ 5 + скорость 5.
+    expect(scoreAccusation(c, partial, t).total).toBe(20);
+    const full = {
+      ...partial,
+      evidence: ['c-ledger', 'c-parking-stub', 'f-gleb-confessed'],
+    };
+    // (10 + 5 + 2 улики × 3 + 5) × 2.
+    expect(scoreAccusation(c, full, t)).toMatchObject({
+      confession: true,
+      total: 52,
+    });
+    // Неверный способ — без бонуса, но дело принято.
+    expect(
+      scoreAccusation(c, { ...partial, methodId: 'w-poison' }, t).total,
+    ).toBe(15);
+  });
+  it('соревнование: принявший дело больше не ходит, партия идёт, побеждает лучший счёт', () => {
+    let s = start(2);
+    s = run(s, { type: 'ACCUSE', ...right, evidence: [] });
+    expect(s.players[0]?.grace).toBe(true);
+    const p0 = s.players[0];
+    if (!p0) throw Error('player');
+    p0.clues.push('c-ledger');
+    s = run(s, { type: 'ACCUSE', ...right, evidence: ['c-ledger'] });
+    expect(s.players[0]?.solved).toBe(true);
+    expect(s.phase).not.toBe('finished');
+    expect(s.current).toBe(1);
+    s = run(s, { type: 'BEGIN_TURN' });
+    const p1 = s.players[1];
+    if (!p1) throw Error('player');
+    p1.clues.push('c-ledger', 'c-parking-stub');
+    s = run(s, { type: 'END_TURN' });
+    // Игрок 0 сдал дело — ход снова у игрока 1, раунд растёт.
+    expect(s.current).toBe(1);
+    s = run(s, { type: 'BEGIN_TURN' });
+    s = run(s, {
+      type: 'ACCUSE',
       ...right,
       evidence: ['c-ledger', 'c-parking-stub'],
-    };
-    expect(accusationOutcome(c, s, p, partial)).toBe('grace');
-    expect(judgeAccusation(c, partial).missing).toEqual(['Признание']);
-    expect(
-      judgeAccusation(c, {
-        ...partial,
-        evidence: [...partial.evidence, 'f-gleb-confessed'],
-      }).proven,
-    ).toBe(true);
+    });
+    expect(s.phase).toBe('finished');
+    expect(s.winners).toEqual([1]);
+    expect(s.players[1]?.score).toBeGreaterThan(s.players[0]?.score ?? 0);
+  });
+  it('слом под давлением: при стрессе 9 Глебу хватает статуэтки и одной находки', () => {
+    let s = start(1);
+    const p = s.players[0];
+    if (!p) throw Error('player');
+    p.clues = ['c-statuette'];
+    p.facts = ['f-statuette-weapon'];
+    p.stress['s-gleb'] = 8;
+    const present = (x: GameState) =>
+      run(x, {
+        type: 'PRESENT_CLUE',
+        suspectId: 's-gleb',
+        clueId: 'c-statuette',
+        tone: 'neutral',
+      });
+    expect(present(s).players[0]?.facts).not.toContain('f-gleb-confessed');
+    const q = s.players[0];
+    if (!q) throw Error('player');
+    q.stress['s-gleb'] = 9;
+    s = present(s);
+    expect(s.players[0]?.facts).toContain('f-gleb-confessed');
   });
   it('мутная квитанция не оправдывает и не обвиняет Тимура сама по себе', () => {
     const f = c.facts.find((x) => x.id === 'f-key-copy');
