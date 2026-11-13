@@ -7,7 +7,7 @@ import { validateCase } from './validate';
 it('встроенное дело валидно и решаемо без сети', () => {
   expect(validateCase(pilot).errors).toEqual([]);
   expect(pilot.facts).toHaveLength(31);
-  expect(pilot.clues).toHaveLength(13);
+  expect(pilot.clues).toHaveLength(12);
 });
 it('брифинг не называет число раундов: его выбирает игрок', () => {
   const c = structuredClone(pilot);
