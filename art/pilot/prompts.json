@@ -105,11 +105,27 @@
       "output": "images/closeups/h-dumpster.webp",
       "width": 1024,
       "height": 1024,
-      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Close-up illustration of the area behind a large dumpster in the wet alley; a rain-soaked cardboard whisky crate with six glass bottles is partly concealed under a black plastic rubbish bag. Blank bottle labels, no branding. As a detective leaning in with a flashlight, square 1:1, key physical detail in center, no UI callout, no arrow or highlighting. Avoid photorealism, 3D render look, anime, glossy skin, distorted hands, extra fingers, readable signage, gore or blood.",
-      "references": ["l-alley.png"],
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Redraw the attached old dumpster close-up into a NEW COMPOSITION with the SAME noir ink-and-watercolor rendering, wet brick alley, slate blue / desaturated teal rainlight and restrained burnt-orange reflected window light. Square 1:1. Slightly elevated three-quarter view into a large OVERFLOWING OPEN DUMPSTER, lid raised, so the contents are clearly visible: black garbage bags and MANY crushed, dented, empty beer and soda cans, unbranded and without any writing. Among the cans INSIDE the dumpster is EXACTLY ONE small crumpled scrap of pale gray-cream paper, receipt-sized, partly folded but visible to a careful observer, roughly a tenth of the image width. This paper is a subtle natural object among the trash, not centered on an empty field; no special light, outline, glow, arrow, contrasting halo, inset or UI marker. No readable marks on the scrap. Beside the dumpster on the wet ground is a cardboard crate with six whisky bottles, half covered by a heavy black tarp, plain bottle labels with no lettering. Compose the bin contents as the main upper-middle area and the crate at one lower side so BOTH can be seen clearly. Remove all other pieces of paper from the ground and the scene: the ONLY pale scrap is among the crushed cans INSIDE the bin. No people, detective, hands, faces, shadows of people or handheld flashlight. No signs, numbers, logos or typography anywhere. Avoid photorealism, 3D render look, anime, glossy skin, gore, blood and highlighted game clues.",
+      "references": ["h-dumpster.png"],
       "transparent": false,
-      "revisionPrompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Close-up illustration of the area behind a large dumpster in the wet alley; a rain-soaked cardboard whisky crate with six glass bottles is partly concealed under a black plastic rubbish bag. Blank bottle labels, no branding. As a detective leaning in with a flashlight, square 1:1, key physical detail in center, no UI callout, no arrow or highlighting. Avoid photorealism, 3D render look, anime, glossy skin, distorted hands, extra fingers, readable signage, gore or blood. EDIT THE ATTACHED CLOSEUP: Remove the entire detective figure, face, torso, arms, hands and handheld flashlight from the picture. Fill that space naturally with the surrounding setting. Viewer sees the environment from first person; no person visible at all, not even hands, shadows, reflections or silhouettes of a detective. Preserve the important object and its detail, square framing, palette and lighting. Do not change the two photographed men within the framed archival photograph if present. Light can come from an unseen offscreen torch.",
-      "revisionReference": "Первый сгенерированный вариант этого крупного плана; заменён, в git не сохраняется."
+      "referenceRevision": "main bf58de8, original before redraw",
+      "detailCalibration": {
+        "detailId": "d-key-receipt",
+        "sourceWidth": 1254,
+        "sourceHeight": 1254,
+        "pixelRect": {
+          "x": 828,
+          "y": 440,
+          "w": 132,
+          "h": 80
+        },
+        "normalizedRect": {
+          "x": 0.6603,
+          "y": 0.3509,
+          "w": 0.1053,
+          "h": 0.0638
+        }
+      }
     },
     {
       "id": "h-puddle",

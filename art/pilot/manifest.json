@@ -383,7 +383,8 @@
       "height": 1024,
       "sourceWidth": 1254,
       "sourceHeight": 1254,
-      "quality": 80
+      "quality": 80,
+      "sourceSha256": "c325993ad63feb46a22fa05192bc9ca7c1a60482a8f2b8429e6013d0eb3c8eb5"
     },
     {
       "source": "h-puddle.png",
