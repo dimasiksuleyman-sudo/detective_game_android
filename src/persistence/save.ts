@@ -29,6 +29,30 @@ const player = z.object({
   eliminated: z.boolean(),
   grace: z.boolean(),
   score: num,
+  // ADR-036: необязательные поля — старые партии читаются как «ещё расследует».
+  solved: z.boolean().default(false),
+  accusation: z
+    .object({
+      suspectId: z.string(),
+      motiveId: z.string(),
+      methodId: z.string(),
+      evidence: strings,
+      accepted: z.boolean(),
+      round: num,
+      order: num,
+      final: z.boolean(),
+      breakdown: z
+        .object({
+          base: num,
+          method: num,
+          evidence: num,
+          speed: num,
+          confession: z.boolean(),
+          total: num,
+        })
+        .optional(),
+    })
+    .optional(),
   history: z.array(
     z.object({ suspect: z.string(), question: z.string(), answer: z.string() }),
   ),
@@ -57,6 +81,7 @@ const schema = z.object({
   finalMode: z.boolean(),
   finalDone: z.array(num),
   winners: z.array(num),
+  accusationCount: num.default(0),
   action: z
     .object({ kind: z.enum(['search', 'talk']), target: z.string(), used: num })
     .nullable(),

@@ -61,11 +61,13 @@ async function accuse(p: Page) {
     })
     .check();
   await click(p, 'Предъявить обвинение');
-  // ADR-035: подпись доказывает мотив, но без возможности и признания дело не принимают.
-  const verdict = p.getByRole('alertdialog');
-  await expect(verdict).toContainText('Прокурор не примет дело без улик');
-  await expect(verdict).toContainText('Не доказано: Возможность, Признание');
-  await click(p, 'Понятно');
+  // ADR-036: убийца, мотив и одна ключевая улика (подпись) — дело принято, без признания очков меньше.
+  await expect(
+    p.getByRole('heading', { name: 'Итоги', exact: true }),
+  ).toBeVisible();
+  const results = p.getByRole('region', { name: 'Итоги' });
+  await expect(results).toContainText('дело принято');
+  await expect(results).not.toContainText('× 2');
 }
 
 test('неверный код бесплатен, верный работает без фактов, предметы не выдаются автоматически', async ({
@@ -263,7 +265,7 @@ test('валидатор дедукции: каждый из двух факто
   }
 });
 
-test('кратчайший путь с известным кодом: одна зона и подпись доказывают мотив, но не всё дело', async ({
+test('кратчайший путь с известным кодом: одна зона и подпись — дело принято без признания', async ({
   page,
 }) => {
   await start(page);
@@ -282,7 +284,7 @@ test('кратчайший путь с известным кодом: одна �
   await accuse(page);
 });
 
-test('самостоятельная дедукция: фотография и ежедневник за два хода, подпись — звено «мотив»', async ({
+test('самостоятельная дедукция: фотография и ежедневник за два хода, подпись — дело принято', async ({
   page,
 }) => {
   await start(page);

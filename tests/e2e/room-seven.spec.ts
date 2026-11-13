@@ -155,7 +155,7 @@ async function accuse(
 const chain = [...ROOM_SEVEN_PROOF.clues, ...ROOM_SEVEN_PROOF.facts];
 test.describe('Номер семь', () => {
   test.setTimeout(90000);
-  test('ADR-035: одних следов мало — прокурор; с мотивом, возможностью и признанием — победа', async ({
+  test('ADR-036: следов хватает, чтобы дело приняли; признание удваивает счёт', async ({
     page,
   }, info) => {
     await start(page);
@@ -164,19 +164,15 @@ test.describe('Номер семь', () => {
     await click(page, 'Назад');
     await click(page, 'Назад');
     await hub(page);
-    await accuse(page);
-    const verdict = page.getByRole('alertdialog');
-    await expect(verdict).toContainText('Прокурор не примет дело без улик');
-    await expect(verdict).toContainText(
-      'Не доказано: Мотив, Возможность, Признание',
-    );
-    await click(page, 'Понятно');
     await grantProof(page, ROOM_SEVEN_PROOF);
-    await accuse(page, 's-nadia', chain);
+    await accuse(page, 's-nadia', [...chain, 'f-wet-footprints']);
     await expect(
-      page.getByRole('heading', { name: 'Как всё было', exact: true }),
+      page.getByRole('heading', { name: 'Итоги', exact: true }),
     ).toBeVisible();
+    const results = page.getByRole('region', { name: 'Итоги' });
+    await expect(results).toContainText('× 2 за признание');
     expect((await saved(page)).winners).toEqual([0]);
+    await click(page, 'Как всё было');
     await expect(page.locator('main')).toContainText(
       'Она не знала, что Каретников принимает сердечные таблетки',
     );

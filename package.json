@@ -1,7 +1,7 @@
 {
   "name": "interrogation-room",
   "private": true,
-  "version": "0.4.6",
+  "version": "0.5.2",
   "type": "module",
   "engines": {
     "node": ">=22.12.0"

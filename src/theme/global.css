@@ -241,3 +241,43 @@ pre {
   min-height: 44px;
   min-width: 44px;
 }
+
+/* Диалоги (ADR-037): кто говорит — видно по цвету, стороне и подписи. Для всех дел. */
+.exchange {
+  display: grid;
+  gap: 0.35rem;
+}
+.say {
+  max-width: 88%;
+  padding: 0.35rem 0.6rem;
+  border-radius: 0.6rem;
+}
+.say p,
+.say blockquote {
+  margin: 0;
+}
+.say .speaker {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: bold;
+  letter-spacing: 0.03em;
+  opacity: 0.85;
+}
+.say-player {
+  justify-self: end;
+  background: var(--teal-gray);
+  color: var(--paper);
+  border-bottom-right-radius: 0.15rem;
+}
+.say-npc {
+  justify-self: start;
+  background: var(--paper);
+  color: var(--ink);
+  border-bottom-left-radius: 0.15rem;
+}
+.say-chief {
+  max-width: 100%;
+  background: var(--slate);
+  color: var(--paper);
+  border-left: 5px solid var(--accent);
+}

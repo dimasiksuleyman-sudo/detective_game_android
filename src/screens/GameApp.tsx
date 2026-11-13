@@ -3,10 +3,10 @@ import { TurnTimer } from '../components/TurnTimer';
 import { TALK_LIMIT, TURN_SECONDS, turnBudget } from '../game/rules/turn';
 import {
   accusationOutcome,
-  evidenceLimit,
-  judgeAccusation,
   type AccusationOutcome,
 } from '../game/rules/accusation';
+import { EVIDENCE_LIMIT, maxScore } from '../game/rules/scoring';
+import { loadRecords, submitRecord } from '../persistence/records';
 import { playEffect } from '../platform/soundscape';
 import { SafePuzzle } from '../components/SafePuzzle';
 import { Soundscape } from '../components/Soundscape';
@@ -31,6 +31,7 @@ import { listCases, loadCase } from '../content/loader';
 import { useGame } from '../store/gameStore';
 import { ru } from '../i18n/ru';
 import { HoldButton } from '../components/HoldButton';
+import { Exchange } from '../components/Exchange';
 import { watchLifecycle } from '../platform/appLifecycle';
 import type { Tone } from '../game/engine';
 const t = ru.game;
@@ -75,11 +76,17 @@ export default function GameApp() {
     path = useLocation().pathname;
   const [setupAllowed, setSetupAllowed] = useState(false);
   // Нераскрытое дело не показывает разгадку без спроса: игроки могут захотеть сыграть ещё раз.
-  const [revealed, setRevealed] = useState(false);
+  // Финал: сначала страница «Итоги», разгадка — отдельной страницей по кнопке (ADR-037).
+  const [finaleView, setFinaleView] = useState<'results' | 'story'>('results');
+  // Счёт принятого обвинения — показывается только самому игроку в окне итога.
+  const [verdictPoints, setVerdictPoints] = useState('');
+  // Личные рекорды по делам и признак «новый рекорд» для завершённой партии.
+  const [records, setRecords] = useState<Record<string, number>>({});
+  const [newRecord, setNewRecord] = useState(false);
+  const recordedGame = useRef('');
   const [turnSeconds, setTurnSeconds] =
     useState<(typeof TURN_SECONDS)[number]>(0);
   const [verdict, setVerdict] = useState<AccusationOutcome | null>(null);
-  const [verdictMissing, setVerdictMissing] = useState<string[]>([]);
   const [timeUp, setTimeUp] = useState(false);
   const [selectedCaseId, setSelectedCaseId] = useState(() => {
     const first = listCases()[0];
@@ -120,7 +127,6 @@ export default function GameApp() {
   const briefcase = safeHotspot?.label.toLocaleLowerCase('ru') === 'портфель';
   const containerInside = briefcase ? ru.safe.insideBriefcase : ru.safe.inside;
   const containerBack = briefcase ? ru.safe.backBriefcase : ru.safe.back;
-  const [narrateClues, setNarrateClues] = useState(true);
   const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
     [freeQuestion, setFreeQuestion] = useState('');
   const [privacy, setPrivacy] = useState(false);
@@ -165,6 +171,21 @@ export default function GameApp() {
   useEffect(() => {
     if (ready) void hideLaunchSplash();
   }, [ready]);
+  useEffect(() => {
+    void loadRecords().then(setRecords);
+  }, []);
+  // Рекорд дела — лучший счёт партии; записывается один раз, когда партия закончилась.
+  useEffect(() => {
+    if (!g || g.phase !== 'finished' || !g.winners.length) return;
+    const id = `${g.caseId}/${g.accusationCount}/${g.players.map((x) => x.score).join(',')}`;
+    if (recordedGame.current === id) return;
+    recordedGame.current = id;
+    const best = Math.max(...g.players.map((x) => x.score));
+    void submitRecord(g.caseId, best).then((r) => {
+      setRecords(r.records);
+      setNewRecord(r.isNew);
+    });
+  }, [g]);
   const screen = path.split('/')[1] || 's02';
   const personal = ['s07', 's08', 's09', 's10', 's11', 's12', 's13'].includes(
     screen,
@@ -312,7 +333,7 @@ export default function GameApp() {
         )}
       </header>
       {error && <p role="alert">{error}</p>}
-      {verdict && verdict !== 'win' && (
+      {verdict && (
         <div
           className={styles.dialog}
           role="alertdialog"
@@ -322,8 +343,8 @@ export default function GameApp() {
           <section>
             <h2 id="verdict-title">{ru.turn.verdict[verdict].title}</h2>
             <p>
-              {verdict === 'grace' && verdictMissing.length
-                ? ru.turn.verdict.grace.missing(verdictMissing.join(', '))
+              {verdict === 'accepted'
+                ? ru.turn.verdict.accepted.text(verdictPoints)
                 : ru.turn.verdict[verdict].text}
             </p>
             <button autoFocus onClick={() => setVerdict(null)}>
@@ -402,6 +423,9 @@ export default function GameApp() {
                     {t.difficulty}: {item.difficulty} · {item.estimatedMinutes}{' '}
                     {t.minutes}
                   </p>
+                  {records[item.id] !== undefined && (
+                    <p>{t.record(records[item.id] ?? 0)}</p>
+                  )}
                   {button(item.title, () => {
                     setSelectedCaseId(item.id);
                     setCount(
@@ -505,7 +529,8 @@ export default function GameApp() {
                 () => {
                   if (g && !setupAllowed && !confirm(t.overwrite)) return;
                   resetAiUsage();
-                  setRevealed(false);
+                  setFinaleView('results');
+                  setNewRecord(false);
                   void dispatch({
                     type: 'START_GAME',
                     caseId: c.id,
@@ -579,12 +604,14 @@ export default function GameApp() {
             <>
               <h2>{t.hub}</h2>
               {g.hint && (
-                <aside>
-                  {t.hint}: {g.hint}
+                <aside className="say say-chief">
+                  <small className="speaker">{t.hint}</small>
+                  <p>{g.hint}</p>
                   <NarrationPlayer clip={hintNarration(c.id, g.hint)} />
                 </aside>
               )}
               <p role="status">{budgetText}</p>
+              {!p.solved && <p>{t.maxHub(maxScore(g))}</p>}
               {button(
                 t.search,
                 () => {
@@ -882,10 +909,13 @@ export default function GameApp() {
                                 .filter((h) => h.suspect === s.id)
                                 .slice(0, -1)
                                 .map((h, i) => (
-                                  <article key={i}>
-                                    <p>{h.question}</p>
-                                    <blockquote>{h.answer}</blockquote>
-                                  </article>
+                                  <Exchange
+                                    key={i}
+                                    asker={ru.dialogue.you}
+                                    question={h.question}
+                                    speaker={s.name}
+                                    answer={h.answer}
+                                  />
                                 ))}
                             </details>
                           )}
@@ -893,10 +923,14 @@ export default function GameApp() {
                             .filter((h) => h.suspect === s.id)
                             .slice(-1)
                             .map((h, i) => (
-                              <article className="latestReply" key={i}>
-                                <p>{h.question}</p>
-                                <blockquote>{h.answer}</blockquote>
-                              </article>
+                              <div className="latestReply" key={i}>
+                                <Exchange
+                                  asker={ru.dialogue.you}
+                                  question={h.question}
+                                  speaker={s.name}
+                                  answer={h.answer}
+                                />
+                              </div>
                             ))}
                           {ai.busy && (
                             <p role="status" className="typing">
@@ -1008,19 +1042,6 @@ export default function GameApp() {
                         </details>
                         <h3>{t.present}</h3>
                         {!p.clues.length && <p>{ru.qa.emptyEvidence}</p>}
-                        {g.mode === 'ai' && (
-                          <label>
-                            <input
-                              type="checkbox"
-                              checked={narrateClues}
-                              onChange={(e) =>
-                                setNarrateClues(e.target.checked)
-                              }
-                            />
-                            {ru.ai.narrateClues}
-                            <p>{ru.ai.offlinePresent}</p>
-                          </label>
-                        )}
                         {c.clues
                           .filter((cl) => p.clues.includes(cl.id))
                           .map((cl) =>
@@ -1030,8 +1051,7 @@ export default function GameApp() {
                                 if (
                                   online &&
                                   g.mode === 'ai' &&
-                                  settings.hasKey &&
-                                  narrateClues
+                                  settings.hasKey
                                 ) {
                                   void askAi(s.id, '', tone, cl.id);
                                   showSuspect();
@@ -1225,10 +1245,12 @@ export default function GameApp() {
               )}
               {step === 3 && (
                 <>
-                  <p>{t.evidence(evidenceLimit(c))}</p>
+                  <p>{t.evidence(EVIDENCE_LIMIT)}</p>
+                  <p>{t.scoring}</p>
+                  <p>{t.maxNow(maxScore(g))}</p>
                   {c.solution.proofChain && (
                     <p>
-                      {t.chain(
+                      {t.strong(
                         c.solution.proofChain.map((l) => l.label).join(' · '),
                       )}
                     </p>
@@ -1245,7 +1267,7 @@ export default function GameApp() {
                         checked={acc.evidence.includes(f.id)}
                         disabled={
                           !acc.evidence.includes(f.id) &&
-                          acc.evidence.length >= evidenceLimit(c)
+                          acc.evidence.length >= EVIDENCE_LIMIT
                         }
                         onChange={(e) =>
                           setAcc({
@@ -1269,13 +1291,13 @@ export default function GameApp() {
                   )
                 : button(t.submit, async () => {
                     const outcome = accusationOutcome(c, g, p, acc);
-                    setVerdictMissing(judgeAccusation(c, acc).missing);
+                    const who = g.current;
                     await dispatch({ type: 'ACCUSE', ...acc });
-                    if (
-                      outcome !== 'win' &&
-                      useGame.getState().game?.phase !== 'finished'
-                    )
-                      setVerdict(outcome);
+                    const after = useGame.getState().game;
+                    const breakdown =
+                      after?.players[who]?.accusation?.breakdown;
+                    if (breakdown) setVerdictPoints(t.pointsLine(breakdown));
+                    if (after?.phase !== 'finished') setVerdict(outcome);
                     setStep(0);
                     setAcc({
                       suspectId: '',
@@ -1291,33 +1313,72 @@ export default function GameApp() {
           )}
           {effective === 's14' &&
             g?.phase === 'finished' &&
-            !g.winners.length &&
-            !revealed && (
-              <section aria-label={t.unsolved}>
-                <h2>{t.unsolved}</h2>
-                <p>{t.spoilerQuestion}</p>
-                {button(t.revealYes, () => setRevealed(true))}
-                {button(t.revealNo, () => {
-                  if (confirm(t.overwrite)) {
-                    setSelectedCaseId(c.id);
-                    setSetupAllowed(true);
-                    go('s04');
-                  }
+            finaleView === 'results' && (
+              <section aria-label={t.results}>
+                <h2>{g.winners.length ? t.results : t.unsolved}</h2>
+                {g.winners.length > 0 && (
+                  <p>
+                    {t.winners +
+                      ': ' +
+                      g.winners.map((i) => g.players[i]?.name).join(', ')}
+                  </p>
+                )}
+                {g.players.map((v, i) => (
+                  <article key={i}>
+                    <p>
+                      <strong>{v.name}</strong>
+                      {g.winners.includes(i) && ` — ${t.winner}`}: {t.score}{' '}
+                      {v.accusation?.accepted
+                        ? t.ofMax(
+                            v.score,
+                            maxScore({
+                              round: v.accusation.round,
+                              roundLimit: g.roundLimit,
+                              finalMode: v.accusation.final,
+                            }),
+                          )
+                        : v.score}
+                    </p>
+                    <p>
+                      {v.accusation?.accepted && v.accusation.breakdown
+                        ? `${t.accepted}: ${t.pointsLine(v.accusation.breakdown)}`
+                        : v.accusation
+                          ? t.rejected
+                          : t.noAccusation}
+                    </p>
+                  </article>
+                ))}
+                {records[c.id] !== undefined && (
+                  <p>{t.record(records[c.id] ?? 0)}</p>
+                )}
+                {newRecord && <p role="status">{t.newRecord}</p>}
+                {!g.winners.length && <p>{t.spoilerQuestion}</p>}
+                {button(g.winners.length ? t.ending : t.revealYes, () => {
+                  setFinaleView('story');
+                  window.scrollTo(0, 0);
                 })}
+                {g.winners.length
+                  ? button(ru.qa.replay, () => {
+                      if (confirm(t.overwrite)) {
+                        setSetupAllowed(true);
+                        go('s03');
+                      }
+                    })
+                  : button(t.revealNo, () => {
+                      if (confirm(t.overwrite)) {
+                        setSelectedCaseId(c.id);
+                        setSetupAllowed(true);
+                        go('s04');
+                      }
+                    })}
+                {button(t.menu, () => go('s02'))}
               </section>
             )}
           {effective === 's14' &&
             g?.phase === 'finished' &&
-            (g.winners.length > 0 || revealed) && (
+            finaleView === 'story' && (
               <>
                 <h2>{t.ending}</h2>
-                <p>
-                  {g.winners.length
-                    ? t.winners +
-                      ': ' +
-                      g.winners.map((i) => g.players[i]?.name).join(', ')
-                    : t.unsolved}
-                </p>
                 <p>{c.solution.explanation}</p>
                 <NarrationPlayer
                   clip={narrationFor(
@@ -1358,26 +1419,19 @@ export default function GameApp() {
                       </article>
                     ))}
                 </section>
-                {g.players.map((v, i) => (
-                  <article key={i}>
-                    {v.name}: {t.score} {v.score}
-                    <p>
-                      {c.clues
-                        .filter((cl) => cl.isKey && v.clues.includes(cl.id))
-                        .map((cl) => cl.name)
-                        .join(', ')}
-                    </p>
-                  </article>
-                ))}
+                {button(t.toResults, () => {
+                  setFinaleView('results');
+                  window.scrollTo(0, 0);
+                })}
+                {button(ru.qa.replay, () => {
+                  if (confirm(t.overwrite)) {
+                    setSetupAllowed(true);
+                    go('s03');
+                  }
+                })}
+                {button(t.menu, () => go('s02'))}
               </>
             )}
-          {effective === 's14' &&
-            button(ru.qa.replay, () => {
-              if (confirm(t.overwrite)) {
-                setSetupAllowed(true);
-                go('s03');
-              }
-            })}
           {effective === 's15' && (
             <>
               <h2>{t.settings}</h2>
@@ -1419,13 +1473,15 @@ export default function GameApp() {
           </details>
         </aside>
       )}
-      {button(t.menu, () => {
-        if (!personal || confirm(t.exit)) {
-          cancelAi();
-          act({ type: 'LOCK' });
-          go('s02');
-        }
-      })}
+      {/* На финале своя кнопка «В меню» внизу страницы итогов/разгадки. */}
+      {effective !== 's14' &&
+        button(t.menu, () => {
+          if (!personal || confirm(t.exit)) {
+            cancelAi();
+            act({ type: 'LOCK' });
+            go('s02');
+          }
+        })}
       {!busy && g && <small>{t.saved}</small>}
     </div>
   );
