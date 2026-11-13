@@ -2,7 +2,7 @@
 import { hiddenInspectionFactIds } from '../content/inspectionKnowledge';
 import { ru } from '../i18n/ru';
 import type { CaseFile } from '../content/schema';
-import { judgeAccusation } from './rules/accusation';
+import { evidenceLimit, judgeAccusation } from './rules/accusation';
 import { TALK_LIMIT, TURN_SECONDS, type TurnSeconds } from './rules/turn';
 export type Emotion =
   'neutral' | 'nervous' | 'angry' | 'sad' | 'smug' | 'broken';
@@ -515,7 +515,7 @@ export function reduce(
       !c.suspects.some((x) => x.id === a.suspectId) ||
       !c.motives.some((x) => x.id === a.motiveId) ||
       !c.methods.some((x) => x.id === a.methodId) ||
-      a.evidence.length > 3 ||
+      a.evidence.length > evidenceLimit(c) ||
       unique(a.evidence).length !== a.evidence.length ||
       !a.evidence.every((id) => p.clues.includes(id) || p.facts.includes(id))
     )

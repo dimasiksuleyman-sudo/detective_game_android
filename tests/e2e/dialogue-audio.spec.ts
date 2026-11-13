@@ -74,7 +74,7 @@ test('чат без внутренней прокрутки, история от
   });
 });
 
-test('все десять документов содержат исходные реквизиты и записи, а не тексты фактов', async ({
+test('все одиннадцать документов содержат исходные реквизиты и записи, а не тексты фактов', async ({
   page,
   request,
 }) => {
@@ -82,7 +82,7 @@ test('все десять документов содержат исходные
     await request.get('/cases/case-001-blue-owl/case.json')
   ).json();
   const documents = c.clues.filter((x: { document?: unknown }) => x.document);
-  expect(documents).toHaveLength(10);
+  expect(documents).toHaveLength(11);
   const facts = new Set(c.facts.map((f: { text: string }) => f.text));
   for (const d of documents)
     for (const v of Object.values(d.document.fields))

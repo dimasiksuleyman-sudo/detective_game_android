@@ -23,6 +23,7 @@
 | `images/closeups/h-door.webp`      | closeups             | 1024×1024 | [pilot/h-door.png](pilot/h-door.png)                         | `h-door`                  | сгенерировано |
 | `images/closeups/h-dumpster.webp`  | closeups             | 1024×1024 | [pilot/h-dumpster.png](pilot/h-dumpster.png)                 | `h-dumpster`              | сгенерировано |
 | `images/closeups/h-puddle.webp`    | closeups             | 1024×1024 | [pilot/h-puddle.png](pilot/h-puddle.png)                     | `h-puddle`                | сгенерировано |
+| `images/closeups/h-alley-end.webp` | closeups             | 1024×1024 | pilot/h-alley-end.png (агент)                                | `h-alley-end`             | заглушка      |
 | `images/clues/c-diary.webp`        | clues                | 512×512   | [pilot/c-diary.png](pilot/c-diary.png)                       | `c-diary`                 | сгенерировано |
 | `images/clues/c-ledger.webp`       | clues                | 512×512   | [pilot/c-ledger.png](pilot/c-ledger.png)                     | `c-ledger`                | сгенерировано |
 | `images/clues/c-photo.webp`        | clues                | 512×512   | [pilot/c-photo.png](pilot/c-photo.png)                       | `c-photo`                 | сгенерировано |

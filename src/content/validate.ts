@@ -40,6 +40,8 @@ export function validateCase(c: CaseFile) {
   refs([c.solution.motiveId], new Set(c.motives.map((x) => x.id)));
   refs([c.solution.methodId], new Set(c.methods.map((x) => x.id)));
   refs(c.solution.keyEvidence, new Set([...facts, ...clues]));
+  for (const link of c.solution.proofChain ?? [])
+    refs(link.evidenceIds, new Set([...facts, ...clues]));
   check(
     c.suspects.filter((s) => s.isCulprit).length === 1 &&
       c.suspects.some((s) => s.id === c.solution.culpritId && s.isCulprit),
@@ -241,6 +243,24 @@ export function validateCase(c: CaseFile) {
   for (const cl of c.clues)
     for (const id of cl.explanationFactIds ?? [])
       check(reached.has(id), 'unreachable explanation ' + id);
+  // ADR-035: каждое звено цепочки можно закрыть, и хотя бы одно звено — только
+  // признанием виновного (факт из его breakpoint), а не одной найденной уликой.
+  const chain = c.solution.proofChain ?? [];
+  for (const link of chain)
+    check(
+      link.evidenceIds.some((id) => reached.has(id)),
+      'unreachable proof link ' + link.id,
+    );
+  if (chain.length) {
+    const culprit = c.suspects.find((s) => s.id === c.solution.culpritId);
+    const confessed = new Set(
+      culprit?.breakpoints.flatMap((b) => b.revealsFactIds) ?? [],
+    );
+    check(
+      chain.some((link) => link.evidenceIds.every((id) => confessed.has(id))),
+      'proof chain lacks culprit confession',
+    );
+  }
   for (const s of c.suspects.filter((s) => !s.isCulprit))
     check(
       c.facts.some(

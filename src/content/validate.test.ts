@@ -6,8 +6,8 @@ import { caseSchema } from './schema';
 import { validateCase } from './validate';
 it('встроенное дело валидно и решаемо без сети', () => {
   expect(validateCase(pilot).errors).toEqual([]);
-  expect(pilot.facts).toHaveLength(28);
-  expect(pilot.clues).toHaveLength(12);
+  expect(pilot.facts).toHaveLength(31);
+  expect(pilot.clues).toHaveLength(13);
 });
 it('брифинг не называет число раундов: его выбирает игрок', () => {
   const c = structuredClone(pilot);
@@ -15,7 +15,7 @@ it('брифинг не называет число раундов: его вы�
   expect(validateCase(c).errors).toContain('briefing mentions rounds');
 });
 it('невалидный формат отвергается', () =>
-  expect(caseSchema.safeParse({ ...pilot, schemaVersion: 4 }).success).toBe(
+  expect(caseSchema.safeParse({ ...pilot, schemaVersion: 5 }).success).toBe(
     false,
   ));
 it('повреждённые ссылки и недостижимый сейф обнаруживаются', () => {
@@ -33,6 +33,7 @@ it('v1 без осмотра читается, v1 с новыми правила
   const legacy = structuredClone(pilot);
   legacy.schemaVersion = 1;
   legacy.players.max = 4;
+  delete legacy.solution.proofChain;
   expect(caseSchema.safeParse(legacy).success).toBe(false);
   for (const cl of legacy.clues) {
     delete cl.inspection;

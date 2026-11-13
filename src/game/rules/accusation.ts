@@ -12,14 +12,32 @@ export type Accusation = {
   methodId: string;
   evidence: string[];
 };
-/** Верна ли тройка виновный/мотив/способ и есть ли среди доказательств ключевая улика. */
+/** Сколько улик/фактов можно приложить: по одной на звено цепочки и две про запас. */
+export const evidenceLimit = (c: CaseFile) =>
+  (c.solution.proofChain?.length ?? 1) + 2;
+/**
+ * Верна ли тройка виновный/мотив/способ и доказана ли она. С цепочкой (v4, ADR-035)
+ * нужно закрыть каждое звено; без неё — хватает одной улики из keyEvidence.
+ * missing — подписи незакрытых звеньев: показываются только тому, чья тройка верна.
+ */
 export function judgeAccusation(c: CaseFile, a: Accusation) {
+  const chain = c.solution.proofChain;
+  const missing = chain
+    ? chain
+        .filter(
+          (link) => !link.evidenceIds.some((id) => a.evidence.includes(id)),
+        )
+        .map((link) => link.label)
+    : [];
   return {
     correct:
       a.suspectId === c.solution.culpritId &&
       a.motiveId === c.solution.motiveId &&
       a.methodId === c.solution.methodId,
-    proven: a.evidence.some((id) => c.solution.keyEvidence.includes(id)),
+    proven: chain
+      ? missing.length === 0
+      : a.evidence.some((id) => c.solution.keyEvidence.includes(id)),
+    missing,
   };
 }
 /**
