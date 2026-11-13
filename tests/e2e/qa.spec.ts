@@ -272,10 +272,10 @@ test('11,13: Онлайн/Офлайн без новой партии, поле 
   const input = page.getByRole('textbox', { name: 'Свободный вопрос' });
   await expect(input).toBeVisible();
   await expect(
-    page.getByRole('button', { name: 'Спросить ИИ', exact: true }),
+    page.getByRole('button', { name: 'Спросить', exact: true }),
   ).toBeVisible();
   await input.fill('Где вы были?');
-  await click(page, 'Спросить ИИ');
+  await click(page, 'Спросить');
   await expect(page.locator('.chat blockquote')).toHaveCount(2);
   await click(page, 'Офлайн');
   await expect(input).toBeHidden();

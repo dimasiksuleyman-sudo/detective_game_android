@@ -83,11 +83,11 @@ test('MockAiClient: вопрос → разрешённый факт; слом �
   await page
     .getByRole('textbox', { name: 'Свободный вопрос' })
     .fill('Где вы были?');
-  await click(page, 'Спросить ИИ');
+  await click(page, 'Спросить');
   await expect(
     page.getByRole('blockquote').filter({
       hasText:
-        'Вера выступала в клубе «Ржавый якорь» с 23:30 до 01:00 — это подтвердит весь зал.',
+        'Вера пела в джаз-клубе «Ржавый якорь» на набережной с 23:30 до 01:00 — это подтвердит весь зал.',
     }),
   ).toBeVisible();
   await page.getByText('Стоимость последней попытки', { exact: true }).click();
@@ -140,7 +140,7 @@ test('сетевая ошибка или guard-фолбэк не расходу�
   await page
     .getByRole('textbox', { name: 'Свободный вопрос' })
     .fill('Где вы были?');
-  await click(page, 'Спросить ИИ');
+  await click(page, 'Спросить');
   await expect(page.getByRole('alert')).toContainText('Нет связи');
   await click(page, 'Где вы были после 23:00?');
   await click(page, 'Какие у вас были отношения с Аркадием?');
@@ -215,7 +215,7 @@ test('ожидание видно, сворачивание отменяет з�
   await page
     .getByRole('textbox', { name: 'Свободный вопрос' })
     .fill('Где вы были?');
-  await click(page, 'Спросить ИИ');
+  await click(page, 'Спросить');
   await expect(page.getByText('Подозреваемый печатает…')).toBeVisible();
   await page.evaluate(() => {
     Object.defineProperty(document, 'hidden', {
@@ -256,12 +256,12 @@ test('ИИ-форма первая, готовые вопросы свёрнут
   const field = page.getByRole('textbox', { name: 'Свободный вопрос' });
   for (let i = 0; i < 3; i++) {
     await field.fill('Расскажите о себе');
-    await click(page, 'Спросить ИИ');
+    await click(page, 'Спросить');
     await expect(page.locator('.chat blockquote')).toHaveCount(i + 1);
   }
   await field.fill('Ещё вопрос');
   await expect(
-    page.getByRole('button', { name: 'Спросить ИИ', exact: true }),
+    page.getByRole('button', { name: 'Спросить', exact: true }),
   ).toBeDisabled();
   await click(page, 'Назад');
   await click(page, 'Назад');
@@ -269,6 +269,6 @@ test('ИИ-форма первая, готовые вопросы свёрнут
   await click(page, 'Допрос');
   await click(page, 'Глеб Соколов');
   await field.fill('Новый ход');
-  await click(page, 'Спросить ИИ');
+  await click(page, 'Спросить');
   await expect(page.locator('.chat blockquote')).toHaveCount(4);
 });

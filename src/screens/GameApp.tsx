@@ -182,6 +182,31 @@ export default function GameApp() {
     useGame.getState().clearMessage();
   }, [path]);
 
+  // Допрос: после вопроса, предъявления улики и прихода ответа экран возвращается к портрету.
+  // Сразу под портретом — последний ответ, поэтому видны и мимика, и реплика.
+  const interrogationRef = useRef<HTMLElement | null>(null);
+  const repliesWithSuspect = suspect
+    ? (p?.history.filter((h) => h.suspect === suspect).length ?? 0)
+    : 0;
+  const showSuspect = () =>
+    requestAnimationFrame(() => {
+      const reduce = window.matchMedia?.(
+        '(prefers-reduced-motion: reduce)',
+      ).matches;
+      interrogationRef.current?.scrollIntoView({
+        block: 'start',
+        behavior: reduce ? 'auto' : 'smooth',
+      });
+    });
+  const seenReplies = useRef({ suspect, count: repliesWithSuspect });
+  useEffect(() => {
+    const seen = seenReplies.current;
+    seenReplies.current = { suspect, count: repliesWithSuspect };
+    // Только новый ответ того же подозреваемого, не вход на экран и не смена собеседника.
+    if (seen.suspect === suspect && repliesWithSuspect > seen.count)
+      showSuspect();
+  }, [suspect, repliesWithSuspect]);
+
   const button = (label: string, fn: () => void, disabled = false) => (
     <button type="button" disabled={disabled || busy || ai.busy} onClick={fn}>
       {label}
@@ -625,7 +650,11 @@ export default function GameApp() {
                 : c.suspects
                     .filter((s) => s.id === suspect)
                     .map((s) => (
-                      <section key={s.id} className={styles.interrogation}>
+                      <section
+                        key={s.id}
+                        className={styles.interrogation}
+                        ref={interrogationRef}
+                      >
                         <h3>{s.name}</h3>
                         <Art
                           src={
@@ -667,6 +696,11 @@ export default function GameApp() {
                                 <blockquote>{h.answer}</blockquote>
                               </article>
                             ))}
+                          {ai.busy && (
+                            <p role="status" className="typing">
+                              {ru.ai.typing}
+                            </p>
+                          )}
                         </div>
                         <div className="modeSwitch">
                           <button
@@ -714,6 +748,7 @@ export default function GameApp() {
                                     const question = freeQuestion;
                                     setFreeQuestion('');
                                     void askAi(s.id, question, tone);
+                                    showSuspect();
                                   },
                                   !freeQuestion.trim() ||
                                     (g.action?.used ?? 0) >= 3 ||
@@ -795,9 +830,10 @@ export default function GameApp() {
                                   g.mode === 'ai' &&
                                   settings.hasKey &&
                                   narrateClues
-                                )
+                                ) {
                                   void askAi(s.id, '', tone, cl.id);
-                                else
+                                  showSuspect();
+                                } else
                                   act({
                                     type: 'PRESENT_CLUE',
                                     suspectId: s.id,
@@ -1106,7 +1142,6 @@ export default function GameApp() {
       {isAiTestBuild && <p role="note">{ru.ai.testMode}</p>}
       {effective === 's10' && g?.mode === 'ai' && (
         <aside>
-          {ai.busy && <p role="status">{ru.ai.typing}</p>}
           {ai.error && (
             <p role="alert">
               {ai.error} {ru.ai.freeFallback}
