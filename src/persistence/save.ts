@@ -1,5 +1,5 @@
 /** Версионированное сохранение партии в IndexedDB, без ключей и сетевых запросов. */
-import { pilot } from '../content/loader';
+import { loadCase, legacyCaseId } from '../content/loader';
 import { get, set, del } from 'idb-keyval';
 import { z } from 'zod';
 import { emptyAiUsage, type GameState } from '../game/engine';
@@ -34,7 +34,7 @@ const player = z.object({
   ),
 });
 const schema = z.object({
-  caseId: z.string(),
+  caseId: z.string().optional(),
   aiUsage: z
     .object({
       knownCostRub: z.number().nonnegative(),
@@ -63,51 +63,65 @@ const schema = z.object({
 });
 const key = 'interrogation-save-v1';
 export async function saveGame(state: GameState) {
-  await set(key, { version: 3, state });
+  await set(key, { version: 4, state });
 }
-export function parseStoredGame(raw: unknown): GameState | null {
+export function parseStoredGame(
+  raw: unknown,
+  resolveCase = loadCase,
+): GameState | null {
   if (raw === undefined) return null;
   const envelope = z
     .object({
-      version: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+      version: z.union([
+        z.literal(1),
+        z.literal(2),
+        z.literal(3),
+        z.literal(4),
+      ]),
       state: schema,
     })
     .parse(raw);
-  const parsed = envelope.state;
-  if (
-    parsed.current >= parsed.players.length ||
-    parsed.caseId !== 'case-001-blue-owl'
-  )
-    throw new Error('Invalid save');
-  // Новый сейф не отбирает старые находки; числовой факт заменяется смысловой подсказкой.
-  parsed.board = parsed.board.map((b) => ({
-    ...b,
-    id: b.id === 'f-safe-code' ? 'f-safe-hint' : b.id,
-  }));
-  for (const p of parsed.players) {
-    p.facts = p.facts.map((id) => (id === 'f-safe-code' ? 'f-safe-hint' : id));
-    if (p.clues.includes('c-photo') && !p.facts.includes('f-opening-date'))
-      p.facts.push('f-opening-date');
-    if (
-      (p.visited.includes('h-safe') || p.clues.includes('c-ledger')) &&
-      !p.openedLocks.includes('h-safe')
-    )
-      p.openedLocks.push('h-safe');
-    // В старой бухгалтерии подпись уже была частью известного факта.
-    if (
-      envelope.version < 3 &&
-      p.clues.includes('c-ledger') &&
-      (p.facts.includes('f-double-books') || p.truths.includes('t-money'))
-    ) {
-      if (!p.facts.includes('f-ledger-signature'))
-        p.facts.push('f-ledger-signature');
-      if (!p.inspectedDetails.includes('d-ledger-signature'))
-        p.inspectedDetails.push('d-ledger-signature');
+  if (envelope.version === 4 && !envelope.state.caseId)
+    throw new Error('Missing caseId');
+  const parsed = {
+    ...envelope.state,
+    caseId: envelope.state.caseId ?? legacyCaseId,
+  };
+  if (parsed.current >= parsed.players.length) throw new Error('Invalid save');
+  const c = resolveCase(parsed.caseId);
+  if (parsed.caseId === legacyCaseId) {
+    // Новый сейф не отбирает старые находки; числовой факт заменяется смысловой подсказкой.
+    parsed.board = parsed.board.map((b) => ({
+      ...b,
+      id: b.id === 'f-safe-code' ? 'f-safe-hint' : b.id,
+    }));
+    for (const p of parsed.players) {
+      p.facts = p.facts.map((id) =>
+        id === 'f-safe-code' ? 'f-safe-hint' : id,
+      );
+      if (p.clues.includes('c-photo') && !p.facts.includes('f-opening-date'))
+        p.facts.push('f-opening-date');
+      if (
+        (p.visited.includes('h-safe') || p.clues.includes('c-ledger')) &&
+        !p.openedLocks.includes('h-safe')
+      )
+        p.openedLocks.push('h-safe');
+      // В старой бухгалтерии подпись уже была частью известного факта.
+      if (
+        envelope.version < 3 &&
+        p.clues.includes('c-ledger') &&
+        (p.facts.includes('f-double-books') || p.truths.includes('t-money'))
+      ) {
+        if (!p.facts.includes('f-ledger-signature'))
+          p.facts.push('f-ledger-signature');
+        if (!p.inspectedDetails.includes('d-ledger-signature'))
+          p.inspectedDetails.push('d-ledger-signature');
+      }
     }
   }
   // Прежние версии выдавали факт при находке. Не отбираем его и не заставляем искать заново.
   for (const p of parsed.players)
-    for (const cl of pilot.clues) {
+    for (const cl of c.clues) {
       if (!p.clues.includes(cl.id)) continue;
       for (const d of cl.inspection?.details ?? [])
         if (

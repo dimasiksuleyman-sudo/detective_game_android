@@ -171,6 +171,8 @@ pre {
   justify-content: center;
 }
 .wheels {
+  max-width: 100%;
+  overflow-x: auto;
   display: flex;
   gap: 0.2rem;
   padding: 0.45rem;

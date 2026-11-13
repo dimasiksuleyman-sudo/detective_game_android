@@ -1,6 +1,6 @@
 /** Применяет только актуальный результат к тому игроку/ходу, который начал запрос; ключ не сохраняется в партии. */
 import { create } from 'zustand';
-import { pilot } from '../content/loader';
+import { loadCase } from '../content/loader';
 import { useGame } from '../store/gameStore';
 import { useSettings } from '../store/settingsStore';
 import { getAiClient } from './factory';
@@ -40,6 +40,7 @@ export async function askAi(
     original.finalMode
   )
     return;
+  const c = loadCase(original.caseId);
   const player = original.players[original.current];
   if (!player) return;
   if (!settings.hasKey) {
@@ -49,8 +50,8 @@ export async function askAi(
   if (!clueId && (!question.trim() || question.length > 1000)) return;
   // Проверка до платного запроса использует тот же reduce, что и окончательное действие.
   const preview = clueId
-    ? reduce(pilot, original, { type: 'PRESENT_CLUE', suspectId, clueId, tone })
-    : reduce(pilot, original, {
+    ? reduce(c, original, { type: 'PRESENT_CLUE', suspectId, clueId, tone })
+    : reduce(c, original, {
         type: 'ASK_AI_QUESTION_RESULT',
         suspectId,
         reply: '',
@@ -64,7 +65,7 @@ export async function askAi(
     ? preview.players[original.current]?.history.at(-1)?.answer
     : undefined;
   const label = clueId
-    ? (pilot.clues.find((c) => c.id === clueId)?.name ?? '')
+    ? (c.clues.find((c) => c.id === clueId)?.name ?? '')
     : question.trim();
   const controller = new AbortController();
   pending = controller;
@@ -72,7 +73,7 @@ export async function askAi(
   try {
     const answer = await interrogate({
       client: getAiClient(),
-      c: pilot,
+      c,
       suspectId,
       player: clueId ? (preview.players[original.current] ?? player) : player,
       tone,

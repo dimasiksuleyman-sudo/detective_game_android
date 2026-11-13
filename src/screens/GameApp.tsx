@@ -23,7 +23,7 @@ import {
   isFinishedIllustration,
   illustrationDimensions,
 } from '../content/illustrations';
-import { pilot as c } from '../content/loader';
+import { listCases, loadCase } from '../content/loader';
 import { useGame } from '../store/gameStore';
 import { ru } from '../i18n/ru';
 import { HoldButton } from '../components/HoldButton';
@@ -36,20 +36,30 @@ const HotspotEditor =
   import.meta.env.MODE === 'e2e'
     ? lazy(() => import('../components/HotspotEditor'))
     : null;
-function Art({ src, label }: { src: string; label: string }) {
-  const dimensions = illustrationDimensions(src);
+function Art({
+  src,
+  label,
+  caseId,
+}: {
+  src: string;
+  label: string;
+  caseId: string;
+}) {
+  const dimensions = illustrationDimensions(caseId, src);
   return (
     <figure
-      className={isFinishedIllustration(src) ? styles.finishedArt : undefined}
+      className={
+        isFinishedIllustration(caseId, src) ? styles.finishedArt : undefined
+      }
     >
       <img
         width={dimensions?.width}
         height={dimensions?.height}
-        src={src.startsWith('/troupe') ? src : `/cases/${c.id}/${src}`}
+        src={src.startsWith('/troupe') ? src : `/cases/${caseId}/${src}`}
         alt=""
       />
       <figcaption>
-        {!isFinishedIllustration(src) && t.placeholder + ': '}
+        {!isFinishedIllustration(caseId, src) && t.placeholder + ': '}
         {label}
       </figcaption>
     </figure>
@@ -59,10 +69,20 @@ export default function GameApp() {
   const { game: g, ready, busy, error, init, dispatch, reset } = useGame(),
     nav = useNavigate(),
     path = useLocation().pathname;
+  const [setupAllowed, setSetupAllowed] = useState(false);
+  const [selectedCaseId, setSelectedCaseId] = useState(() => {
+    const first = listCases()[0];
+    if (!first) throw new Error('No built-in cases');
+    return first.id;
+  });
+  const selecting = ['/s03', '/s04'].includes(path) && setupAllowed;
+  const c = loadCase(
+    selecting ? selectedCaseId : (g?.caseId ?? selectedCaseId),
+  );
+  const briefing = briefingText(c);
   const initSettings = useSettings((s) => s.init);
   const ai = useAi(),
     settings = useSettings();
-  const [setupAllowed, setSetupAllowed] = useState(false);
   const [online, setOnline] = useState(false);
   useEffect(() => {
     setOnline(g?.mode === 'ai');
@@ -275,18 +295,37 @@ export default function GameApp() {
           )}
           {effective === 's17' && HotspotEditor && (
             <Suspense fallback={<p>{ru.loading}</p>}>
-              <HotspotEditor />
+              <HotspotEditor key={c.id} c={c} />
             </Suspense>
           )}
           {effective === 's03' && (
             <>
               <h2>{t.choose}</h2>
-              <Art src={c.cover} label={c.title} />
-              <p>{c.tagline}</p>
-              <p>
-                {c.estimatedMinutes} · {t.classic}
-              </p>
-              {button(c.title, () => go('s04'))}
+              {listCases().map((item) => (
+                <article key={item.id}>
+                  <Art caseId={item.id} src={item.cover} label={item.title} />
+                  <p>{item.tagline}</p>
+                  <p>
+                    {t.difficulty}: {item.difficulty} · {item.estimatedMinutes}{' '}
+                    {t.minutes}
+                  </p>
+                  {button(item.title, () => {
+                    setSelectedCaseId(item.id);
+                    setCount(
+                      Math.max(
+                        item.players.min,
+                        Math.min(count, item.players.max),
+                      ),
+                    );
+                    setLocation('');
+                    setSuspect('');
+                    setClue('');
+                    setSafeId('');
+                    setCloseup('');
+                    go('s04');
+                  })}
+                </article>
+              ))}
               {button(t.back, () => go('s02'))}
             </>
           )}
@@ -299,7 +338,10 @@ export default function GameApp() {
                   value={count}
                   onChange={(e) => setCount(+e.target.value)}
                 >
-                  {[1, 2, 3, 4, 5].map((n) => (
+                  {Array.from(
+                    { length: c.players.max - c.players.min + 1 },
+                    (_, i) => c.players.min + i,
+                  ).map((n) => (
                     <option key={n}>{n}</option>
                   ))}
                 </select>
@@ -355,6 +397,7 @@ export default function GameApp() {
                   resetAiUsage();
                   void dispatch({
                     type: 'START_GAME',
+                    caseId: c.id,
                     overwrite: !!g,
                     mode: settings.hasKey ? mode : 'classic',
                     names: names.slice(0, count),
@@ -374,12 +417,15 @@ export default function GameApp() {
           {effective === 's05' && g && (
             <>
               <h2>{ru.screens.S05.title}</h2>
-              <p>{briefingText}</p>
+              <p>{briefing}</p>
               <p>
                 {t.rounds}: {g.roundLimit}
               </p>
-              <NarrationPlayer clip={narrationFor('briefing', briefingText)} />
+              <NarrationPlayer
+                clip={narrationFor(c.id, 'briefing', briefing)}
+              />
               <Art
+                caseId={c.id}
                 src={'/troupe/' + c.victim.actorId + '/neutral.webp'}
                 label={c.victim.name}
               />
@@ -423,7 +469,7 @@ export default function GameApp() {
               {g.hint && (
                 <aside>
                   {t.hint}: {g.hint}
-                  <NarrationPlayer clip={hintNarration(g.hint)} />
+                  <NarrationPlayer clip={hintNarration(c.id, g.hint)} />
                 </aside>
               )}
               <p>
@@ -557,7 +603,7 @@ export default function GameApp() {
               </h2>
               {safeHotspot && !clue && (
                 <SafePuzzle
-                  key={safeId}
+                  key={c.id + safeId}
                   caseId={c.id}
                   hotspot={safeHotspot}
                   opened={p.openedLocks.includes(safeId)}
@@ -597,7 +643,7 @@ export default function GameApp() {
                 />
               )}
               {closeup && !selectedClue?.inspection && (
-                <Art src={closeup} label="" />
+                <Art caseId={c.id} src={closeup} label="" />
               )}
               {c.clues
                 .filter((x) => x.id === clue && p.clues.includes(x.id))
@@ -605,7 +651,7 @@ export default function GameApp() {
                   <article key={cl.id}>
                     <h3>{cl.name}</h3>
                     {cl.image && !cl.inspection && (
-                      <Art src={cl.image} label="" />
+                      <Art caseId={c.id} src={cl.image} label="" />
                     )}
                     {!cl.document && <p>{cl.description}</p>}
                     {cl.inspection && (
@@ -661,6 +707,7 @@ export default function GameApp() {
                       >
                         <h3>{s.name}</h3>
                         <Art
+                          caseId={c.id}
                           src={
                             '/troupe/' +
                             s.actorId +
@@ -877,7 +924,7 @@ export default function GameApp() {
                           go('s09');
                         }}
                       >
-                        {cl.image && isFinishedIllustration(cl.image) && (
+                        {cl.image && isFinishedIllustration(c.id, cl.image) && (
                           <img
                             className={styles.clueThumb}
                             src={`/cases/${c.id}/${cl.image}`}
@@ -1071,15 +1118,17 @@ export default function GameApp() {
               <p>{c.solution.explanation}</p>
               <NarrationPlayer
                 clip={narrationFor(
+                  c.id,
                   'solution-explanation',
                   c.solution.explanation,
                 )}
               />
               {c.solution.reconstruction.map((r, index) => (
                 <div key={r.image}>
-                  <Art src={r.image} label={r.caption} />
+                  <Art caseId={c.id} src={r.image} label={r.caption} />
                   <NarrationPlayer
                     clip={narrationFor(
+                      c.id,
                       'reconstruction-' + (index + 1),
                       r.caption,
                     )}

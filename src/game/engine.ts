@@ -61,6 +61,7 @@ export type GameState = {
 export type Action =
   | {
       type: 'START_GAME';
+      caseId?: string;
       names: string[];
       roundLimit: number;
       mode?: 'classic' | 'ai';

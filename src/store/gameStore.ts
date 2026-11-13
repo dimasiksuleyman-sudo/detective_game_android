@@ -1,7 +1,7 @@
 /** Zustand объединяет чистый движок и последовательное сохранение до подтверждения действия. */
 import { playEffect } from '../platform/soundscape';
 import { create } from 'zustand';
-import { pilot } from '../content/loader';
+import { loadCase } from '../content/loader';
 import { reduce, type GameState, type Action } from '../game/engine';
 import { loadGame, saveGame, clearGame } from '../persistence/save';
 import { ru } from '../i18n/ru';
@@ -27,7 +27,9 @@ export const useGame = create<Store>((set, get) => ({
       try {
         const game = await loadGame();
         set({
-          game: game ? reduce(pilot, game, { type: 'LOCK' }) : null,
+          game: game
+            ? reduce(loadCase(game.caseId), game, { type: 'LOCK' })
+            : null,
           ready: true,
         });
       } catch {
@@ -40,7 +42,15 @@ export const useGame = create<Store>((set, get) => ({
       if (a.type !== 'ADD_NOTE') set({ busy: true, error: '' });
       try {
         const before = get().game;
-        const game = reduce(pilot, before, a);
+        const caseId =
+          a.type === 'START_GAME'
+            ? (a.caseId ?? before?.caseId)
+            : before?.caseId;
+        if (!caseId) {
+          set({ busy: false });
+          return;
+        }
+        const game = reduce(loadCase(caseId), before, a);
 
         if (game) await saveGame(game);
         set({ game, busy: false });

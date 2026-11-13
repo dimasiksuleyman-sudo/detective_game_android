@@ -43,11 +43,11 @@ describe('готовый арт пилота', () => {
     expect(new Set(manifest.files.map((f) => f.output))).toEqual(required);
     for (const file of required) {
       if (!file) throw new Error('Пустой путь ресурса в деле');
-      expect(isFinishedIllustration(file)).toBe(true);
-      expect(illustrationDimensions('/' + file)).toEqual(
-        illustrationDimensions(file),
+      expect(isFinishedIllustration(pilot.id, file)).toBe(true);
+      expect(illustrationDimensions(pilot.id, '/' + file)).toEqual(
+        illustrationDimensions(pilot.id, file),
       );
     }
-    expect(isFinishedIllustration('images/unknown.webp')).toBe(false);
+    expect(isFinishedIllustration(pilot.id, 'images/unknown.webp')).toBe(false);
   });
 });
