@@ -369,3 +369,20 @@ npm.cmd run android:sync
 ## Физика вещей (0.4.5 / code 15)
 
 Обновление — те же команды, что в разделе 0.4.1. Проверка — MT-029.
+
+## «Холодная камера» — 0.6.0 / code 20
+
+До слияния PR, PowerShell из каталога проекта:
+
+```powershell
+$env:GIT_LFS_SKIP_SMUDGE=1
+git fetch origin
+git switch feature/case-003-cold-room
+git pull --ff-only origin feature/case-003-cold-room
+npm.cmd ci
+npm.cmd run android:sync
+```
+
+После слияния вместо ветки задачи — `git switch main` и `git pull --ff-only origin main`. В Android Studio дождаться Sync, выбрать телефон и нажать Run ▶. APK собирает владелец; агент Gradle не запускает. Данные приложения не удалять. Полный пакет проверки — MT-034. Для S17 использовать debug web build по разделу редактора выше, в production редактор отсутствует.
+
+Секрет ElevenLabs доступен в GitHub Actions, локально не требуется. Workflow `narration-elevenlabs.yml` принимает дело № 3 и необязательный `target_branch`: результаты можно сохранить в той же ветке PR. `mode=voices` только проверяет доступ к библиотеке, `mode=all` платный и запускается ровно один раз после публикации плана в PR. Не повторять платный запуск для исправления характера или артефактов.
