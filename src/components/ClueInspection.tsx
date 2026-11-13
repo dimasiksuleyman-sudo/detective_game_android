@@ -73,6 +73,27 @@ export function ClueInspection({
             alt={title}
             draggable={false}
           />
+          {inspection.overlays?.map((o, i) => (
+            <span
+              key={i}
+              style={{
+                position: 'absolute',
+                left: o.rect.x * 100 + '%',
+                top: o.rect.y * 100 + '%',
+                width: o.rect.w * 100 + '%',
+                height: o.rect.h * 100 + '%',
+                whiteSpace: 'pre-line',
+                color: '#29231c',
+                fontSize: `calc(${zoom} * ${o.handwritten ? 'clamp(10px, 4vw, 24px)' : 'clamp(7px, 2.1vw, 15px)'})`,
+                fontFamily: o.handwritten ? 'cursive' : 'monospace',
+                lineHeight: 1.6,
+                pointerEvents: 'none',
+                fontStyle: o.handwritten ? 'italic' : 'normal',
+              }}
+            >
+              {o.text}
+            </span>
+          ))}
           {inspection.details.map((detail, index) => (
             <button
               type="button"

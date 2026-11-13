@@ -1,4 +1,4 @@
-/** Единая строгая Zod-схема формата дела v1/v2. */
+/** Единая строгая Zod-схема формата дела v1/v2/v3. */
 import { z } from 'zod';
 const text = z.string().min(1);
 const identifier = z.string().regex(/^[a-z][a-z0-9]*(?:-[a-z0-9]+)*$/);
@@ -57,7 +57,7 @@ const breakpoint = z.object({
 });
 export const caseSchema = z
   .object({
-    schemaVersion: z.union([z.literal(1), z.literal(2)]),
+    schemaVersion: z.union([z.literal(1), z.literal(2), z.literal(3)]),
     id: identifier,
     version: z.number().int().positive(),
     minAppVersion: z.string().regex(/^\d+\.\d+\.\d+$/),
@@ -146,6 +146,24 @@ export const caseSchema = z
                 h: z.number().positive().max(1),
               }),
               closeup: text.optional(),
+              lock: z
+                .object({
+                  type: z.literal('combination'),
+                  digits: z.number().int().min(1).max(8),
+                  code: z.string().regex(/^\d+$/),
+                  deductionFactIds: ids.min(2),
+                })
+                .refine(
+                  (l) => l.code.length === l.digits,
+                  'Длина кода не совпадает с замком',
+                )
+                .optional(),
+              container: z
+                .object({
+                  image: text,
+                  items: z.array(z.object({ clueId: identifier, rect })).min(1),
+                })
+                .optional(),
               text,
               clueId: identifier.optional(),
               revealsFactIds: ids.optional(),
@@ -168,9 +186,15 @@ export const caseSchema = z
         description: text,
         revealsFactIds: ids,
         isKey: z.boolean(),
+        explanationFactIds: ids.optional(),
         inspection: z
           .object({
             image: text,
+            overlays: z
+              .array(
+                z.object({ text, rect, handwritten: z.boolean().optional() }),
+              )
+              .optional(),
             details: z
               .array(
                 z.object({
@@ -197,9 +221,20 @@ export const caseSchema = z
   })
   .refine(
     (c) =>
-      c.schemaVersion === 2 ||
+      c.schemaVersion >= 2 ||
       (!c.clues.some((cl) => cl.inspection) && c.players.max <= 4),
-    'Осмотр деталей и пять игроков требуют schemaVersion=2',
+    'Осмотр деталей и пять игроков требуют schemaVersion>=2',
+  )
+  .refine(
+    (c) =>
+      c.schemaVersion >= 3 ||
+      (!c.locations.some((l) =>
+        l.hotspots.some((h) => h.lock || h.container),
+      ) &&
+        !c.clues.some(
+          (cl) => cl.inspection?.overlays || cl.explanationFactIds,
+        )),
+    'Замки, надписи и объяснения требуют schemaVersion=3',
   )
   .refine(
     (c) => c.players.min <= c.players.max,

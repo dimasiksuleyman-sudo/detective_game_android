@@ -24,6 +24,7 @@ export type Player = {
   color: string;
   clues: string[];
   inspectedDetails: string[];
+  openedLocks: string[];
   facts: string[];
   visited: string[];
   asked: string[];
@@ -67,6 +68,8 @@ export type Action =
     }
   | { type: 'RECORD_AI_USAGE'; usage: AiUsage }
   | { type: 'BEGIN_TURN' }
+  | { type: 'OPEN_LOCK'; locationId: string; hotspotId: string; code: string }
+  | { type: 'TAKE_CONTAINER_ITEM'; hotspotId: string; clueId: string }
   | { type: 'END_TURN' }
   | { type: 'INSPECT_CLUE'; clueId: string; x: number; y: number }
   | { type: 'SEARCH_HOTSPOT'; locationId: string; hotspotId: string }
@@ -235,6 +238,7 @@ export function reduce(
         color: colors[i] ?? colors[0] ?? '',
         clues: [],
         inspectedDetails: [],
+        openedLocks: [],
         facts: [],
         visited: [],
         asked: [],
@@ -343,11 +347,44 @@ export function reduce(
     s.message = ru.inspection.found;
     return s;
   }
+  if (a.type === 'OPEN_LOCK') {
+    if (s.finalMode || p.eliminated) return state;
+    const loc = c.locations.find((l) => l.id === a.locationId);
+    const h = loc?.hotspots.find((h) => h.id === a.hotspotId);
+    if (!h?.lock || !h.container) return state;
+    if (p.openedLocks.includes(h.id)) return state;
+    if (!canUse(s, p, 'search', a.locationId, 2)) return state;
+    if (a.code !== h.lock.code) {
+      s.message = ru.safe.wrong;
+      return s;
+    }
+    use(s, 'search', a.locationId);
+    p.openedLocks.push(h.id);
+    p.visited = unique([...p.visited, h.id]);
+    s.message = ru.safe.opened;
+    return s;
+  }
+  if (a.type === 'TAKE_CONTAINER_ITEM') {
+    if (s.finalMode || p.eliminated) return state;
+    const h = c.locations
+      .flatMap((l) => l.hotspots)
+      .find((h) => h.id === a.hotspotId);
+    if (
+      !h?.container ||
+      !p.openedLocks.includes(h.id) ||
+      !h.container.items.some((i) => i.clueId === a.clueId) ||
+      p.clues.includes(a.clueId)
+    )
+      return state;
+    grant(c, p, [a.clueId], []);
+    return s;
+  }
   if (a.type === 'SEARCH_HOTSPOT') {
     const l = c.locations.find((x) => x.id === a.locationId),
       h = l?.hotspots.find((x) => x.id === a.hotspotId);
     if (
       !h ||
+      h.lock ||
       !canUse(s, p, 'search', a.locationId, 2) ||
       p.visited.includes(h.id)
     )

@@ -16,6 +16,11 @@ const assets = [
       .filter((h) => h.closeup)
       .map((h) => ({ file: h.closeup ?? '', w: 1024, h: 1024 })),
   ),
+  ...c.locations.flatMap((l) =>
+    l.hotspots.flatMap((h) =>
+      h.container ? [{ file: h.container.image, w: 1024, h: 1024 }] : [],
+    ),
+  ),
   ...c.clues
     .filter((cl) => cl.image)
     .map((cl) => ({ file: cl.image ?? '', w: 512, h: 512 })),

@@ -10,6 +10,7 @@ const player = z.object({
   color: z.string(),
   clues: strings,
   inspectedDetails: strings.default([]),
+  openedLocks: strings.default([]),
   facts: strings,
   visited: strings,
   asked: strings,
@@ -62,18 +63,48 @@ const schema = z.object({
 });
 const key = 'interrogation-save-v1';
 export async function saveGame(state: GameState) {
-  await set(key, { version: 2, state });
+  await set(key, { version: 3, state });
 }
 export function parseStoredGame(raw: unknown): GameState | null {
   if (raw === undefined) return null;
-  const parsed = z
-    .object({ version: z.union([z.literal(1), z.literal(2)]), state: schema })
-    .parse(raw).state;
+  const envelope = z
+    .object({
+      version: z.union([z.literal(1), z.literal(2), z.literal(3)]),
+      state: schema,
+    })
+    .parse(raw);
+  const parsed = envelope.state;
   if (
     parsed.current >= parsed.players.length ||
     parsed.caseId !== 'case-001-blue-owl'
   )
     throw new Error('Invalid save');
+  // Новый сейф не отбирает старые находки; числовой факт заменяется смысловой подсказкой.
+  parsed.board = parsed.board.map((b) => ({
+    ...b,
+    id: b.id === 'f-safe-code' ? 'f-safe-hint' : b.id,
+  }));
+  for (const p of parsed.players) {
+    p.facts = p.facts.map((id) => (id === 'f-safe-code' ? 'f-safe-hint' : id));
+    if (p.clues.includes('c-photo') && !p.facts.includes('f-opening-date'))
+      p.facts.push('f-opening-date');
+    if (
+      (p.visited.includes('h-safe') || p.clues.includes('c-ledger')) &&
+      !p.openedLocks.includes('h-safe')
+    )
+      p.openedLocks.push('h-safe');
+    // В старой бухгалтерии подпись уже была частью известного факта.
+    if (
+      envelope.version < 3 &&
+      p.clues.includes('c-ledger') &&
+      (p.facts.includes('f-double-books') || p.truths.includes('t-money'))
+    ) {
+      if (!p.facts.includes('f-ledger-signature'))
+        p.facts.push('f-ledger-signature');
+      if (!p.inspectedDetails.includes('d-ledger-signature'))
+        p.inspectedDetails.push('d-ledger-signature');
+    }
+  }
   // Прежние версии выдавали факт при находке. Не отбираем его и не заставляем искать заново.
   for (const p of parsed.players)
     for (const cl of pilot.clues) {

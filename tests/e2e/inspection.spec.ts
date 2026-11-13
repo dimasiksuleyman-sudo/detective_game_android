@@ -107,7 +107,7 @@ test('предмет → самостоятельный осмотр → фак�
   ).toBeVisible();
   await expect(page.locator('main')).toContainText('свежий скол');
   const after = await saved(page);
-  expect(after.version).toBe(2);
+  expect(after.version).toBe(3);
   expect(after.state.players[0]?.facts).toContain('f-statuette-weapon');
   expect(after.state.action.used).toBe(before.state.action.used);
   expect(after.state.players[0]?.score).toBe(before.state.players[0]?.score);

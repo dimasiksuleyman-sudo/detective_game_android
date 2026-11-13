@@ -1,3 +1,4 @@
+import { collectLedger, backFromSafeItem } from './safeHelpers';
 import { test, expect, type Page } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   page.on('dialog', (d) => {
@@ -5,6 +6,15 @@ test.beforeEach(async ({ page }) => {
   });
 });
 const click = async (p: Page, name: string) => {
+  if (
+    name === 'Назад' &&
+    (await p
+      .getByRole('button', { name: 'К содержимому сейфа', exact: true })
+      .count())
+  ) {
+    await backFromSafeItem(p);
+    return;
+  }
   const b = p.getByRole('button', { name, exact: true, includeHidden: true });
   await expect(b).toBeAttached();
   const details = b.locator('xpath=ancestor::details');
@@ -12,6 +22,7 @@ const click = async (p: Page, name: string) => {
     await details.locator('summary').click();
   await expect(b).toBeEnabled();
   await b.click();
+  if (name === 'Сейф') await collectLedger(p);
 };
 async function setup(page: Page, fixture = '') {
   await page.route('**/*', (r) =>

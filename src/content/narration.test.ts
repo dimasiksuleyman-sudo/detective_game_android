@@ -29,8 +29,13 @@ it('восемь встроенных MP3 соответствуют маниф�
 
 it('тексты всех восьми записей совпадают с текущим каноном игры', () => {
   expect(narrationFor('briefing', briefingText)).toBeDefined();
-  for (const hint of pilot.hints)
-    expect(hintNarration(hint.text)).toBeDefined();
+  for (const clip of manifest.clips.filter((c) => c.role === 'chief'))
+    expect(pilot.hints.some((h) => h.text === clip.text)).toBe(true);
+  expect(
+    hintNarration(
+      pilot.hints.find((h) => h.unlessAnyPlayerHas === 'c-ledger')?.text ?? '',
+    ),
+  ).toBeUndefined();
   expect(
     narrationFor('solution-explanation', pilot.solution.explanation),
   ).toBeDefined();

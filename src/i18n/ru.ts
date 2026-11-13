@@ -1,4 +1,17 @@
 export const ru = {
+  safe: {
+    title: 'Кодовый замок',
+    digit: 'Колёсико',
+    increment: 'Следующая цифра',
+    decrement: 'Предыдущая цифра',
+    open: 'Открыть сейф',
+    opened: 'Сейф открыт.',
+    wrong: 'Не подходит.',
+    inside: 'Содержимое сейфа',
+    item: 'Осмотреть предмет',
+    back: 'К содержимому сейфа',
+    explanations: 'Ложные следы',
+  },
   dialogue: { earlier: 'Предыдущие реплики' },
   sound: {
     saveError:

@@ -8,6 +8,7 @@ import {
 } from '../audio/policy';
 import { watchLifecycle } from './appLifecycle';
 export type EffectId =
+  | 'safe-open'
   | 'ui-tap'
   | 'new-fact'
   | 'handover'
@@ -188,7 +189,7 @@ function createSoundscape() {
     const el = e.target;
     if (el instanceof Element && el.closest('button, summary, input, select')) {
       unlock();
-      if (!el.closest('.hold')) effect('ui-tap');
+      if (!el.closest('.hold, [data-silent-tap]')) effect('ui-tap');
     }
   };
   const key = (e: KeyboardEvent) => {

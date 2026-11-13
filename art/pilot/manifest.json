@@ -510,6 +510,51 @@
       "sourceWidth": 1536,
       "sourceHeight": 1024,
       "quality": 80
+    },
+    {
+      "source": "h-safe-open.png",
+      "output": "images/closeups/h-safe-open.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-ledger-spread.png",
+      "output": "images/closeups/h-ledger-spread.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "c-envelope.png",
+      "output": "images/clues/c-envelope.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-will.png",
+      "output": "images/clues/c-will.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-lawyer-card.png",
+      "output": "images/clues/c-lawyer-card.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
     }
   ]
 }

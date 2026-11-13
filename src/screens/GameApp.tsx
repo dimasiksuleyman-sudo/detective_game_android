@@ -1,3 +1,5 @@
+import { playEffect } from '../platform/soundscape';
+import { SafePuzzle } from '../components/SafePuzzle';
 import { Soundscape } from '../components/Soundscape';
 import { AudioSettings } from '../components/AudioSettings';
 import { DocumentRender } from '../components/DocumentRender';
@@ -64,7 +66,11 @@ export default function GameApp() {
   useEffect(() => {
     setOnline(g?.mode === 'ai');
   }, [g?.mode]);
-  const [clueReturn, setClueReturn] = useState<'s08' | 's11'>('s08');
+  const [clueReturn, setClueReturn] = useState<'s08' | 's11' | 'safe'>('s08');
+  const [safeId, setSafeId] = useState('');
+  const safeHotspot = c.locations
+    .flatMap((l) => l.hotspots)
+    .find((h) => h.id === safeId);
   const [narrateClues, setNarrateClues] = useState(true);
   const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
     [freeQuestion, setFreeQuestion] = useState('');
@@ -192,7 +198,11 @@ export default function GameApp() {
   if (!ready) return <p role="status">{ru.loading}</p>;
   return (
     <div className={styles.game} data-screen={effective}>
-      <Soundscape screen={effective} solved={!!g?.winners.length} />
+      <Soundscape
+        screen={effective}
+        solved={!!g?.winners.length}
+        paper={!(safeId && !clue)}
+      />
       <header>
         <h1>{ru.appName}</h1>
         {p && g && effective !== 's06' && effective !== 's14' && personal && (
@@ -460,10 +470,20 @@ export default function GameApp() {
                                 height: h.rect.h * 100 + '%',
                               }}
                               disabled={
-                                p.visited.includes(h.id) ||
-                                (g.action?.used ?? 0) >= 2
+                                !p.openedLocks.includes(h.id) &&
+                                (p.visited.includes(h.id) ||
+                                  (g.action?.used ?? 0) >= 2)
                               }
                               onClick={() => {
+                                if (h.lock) {
+                                  setSafeId(h.id);
+                                  setClue('');
+                                  setCloseup('');
+                                  setClueReturn('s08');
+                                  go('s09');
+                                  return;
+                                }
+                                setSafeId('');
                                 act({
                                   type: 'SEARCH_HOTSPOT',
                                   locationId: l.id,
@@ -499,7 +519,54 @@ export default function GameApp() {
           )}
           {effective === 's09' && g && p && (
             <>
-              <h2>{t.found}</h2>
+              <h2>
+                {safeId && !clue
+                  ? p.openedLocks.includes(safeId)
+                    ? ru.safe.inside
+                    : ru.safe.title
+                  : t.found}
+              </h2>
+              {safeHotspot && !clue && (
+                <SafePuzzle
+                  key={safeId}
+                  caseId={c.id}
+                  hotspot={safeHotspot}
+                  opened={p.openedLocks.includes(safeId)}
+                  collected={p.clues}
+                  enabled={
+                    g.phase === 'turn' &&
+                    !g.finalMode &&
+                    !p.eliminated &&
+                    (p.openedLocks.includes(safeId) ||
+                      !g.action ||
+                      (g.action.kind === 'search' &&
+                        g.action.target === location &&
+                        g.action.used < 2))
+                  }
+                  submit={async (code) => {
+                    await dispatch({
+                      type: 'OPEN_LOCK',
+                      locationId: location,
+                      hotspotId: safeId,
+                      code,
+                    });
+                    return !!useGame
+                      .getState()
+                      .game?.players[g.current]?.openedLocks.includes(safeId);
+                  }}
+                  take={(id) => {
+                    playEffect('paper');
+                    if (!p.clues.includes(id))
+                      act({
+                        type: 'TAKE_CONTAINER_ITEM',
+                        hotspotId: safeId,
+                        clueId: id,
+                      });
+                    setClue(id);
+                    setClueReturn('safe');
+                  }}
+                />
+              )}
               {closeup && !selectedClue?.inspection && (
                 <Art src={closeup} label="" />
               )}
@@ -535,7 +602,12 @@ export default function GameApp() {
               {selectedClue?.inspection && g.message && (
                 <p role="status">{g.message}</p>
               )}
-              {button(t.back, () => go(clueReturn))}
+              {button(clueReturn === 'safe' ? ru.safe.back : t.back, () => {
+                if (clueReturn === 'safe') {
+                  setClue('');
+                  setClueReturn('s08');
+                } else go(clueReturn);
+              })}
             </>
           )}
           {effective === 's10' && g && p && (
@@ -758,6 +830,7 @@ export default function GameApp() {
                       <button
                         type="button"
                         onClick={() => {
+                          setSafeId('');
                           setCloseup('');
                           setClueReturn('s11');
                           setClue(cl.id);
@@ -978,6 +1051,19 @@ export default function GameApp() {
                   {e.time} — {e.event}
                 </p>
               ))}
+              <section>
+                <h3>{ru.safe.explanations}</h3>
+                {c.clues
+                  .filter((cl) => cl.explanationFactIds?.length)
+                  .map((cl) => (
+                    <article key={cl.id}>
+                      <h4>{cl.name}</h4>
+                      {cl.explanationFactIds?.map((id) => (
+                        <p key={id}>{c.facts.find((f) => f.id === id)?.text}</p>
+                      ))}
+                    </article>
+                  ))}
+              </section>
               {g.players.map((v, i) => (
                 <article key={i}>
                   {v.name}: {t.score} {v.score}
