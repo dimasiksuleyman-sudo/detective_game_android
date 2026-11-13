@@ -143,7 +143,8 @@
       "height": 1024,
       "sourceWidth": 1254,
       "sourceHeight": 1254,
-      "quality": 80
+      "quality": 80,
+      "sourceSha256": "ad7c80ede6788959d94a48a81e07999065ded35c6b7ba98733a768da3346313d"
     },
     {
       "source": "h-partition.png",
