@@ -1,0 +1,617 @@
+{
+  "caseId": "case-002-room-seven",
+  "files": [
+    {
+      "source": "l-lobby.png",
+      "output": "images/locations/l-lobby.webp",
+      "width": 1080,
+      "height": 1620,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "l-room7.png",
+      "output": "images/locations/l-room7.webp",
+      "width": 1080,
+      "height": 1620,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "l-corridor.png",
+      "output": "images/locations/l-corridor.webp",
+      "width": 1080,
+      "height": 1620,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "h-register.png",
+      "output": "images/closeups/h-register.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-phone.png",
+      "output": "images/closeups/h-phone.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-coat-rack.png",
+      "output": "images/closeups/h-coat-rack.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-keeper-photo.png",
+      "output": "images/closeups/h-keeper-photo.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-armchair.png",
+      "output": "images/closeups/h-armchair.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-fireplace.png",
+      "output": "images/closeups/h-fireplace.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-door-chain.png",
+      "output": "images/closeups/h-door-chain.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-tea-tray.png",
+      "output": "images/closeups/h-tea-tray.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-nightstand.png",
+      "output": "images/closeups/h-nightstand.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-desk.png",
+      "output": "images/closeups/h-desk.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-jacket.png",
+      "output": "images/closeups/h-jacket.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-portfel.png",
+      "output": "images/closeups/h-portfel.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-balcony-door.png",
+      "output": "images/closeups/h-balcony-door.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-partition.png",
+      "output": "images/closeups/h-partition.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-linen-cart.png",
+      "output": "images/closeups/h-linen-cart.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-bin.png",
+      "output": "images/closeups/h-bin.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-window.png",
+      "output": "images/closeups/h-window.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-door8.png",
+      "output": "images/closeups/h-door8.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "c-teacup.png",
+      "output": "images/clues/c-teacup.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-empty-case.png",
+      "output": "images/clues/c-empty-case.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-notebook.png",
+      "output": "images/clues/c-notebook.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-wallet.png",
+      "output": "images/clues/c-wallet.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-wet-jacket.png",
+      "output": "images/clues/c-wet-jacket.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-camera.png",
+      "output": "images/clues/c-camera.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-ampoule.png",
+      "output": "images/clues/c-ampoule.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-chronometer.png",
+      "output": "images/clues/c-chronometer.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-partition.png",
+      "output": "images/clues/c-partition.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "portfel-open.png",
+      "output": "images/closeups/portfel-open.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "teacup-inspection.png",
+      "output": "images/closeups/teacup-inspection.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "partition-inspection.png",
+      "output": "images/closeups/partition-inspection.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "chronometer-inspection.png",
+      "output": "images/closeups/chronometer-inspection.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "a14-boris-neutral.png",
+      "output": "troupe/a14-boris/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a14-boris-nervous.png",
+      "output": "troupe/a14-boris/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a14-boris-angry.png",
+      "output": "troupe/a14-boris/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a14-boris-sad.png",
+      "output": "troupe/a14-boris/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a14-boris-smug.png",
+      "output": "troupe/a14-boris/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a14-boris-broken.png",
+      "output": "troupe/a14-boris/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a11-zoya-neutral.png",
+      "output": "troupe/a11-zoya/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a11-zoya-nervous.png",
+      "output": "troupe/a11-zoya/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a11-zoya-angry.png",
+      "output": "troupe/a11-zoya/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a11-zoya-sad.png",
+      "output": "troupe/a11-zoya/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a11-zoya-smug.png",
+      "output": "troupe/a11-zoya/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a11-zoya-broken.png",
+      "output": "troupe/a11-zoya/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a08-ruslan-neutral.png",
+      "output": "troupe/a08-ruslan/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a08-ruslan-nervous.png",
+      "output": "troupe/a08-ruslan/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a08-ruslan-angry.png",
+      "output": "troupe/a08-ruslan/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a08-ruslan-sad.png",
+      "output": "troupe/a08-ruslan/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a08-ruslan-smug.png",
+      "output": "troupe/a08-ruslan/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a08-ruslan-broken.png",
+      "output": "troupe/a08-ruslan/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a13-nadia-neutral.png",
+      "output": "troupe/a13-nadia/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a13-nadia-nervous.png",
+      "output": "troupe/a13-nadia/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a13-nadia-angry.png",
+      "output": "troupe/a13-nadia/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a13-nadia-sad.png",
+      "output": "troupe/a13-nadia/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a13-nadia-smug.png",
+      "output": "troupe/a13-nadia/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a13-nadia-broken.png",
+      "output": "troupe/a13-nadia/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a12-dmitry-neutral.png",
+      "output": "troupe/a12-dmitry/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a12-dmitry-nervous.png",
+      "output": "troupe/a12-dmitry/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a12-dmitry-angry.png",
+      "output": "troupe/a12-dmitry/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a12-dmitry-sad.png",
+      "output": "troupe/a12-dmitry/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a12-dmitry-smug.png",
+      "output": "troupe/a12-dmitry/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a12-dmitry-broken.png",
+      "output": "troupe/a12-dmitry/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "reconstruction-1.png",
+      "output": "images/reconstruction/1.webp",
+      "width": 1200,
+      "height": 800,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "reconstruction-2.png",
+      "output": "images/reconstruction/2.webp",
+      "width": 1200,
+      "height": 800,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "reconstruction-3.png",
+      "output": "images/reconstruction/3.webp",
+      "width": 1200,
+      "height": 800,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "cover.png",
+      "output": "images/cover.webp",
+      "width": 720,
+      "height": 1080,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    }
+  ]
+}

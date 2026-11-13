@@ -302,6 +302,25 @@ npm.cmd run android:sync
 & 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
 ```
 
-Дождаться Gradle Sync, выбрать телефон и нажать Run ▶. После слияния PR использовать `git switch main` и `git pull --ff-only origin main`. Не удалять приложение/его данные: проверяется перенос старой партии. APK агент не собирает. Пакет проверки — MT-023. В production остаётся один пилот, тестовое дело доступно только `npm.cmd run e2e`.
+Дождаться Gradle Sync, выбрать телефон и нажать Run ▶. После слияния PR использовать `git switch main` и `git pull --ff-only origin main`. Не удалять приложение/его данные: проверяется перенос старой партии. APK агент не собирает. Пакет проверки — MT-023. В версии 0.3.5 в production был один пилот; начиная с 0.4.0 есть и «Номер семь». Служебное «Тестовое дело» доступно только `npm.cmd run e2e`.
 
 Новое встроенное дело: добавить `public/cases/<id>/case.json` с совпадающим id; изображения — в этом каталоге, озвучка — `audio/manifest.json`. `npm.cmd run build` обновит список S03. Сервер/скачивание паков ещё не подключены.
+
+## «Номер семь» (0.4.0 / code 10)
+
+В PowerShell из корня проекта:
+
+```powershell
+git fetch origin
+git switch feature/case-002-room-seven
+git pull --ff-only origin feature/case-002-room-seven
+npm.cmd ci
+npm.cmd run android:sync
+& 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
+```
+
+В Android Studio дождаться Sync, выбрать телефон и Run ▶. После слияния PR вместо ветки использовать `git switch main` и `git pull --ff-only origin main`. Приложение и его данные не удалять: ключ и прежняя партия должны сохраниться. Исходники PNG для обычного обновления не нужны. APK собирает владелец, агент делает только web build и cap sync (ADR-024).
+
+В S03 два настоящих дела. Пакет телефонной проверки — MT-024. «Номер семь» работает офлайн с общей музыкой; речевые кнопки появятся после работы планировщика. Отсутствие речи сейчас ожидаемо.
+
+Для разработчика: `git lfs pull --include="art/case-002-room-seven/**"`, `npx tsx tools/build-pack.ts --art-only --case case-002-room-seven`, затем `npm run case:validate`. Без аргумента валидатор проверяет оба дела. Планировщику: `python tools/generate-narration-elevenlabs.py --case case-002-room-seven --list`; это просмотр девяти источников без генерации. Платный ручной workflow запускается отдельно с выбором дела, по одной попытке на дорожку.

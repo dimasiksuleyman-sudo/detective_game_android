@@ -1,6 +1,7 @@
 /** Реестр отвергает неизвестные id и неоднозначный контент вместо тихой подмены дела. */
 import { expect, it } from 'vitest';
 import data from '../../public/cases/case-001-blue-owl/case.json';
+import roomSeven from '../../public/cases/case-002-room-seven/case.json';
 import mini from '../../tests/fixtures/cases/case-e2e-mini/case.json';
 import { createCaseRegistry, listCases, loadCase } from './loader';
 it('список и загрузка выбирают точное встроенное дело', () => {
@@ -11,7 +12,7 @@ it('список и загрузка выбирают точное встрое�
   expect(registry.list().map((c) => c.id)).toEqual([data.id, mini.id]);
   expect(registry.load(mini.id).title).toBe(mini.title);
   expect(() => registry.load('missing')).toThrow('Unknown case');
-  expect(listCases().map((c) => c.id)).toEqual([data.id]);
+  expect(listCases().map((c) => c.id)).toEqual([data.id, roomSeven.id]);
   expect(loadCase(data.id).title).toBe(data.title);
 });
 it('неверная схема, дубликат и несовпадение каталога отвергаются', () => {
