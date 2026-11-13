@@ -7,7 +7,9 @@ import { buildSuspectPrompt } from '../src/ai/promptBuilder';
 import { parseResponse } from '../src/ai/responseParser';
 import { guard } from '../src/ai/guard';
 import { redact } from '../src/ai/redact';
-import { pilot } from '../src/content/loader';
+import data from '../public/cases/case-001-blue-owl/case.json';
+import { caseSchema } from '../src/content/schema';
+const pilot = caseSchema.parse(data);
 import { reduce, type Player } from '../src/game/engine';
 async function main() {
   const key = process.env.AITUNNEL_API_KEY;

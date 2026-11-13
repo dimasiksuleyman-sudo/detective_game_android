@@ -125,6 +125,8 @@ export const ru = {
     },
   },
   game: {
+    difficulty: 'Сложность',
+    minutes: 'мин',
     nervous: 'Он явно занервничал. Надавите сильнее.',
     neutralReaction: 'Впервые вижу. При чём тут я?',
     lawyer: 'Я требую адвоката.',

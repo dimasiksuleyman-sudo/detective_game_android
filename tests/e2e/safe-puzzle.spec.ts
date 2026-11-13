@@ -361,7 +361,7 @@ test('старая партия переносит открытый сейф, и
     page.getByRole('heading', { name: 'Содержимое сейфа', exact: true }),
   ).toBeVisible();
   const migrated = await state(page);
-  expect(migrated.version).toBe(3);
+  expect(migrated.version).toBe(4);
   expect(migrated.state.players[0]?.facts).toEqual(
     expect.arrayContaining([
       'f-safe-hint',

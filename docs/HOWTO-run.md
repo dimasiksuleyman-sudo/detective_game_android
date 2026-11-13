@@ -288,3 +288,20 @@ npm.cmd run android:sync
 ```
 
 assets:android готовит пять входов в игнорируемом assets/, запускает capacitor-assets generate --android и воспроизводимое дополнение monochrome/XML. Оригиналы в art/app; store — только для публикации в магазинах. Нативный сплэш скрывается после загрузки сохранения, без таймера. Свайп вверх по локации теперь прокручивает к нижним кнопкам; «Назад» остаётся внизу по уточнению владельца.
+
+## Несколько дел (0.3.5 / code 9)
+
+В PowerShell, в корне проекта:
+
+```powershell
+git fetch origin
+git switch feature/multiple-cases
+git pull --ff-only origin feature/multiple-cases
+npm.cmd ci
+npm.cmd run android:sync
+& 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
+```
+
+Дождаться Gradle Sync, выбрать телефон и нажать Run ▶. После слияния PR использовать `git switch main` и `git pull --ff-only origin main`. Не удалять приложение/его данные: проверяется перенос старой партии. APK агент не собирает. Пакет проверки — MT-022. В production остаётся один пилот, тестовое дело доступно только `npm.cmd run e2e`.
+
+Новое встроенное дело: добавить `public/cases/<id>/case.json` с совпадающим id; изображения — в этом каталоге, озвучка — `audio/manifest.json`. `npm.cmd run build` обновит список S03. Сервер/скачивание паков ещё не подключены.

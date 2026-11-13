@@ -3,13 +3,23 @@ import { createHash } from 'node:crypto';
 import manifest from '../../public/cases/case-001-blue-owl/audio/manifest.json';
 /** Содержимое записей не подменяет изменившийся текст и не озвучивает неоткрытые подсказки. */
 import { expect, it } from 'vitest';
-import { briefingText, narrationFor, hintNarration } from './narration';
-import { pilot } from './loader';
+import {
+  briefingText as getBriefingText,
+  narrationFor,
+  hintNarration,
+} from './narration';
+import { loadCase } from './loader';
+const pilot = loadCase('case-001-blue-owl');
+const briefingText = getBriefingText(pilot);
 it('устаревший текст/неизвестная подсказка не получают дорожку', () => {
-  expect(narrationFor('briefing', briefingText)?.src).toContain('briefing.mp3');
-  expect(narrationFor('briefing', 'Другой брифинг')).toBeUndefined();
-  expect(hintNarration('')).toBeUndefined();
-  expect(hintNarration(pilot.hints[0]?.text ?? '')?.id).toBe('chief-hint-1');
+  expect(narrationFor(pilot.id, 'briefing', briefingText)?.src).toContain(
+    'briefing.mp3',
+  );
+  expect(narrationFor(pilot.id, 'briefing', 'Другой брифинг')).toBeUndefined();
+  expect(hintNarration(pilot.id, '')).toBeUndefined();
+  expect(hintNarration(pilot.id, pilot.hints[0]?.text ?? '')?.id).toBe(
+    'chief-hint-1',
+  );
   expect(briefingText).not.toContain('восемь раундов');
 });
 
@@ -29,17 +39,19 @@ it('встроенные MP3 соответствуют манифесту по 
 });
 
 it('тексты всех записей совпадают с текущим каноном игры', () => {
-  expect(narrationFor('briefing', briefingText)).toBeDefined();
+  expect(narrationFor(pilot.id, 'briefing', briefingText)).toBeDefined();
   for (const clip of manifest.clips.filter((c) => c.role === 'chief'))
     expect(pilot.hints.some((h) => h.text === clip.text)).toBe(true);
   // Каждая подсказка Шефа, включая подсказку про сейф, озвучена.
   for (const hint of pilot.hints)
-    expect(hintNarration(hint.text)).toBeDefined();
+    expect(hintNarration(pilot.id, hint.text)).toBeDefined();
   expect(
-    narrationFor('solution-explanation', pilot.solution.explanation),
+    narrationFor(pilot.id, 'solution-explanation', pilot.solution.explanation),
   ).toBeDefined();
   pilot.solution.reconstruction.forEach((r, i) =>
-    expect(narrationFor('reconstruction-' + (i + 1), r.caption)).toBeDefined(),
+    expect(
+      narrationFor(pilot.id, 'reconstruction-' + (i + 1), r.caption),
+    ).toBeDefined(),
   );
 });
 
@@ -60,4 +72,13 @@ it('план будущей озвучки сохраняет источники
     const recorded = manifest.clips.find((item) => item.id === clip.id);
     if (recorded) expect(speech?.text).toBe(recorded.text);
   }
+});
+
+it('другое дело не получает дорожки пилота даже с тем же id и текстом', () => {
+  expect(
+    narrationFor('case-e2e-mini', 'briefing', briefingText),
+  ).toBeUndefined();
+  expect(
+    hintNarration('case-e2e-mini', pilot.hints[0]?.text ?? ''),
+  ).toBeUndefined();
 });

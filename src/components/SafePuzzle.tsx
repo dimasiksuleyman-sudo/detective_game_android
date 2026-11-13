@@ -3,7 +3,15 @@ import type { CaseFile } from '../content/schema';
 import { ru } from '../i18n/ru';
 import { playEffect } from '../platform/soundscape';
 type Hotspot = CaseFile['locations'][number]['hotspots'][number];
-export function SafePuzzle({
+export function SafePuzzle(props: Parameters<typeof CombinationLock>[0]) {
+  return (
+    <CombinationLock
+      key={`${props.caseId}/${props.hotspot.id}/${props.hotspot.lock?.digits}`}
+      {...props}
+    />
+  );
+}
+function CombinationLock({
   caseId,
   hotspot,
   opened,
@@ -21,7 +29,7 @@ export function SafePuzzle({
   take: (id: string) => void;
 }) {
   const [digits, setDigits] = useState(() =>
-    Array.from({ length: hotspot.lock?.digits ?? 4 }, () => 0),
+    Array.from({ length: hotspot.lock?.digits ?? 0 }, () => 0),
   );
   const [wrong, setWrong] = useState(0);
   const [pending, setPending] = useState(false);

@@ -1,6 +1,7 @@
 /** Регрессия пилота и намеренно повреждённых ссылок/достижимости. */
 import { it, expect } from 'vitest';
-import { pilot } from './loader';
+import { loadCase } from './loader';
+const pilot = loadCase('case-001-blue-owl');
 import { caseSchema } from './schema';
 import { validateCase } from './validate';
 it('встроенное дело валидно и решаемо без сети', () => {

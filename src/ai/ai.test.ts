@@ -1,6 +1,7 @@
 /** Проверки среза, guard и orchestration: единственный вызываемый ИИ-клиент — MockAiClient. */
 import { describe, it, expect } from 'vitest';
-import { pilot } from '../content/loader';
+import { loadCase } from '../content/loader';
+const pilot = loadCase('case-001-blue-owl');
 import { reduce, type Player } from '../game/engine';
 import { buildSuspectPrompt } from './promptBuilder';
 import { parseResponse } from './responseParser';

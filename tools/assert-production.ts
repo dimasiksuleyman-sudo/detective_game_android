@@ -8,6 +8,8 @@ if (files.some((f) => f.includes('HotspotEditor')))
 if (!files.length) throw new Error('Production JS assets missing');
 for (const file of files) {
   const code = await readFile('dist/assets/' + file, 'utf8');
+  if (code.includes('case-e2e-mini') || code.includes('Тестовое дело'))
+    throw new Error('Test case detected in production');
   if (code.includes('aiFixture') || code.includes('Ответ мока'))
     throw new Error('Test AI implementation detected in production');
 }

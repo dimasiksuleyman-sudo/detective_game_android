@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import { pilot } from '../content/loader';
+import type { CaseFile } from '../content/schema';
 import { ru } from '../i18n/ru';
 import { copyToClipboard } from '../platform/clipboard';
-export default function HotspotEditor() {
-  const [location, setLocation] = useState(pilot.locations[0]?.id ?? '');
-  const room = pilot.locations.find((l) => l.id === location);
+export default function HotspotEditor({ c }: { c: CaseFile }) {
+  const [location, setLocation] = useState(c.locations[0]?.id ?? '');
+  const room = c.locations.find((l) => l.id === location);
   const [rect, setRect] = useState({ x: 0, y: 0, w: 0.1, h: 0.1 });
   const [copied, setCopied] = useState(false);
   const json = JSON.stringify({ rect }, null, 2);
@@ -16,7 +16,7 @@ export default function HotspotEditor() {
         value={location}
         onChange={(e) => setLocation(e.target.value)}
       >
-        {pilot.locations.map((l) => (
+        {c.locations.map((l) => (
           <option key={l.id} value={l.id}>
             {l.name}
           </option>
@@ -43,7 +43,7 @@ export default function HotspotEditor() {
         >
           <img
             draggable={false}
-            src={'/cases/' + pilot.id + '/' + room.image}
+            src={'/cases/' + c.id + '/' + room.image}
             alt={room.name}
           />
           {room.hotspots.map((h) => (

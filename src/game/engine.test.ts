@@ -2,7 +2,8 @@
 import { parseStoredGame } from '../persistence/save';
 import { MockAiClient } from '../ai/client';
 import { describe, it, expect } from 'vitest';
-import { pilot as c } from '../content/loader';
+import { loadCase } from '../content/loader';
+const c = loadCase('case-001-blue-owl');
 import { reduce, type GameState, type Action } from './engine';
 function game(n = 1) {
   const s = reduce(c, null, {
@@ -385,7 +386,7 @@ describe('осмотр найденной улики', () => {
       parseStoredGame({ version: 2, state: inspect(state) })?.players[0]
         ?.inspectedDetails,
     ).toEqual(['d-statuette-chip']);
-    expect(() => parseStoredGame({ version: 4, state })).toThrow();
+    expect(() => parseStoredGame({ version: 5, state })).toThrow();
   });
   it('ИИ не может открыть факт детали до осмотра даже при ошибочной shareable-конфигурации', () => {
     const altered = structuredClone(c);
@@ -522,4 +523,42 @@ it('старая бухгалтерия сохраняет известную п
   expect(
     parseStoredGame({ version: 3, state: old })?.players[0]?.facts,
   ).not.toContain('f-ledger-signature');
+});
+
+it('трёхзначный замок принимает только точный код, ошибку не оплачивает', () => {
+  const three = structuredClone(c);
+  const lock = three.locations
+    .flatMap((l) => l.hotspots)
+    .find((h) => h.lock)?.lock;
+  if (!lock) throw new Error('Missing lock');
+  lock.digits = 3;
+  lock.code = '214';
+  const apply = (s: GameState | null, a: Action) => {
+    const next = reduce(three, s, a);
+    if (!next) throw new Error('Missing state');
+    return next;
+  };
+  let s = apply(null, { type: 'START_GAME', names: ['А'], roundLimit: 8 });
+  s = apply(s, { type: 'BEGIN_TURN' });
+  for (const code of ['000', '0214', '21', '1408']) {
+    s = apply(s, {
+      type: 'OPEN_LOCK',
+      locationId: 'l-office',
+      hotspotId: 'h-safe',
+      code,
+    });
+    expect(s.action).toBeNull();
+    expect(player(s).openedLocks).toEqual([]);
+  }
+  s = apply(s, {
+    type: 'OPEN_LOCK',
+    locationId: 'l-office',
+    hotspotId: 'h-safe',
+    code: '214',
+  });
+  expect(s.action?.used).toBe(1);
+  expect(player(s).openedLocks).toEqual(['h-safe']);
+  expect(
+    c.locations.flatMap((l) => l.hotspots).find((h) => h.lock)?.lock?.digits,
+  ).toBe(4);
 });
