@@ -555,6 +555,15 @@
       "sourceWidth": 1254,
       "sourceHeight": 1254,
       "quality": 85
+    },
+    {
+      "source": "h-alley-end.png",
+      "output": "images/closeups/h-alley-end.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
     }
   ]
 }

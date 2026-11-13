@@ -39,7 +39,7 @@ describe('готовый арт пилота', () => {
         'broken',
       ])
         required.add(`troupe/${actor.actorId}/${emotion}.webp`);
-    expect(required.size).toBe(63);
+    expect(required.size).toBe(64);
     expect(new Set(manifest.files.map((f) => f.output))).toEqual(required);
     for (const file of required) {
       if (!file) throw new Error('Пустой путь ресурса в деле');

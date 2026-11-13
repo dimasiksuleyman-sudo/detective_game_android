@@ -174,6 +174,7 @@ Book-cover style key art for a detective case titled (do not render the title) "
 | `closeups/h-door.webp` | the lock of a metal back door / no scratches on the lock, a clean key mark — it was opened with a key |
 | `closeups/h-dumpster.webp` | behind a dumpster in a wet alley / a cardboard crate with whisky bottles hidden under a black plastic bag |
 | `closeups/h-puddle.webp` | a puddle near a back door at night / a soaked small paper parking stub floating in the puddle |
+| `closeups/h-alley-end.webp` | mouth of a wet alley opening onto Portovaya Street, a small paid parking lot in the distance / a small waterlogged paper receipt on wet cobblestones beside a brick wall, no readable text |
 
 ### 5.3. Улики-предметы (прозрачный фон)
 | Файл | {{OBJECT}} |

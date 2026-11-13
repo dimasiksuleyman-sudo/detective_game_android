@@ -648,6 +648,18 @@
       "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Cinematic comic panel, horizontal 3:2. Gleb, lean man in a charcoal overcoat, hurries out of the wet back alley towards a silver sedan in the street parking area in heavy rain. A small blank paper parking stub falls from his pocket toward a puddle. No readable license plate. Match Gleb’s master portrait and existing alley. Dramatic angle, restrained noir emotion. No graphic violence, body or visible injury. Avoid photorealism, 3D render look, anime, glossy skin, distorted hands, extra fingers, readable signage, gore or blood.",
       "references": ["a02-gleb-neutral.png", "l-alley.png"],
       "transparent": false
+    },
+    {
+      "id": "h-alley-end",
+      "type": "closeups",
+      "batch": "alley-end",
+      "source": "h-alley-end.png",
+      "output": "images/closeups/h-alley-end.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Square 1:1 close-up scene, looking out from the mouth of a narrow wet brick alley onto Portovaya Street in a contemporary rainy northern port city at night. Low viewpoint with wet cobblestones and the foot of a weathered brick wall in the foreground. Beside the brick wall on the wet cobbles lies one small waterlogged crumpled paper receipt, unmarked and entirely unreadable, a natural incidental detail without spotlight or outline. In the distance across the street is a small paid parking lot: a few parked cars, an unmarked payment machine and barrier arm, softly obscured by rain. Deep slate blue and desaturated teal rainlight with a restrained burnt-orange streetlamp reflection, sepia paper and brick textures. Keep the alley opening and distant parking legible as a scene while the little soaked paper remains small and believable. No people, hands, detective, readable signage, lettering, license plate digits, UI, arrows or callouts. Avoid photorealism, 3D render look, anime, glossy surfaces, gore and blood.",
+      "references": [],
+      "transparent": false
     }
   ],
   "masterSelection": {

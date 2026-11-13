@@ -2,7 +2,7 @@
 
 Источник: [арт-библия](../docs/05-art-bible.md), ADR-020. В M3 заменены **52 заглушки** и сохранены 6 прежних ресурсов; для головоломки сейфа добавлены ещё 5 картинок. Статус «одобрено» ставится только после явного подтверждения владельца; генерация не ждёт такого подтверждения.
 
-Всего: **63**. Заглушек: **0**. Сгенерировано: **63**. Одобрено: **0**.
+Всего: **64**. Заглушек: **0**. Сгенерировано: **64**. Одобрено: **0**.
 
 Для каждой новой картинки точный английский промпт и референсы хранятся в [pilot/prompts.json](pilot/prompts.json), ключ указан в таблице. Каждый промпт включает STYLE_CORE. Портреты: neutral — выбранный мастер, остальные эмоции — правки этого мастера. Размер в таблице — игровой WebP; выбранные оригиналы PNG в art/pilot/.
 
@@ -23,6 +23,7 @@
 | `images/closeups/h-door.webp`      | closeups             | 1024×1024 | [pilot/h-door.png](pilot/h-door.png)                         | `h-door`                  | сгенерировано |
 | `images/closeups/h-dumpster.webp`  | closeups             | 1024×1024 | [pilot/h-dumpster.png](pilot/h-dumpster.png)                 | `h-dumpster`              | сгенерировано |
 | `images/closeups/h-puddle.webp`    | closeups             | 1024×1024 | [pilot/h-puddle.png](pilot/h-puddle.png)                     | `h-puddle`                | сгенерировано |
+| `images/closeups/h-alley-end.webp` | closeups             | 1024×1024 | [pilot/h-alley-end.png](pilot/h-alley-end.png)               | `h-alley-end`             | сгенерировано |
 | `images/clues/c-diary.webp`        | clues                | 512×512   | [pilot/c-diary.png](pilot/c-diary.png)                       | `c-diary`                 | сгенерировано |
 | `images/clues/c-ledger.webp`       | clues                | 512×512   | [pilot/c-ledger.png](pilot/c-ledger.png)                     | `c-ledger`                | сгенерировано |
 | `images/clues/c-photo.webp`        | clues                | 512×512   | [pilot/c-photo.png](pilot/c-photo.png)                       | `c-photo`                 | сгенерировано |

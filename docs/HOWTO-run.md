@@ -339,3 +339,17 @@ npm.cmd run android:sync
 ```
 
 В Android Studio дождаться Sync, выбрать телефон и Run ▶. Приложение и данные не удалять. Новые нативные плагины не добавлялись. Проверка — MT-025.
+
+## Крупный план выхода из переулка (арт 0.4.1)
+
+Для проверки ветки из корня проекта:
+
+```powershell
+git fetch origin
+git switch art/pilot-alley-end-closeup
+git pull --ff-only origin art/pilot-alley-end-closeup
+npm.cmd ci
+npm.cmd run android:sync
+```
+
+Затем Sync и Run в Android Studio. После слияния использовать main. Проверка: «Синяя сова» → Обыск → Переулок у чёрного хода → Выход из переулка. Дополнение к MT-025. APK агент не собирает.
