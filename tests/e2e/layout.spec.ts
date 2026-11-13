@@ -19,6 +19,38 @@ async function fullWidth(button: Locator) {
   expect(Math.abs(layout.width - layout.available)).toBeLessThanOrEqual(2);
   expect(layout.alignment).toBe('center');
 }
+/**
+ * Все кнопки экрана проверяются одним замером внутри страницы и с повтором:
+ * перебор локаторов по одному давал гонку с перерисовкой после перехода
+ * (кнопка успевала отсоединиться — «Missing button parent» в CI).
+ */
+async function allFullWidth(page: Page, heading: string) {
+  await expect(
+    page.getByRole('heading', { name: heading, exact: true }),
+  ).toBeVisible();
+  await expect
+    .poll(() =>
+      page.evaluate(() =>
+        [...document.querySelectorAll('main button')].flatMap((el) => {
+          const parent = el.parentElement;
+          if (!parent) return ['detached'];
+          const style = getComputedStyle(parent);
+          const available =
+            parent.clientWidth -
+            parseFloat(style.paddingLeft) -
+            parseFloat(style.paddingRight);
+          const width = el.getBoundingClientRect().width;
+          const problems: string[] = [];
+          if (Math.abs(width - available) > 2)
+            problems.push(`${el.textContent}: ширина ${width}/${available}`);
+          if (getComputedStyle(el).textAlign !== 'center')
+            problems.push(`${el.textContent}: не по центру`);
+          return problems;
+        }),
+      ),
+    )
+    .toEqual([]);
+}
 test('основные кнопки по ширине экрана, меню отдельными строками с центрированием', async ({
   page,
 }) => {
@@ -39,23 +71,20 @@ test('основные кнопки по ширине экрана, меню о�
     fullPage: true,
   });
   await click(page, 'Настройки');
-  for (const button of await page.locator('main button').all())
-    await fullWidth(button);
+  await allFullWidth(page, 'Настройки');
   await click(page, 'Назад');
   await click(page, 'Новое дело');
   await fullWidth(
     page.getByRole('button', { name: 'Синяя сова', exact: true }),
   );
   await click(page, 'Синяя сова');
-  for (const button of await page.locator('main button').all())
-    await fullWidth(button);
+  await allFullWidth(page, 'Настройка игроков');
   await click(page, 'К брифингу');
   await fullWidth(
     page.getByRole('button', { name: 'Начать расследование', exact: true }),
   );
   await click(page, 'Начать расследование');
-  for (const button of await page.locator('main button').all())
-    await fullWidth(button);
+  await allFullWidth(page, 'Хаб хода');
   expect(
     await page.evaluate(
       () => document.documentElement.scrollWidth <= window.innerWidth,
