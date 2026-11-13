@@ -1,47 +1,17 @@
 [
   {
     "id": "briefing",
-    "chars": 641,
-    "characterCost": "256"
+    "chars": 642,
+    "characterCost": "257"
   },
   {
     "id": "chief-hint-1",
-    "chars": 101,
-    "characterCost": "40"
-  },
-  {
-    "id": "chief-hint-2",
-    "chars": 125,
-    "characterCost": "50"
-  },
-  {
-    "id": "chief-hint-3",
-    "chars": 104,
+    "chars": 106,
     "characterCost": "42"
-  },
-  {
-    "id": "chief-hint-4",
-    "chars": 102,
-    "characterCost": "41"
   },
   {
     "id": "solution-explanation",
     "chars": 1002,
     "characterCost": "401"
-  },
-  {
-    "id": "reconstruction-1",
-    "chars": 129,
-    "characterCost": "52"
-  },
-  {
-    "id": "reconstruction-2",
-    "chars": 99,
-    "characterCost": "40"
-  },
-  {
-    "id": "reconstruction-3",
-    "chars": 105,
-    "characterCost": "42"
   }
 ]
