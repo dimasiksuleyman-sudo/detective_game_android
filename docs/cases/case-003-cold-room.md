@@ -267,10 +267,10 @@
 
 | Файл | Размер | Что на картинке (после STYLE_CORE) |
 |---|---|---|
-| `images/cover.webp` | 1024×1536 | a heavy steel freezer door in a fish factory at night, frost creeping from the seal, a cut lead seal dangling on wire, cold blue light and one warm orange work lamp |
-| `images/locations/yard.webp` | 1600×1067 | fish factory yard in a harbor at night under freezing rain, floodlights, a refrigerated truck with its back door ajar, a small guard booth by the gate with a lit window, slush and tire tracks |
-| `images/locations/shop.webp` | 1600×1067 | fish processing hall at night: floor platform scale, an accountant's desk with a small safe under it, a shift schedule board, a mechanic's board with a hanging logbook, a wall thermograph chart recorder next to a heavy freezer door with a latch |
-| `images/locations/chamber.webp` | 1600×1067 | inside a walk-in freezer: frost on everything, metal racks with cardboard boxes, a caged lamp, a chalk outline on the floor by a rack (no body), the inside of the door with a broken emergency handle |
+| `images/cover.webp` | 720×1080 (генерация 1024×1536) | a heavy steel freezer door in a fish factory at night, frost creeping from the seal, a cut lead seal dangling on wire, cold blue light and one warm orange work lamp |
+| `images/locations/yard.webp` | **1080×1620, вертикально** (генерация 1024×1536) | fish factory yard in a harbor at night under freezing rain, floodlights, a refrigerated truck with its back door ajar, a small guard booth by the gate with a lit window, slush and tire tracks |
+| `images/locations/shop.webp` | **1080×1620, вертикально** (генерация 1024×1536) | fish processing hall at night: floor platform scale, an accountant's desk with a small safe under it, a shift schedule board, a mechanic's board with a hanging logbook, a wall thermograph chart recorder next to a heavy freezer door with a latch |
+| `images/locations/chamber.webp` | **1080×1620, вертикально** (генерация 1024×1536) | inside a walk-in freezer: frost on everything, metal racks with cardboard boxes, a caged lamp, a chalk outline on the floor by a rack (no body), the inside of the door with a broken emergency handle |
 | `images/closeups/h-booth.webp` | 1024×1024 | guard booth window: an open logbook on the sill (no readable text), keys hanging on a nail |
 | `images/closeups/h-booth-table.webp` | 1024×1024 | small table in a guard booth: a thermos, a folded newspaper, a half-empty bottle and one glass |
 | `images/closeups/h-truck-cab.webp` | 1024×1024 | refrigerated truck cab dashboard with a clipboard of papers (no readable text), rain on the windshield |
@@ -292,9 +292,11 @@
 | `images/reconstruction/2.webp` | 1200×800 | the woman closes the freezer latch from outside and presses a lead seal with pliers; the man is a dim figure inside among racks |
 | `images/reconstruction/3.webp` | 1200×800 | morning shift workers cut a lead seal off the freezer door, cold mist pouring out |
 | `troupe/a06-semyon/{neutral,nervous,angry,sad,smug,broken}.webp` | 768×1152 | новый актёр по `05-art-bible.md` §3.4: мастер `neutral`, затем эмоции правкой по мастеру |
-| `troupe/a10-pavel/neutral.webp` | 768×1152 | жертва по `05-art-bible.md` §3.4 — только `neutral` |
+| `troupe/a10-pavel/neutral.webp` | 768×1152 | жертва по `05-art-bible.md` §3.4 — только `neutral` (валидатор требует у жертвы только этот портрет) |
 
 Крупные планы с деталями (`h-thermograph`, `h-seal`, `h-frost-floor`) — деталь видна, но не подсвечена.
+
+**Размеры — как у всех дел (`05-art-bible.md` §2):** локации **вертикальные** 1080×1620 — картинка идёт во всю ширину телефона; горизонтальные локации дают слишком мелкие зоны. Первая версия библии ошибочно указала 1600×1067 — локации перерисовываются вертикально.
 
 **Физика вещей (проверить на каждой картинке, CASE-RUNBOOK):**
 - щеколда морозильной камеры — **снаружи** двери, со стороны цеха; изнутри — только аварийная ручка (сломанная); дверь камеры открывается наружу, в цех;

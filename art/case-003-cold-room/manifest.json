@@ -1,0 +1,284 @@
+{
+  "caseId": "case-003-cold-room",
+  "files": [
+    {
+      "source": "yard.png",
+      "output": "images/locations/yard.webp",
+      "width": 1600,
+      "height": 1067,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "shop.png",
+      "output": "images/locations/shop.webp",
+      "width": 1600,
+      "height": 1067,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "chamber.png",
+      "output": "images/locations/chamber.webp",
+      "width": 1600,
+      "height": 1067,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "h-booth.png",
+      "output": "images/closeups/h-booth.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-booth-table.png",
+      "output": "images/closeups/h-booth-table.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-truck-cab.png",
+      "output": "images/closeups/h-truck-cab.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-truck-back.png",
+      "output": "images/closeups/h-truck-back.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-scales.png",
+      "output": "images/closeups/h-scales.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-desk.png",
+      "output": "images/closeups/h-desk.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-safe-open.png",
+      "output": "images/closeups/h-safe-open.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-schedule.png",
+      "output": "images/closeups/h-schedule.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-repair-board.png",
+      "output": "images/closeups/h-repair-board.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-thermograph.png",
+      "output": "images/closeups/h-thermograph.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-chamber-door.png",
+      "output": "images/closeups/h-chamber-door.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-seal.png",
+      "output": "images/closeups/h-seal.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-outline.png",
+      "output": "images/closeups/h-outline.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-frost-floor.png",
+      "output": "images/closeups/h-frost-floor.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-inner-door.png",
+      "output": "images/closeups/h-inner-door.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-racks.png",
+      "output": "images/closeups/h-racks.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "c-bottle.png",
+      "output": "images/clues/c-bottle.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "reconstruction-1.png",
+      "output": "images/reconstruction/1.webp",
+      "width": 1200,
+      "height": 800,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "reconstruction-2.png",
+      "output": "images/reconstruction/2.webp",
+      "width": 1200,
+      "height": 800,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "reconstruction-3.png",
+      "output": "images/reconstruction/3.webp",
+      "width": 1200,
+      "height": 800,
+      "sourceWidth": 1536,
+      "sourceHeight": 1024,
+      "quality": 80
+    },
+    {
+      "source": "cover.png",
+      "output": "images/cover.webp",
+      "width": 720,
+      "height": 1080,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a06-semyon-neutral.png",
+      "output": "troupe/a06-semyon/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a06-semyon-nervous.png",
+      "output": "troupe/a06-semyon/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a06-semyon-angry.png",
+      "output": "troupe/a06-semyon/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a06-semyon-sad.png",
+      "output": "troupe/a06-semyon/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a06-semyon-smug.png",
+      "output": "troupe/a06-semyon/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a06-semyon-broken.png",
+      "output": "troupe/a06-semyon/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "a10-pavel-neutral.png",
+      "output": "troupe/a10-pavel/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    }
+  ]
+}

@@ -1,16 +1,27 @@
 /** CLI: формат, ссылки, достижимость и физические ресурсы встроенного дела. */
-import { readFile, readdir } from 'node:fs/promises';
+import { access, readFile, readdir } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 import { caseSchema } from '../src/content/schema';
 import { validateCase } from '../src/content/validate';
 
 const requested = process.argv[2];
-const files = requested
-  ? [requested]
-  : (await readdir('public/cases'))
-      .sort()
-      .map((id) => `public/cases/${id}/case.json`);
+// Порядок «сначала ассеты, потом дело» (CASE-RUNBOOK): папка с картинками может появиться
+// раньше case.json. Такое дело ещё не подключено — пропускаем с пометкой, а не падаем.
+const files: string[] = [];
+if (requested) files.push(requested);
+else
+  for (const id of (await readdir('public/cases')).sort()) {
+    const file = `public/cases/${id}/case.json`;
+    try {
+      await access(file);
+      files.push(file);
+    } catch {
+      console.log(
+        `⏳ ${id}: дело ещё не подключено (нет case.json) — пропущено`,
+      );
+    }
+  }
 for (const file of files) {
   const c = caseSchema.parse(JSON.parse(await readFile(file, 'utf8'))),
     report = validateCase(c);
@@ -50,11 +61,16 @@ for (const file of files) {
     }
   }
   // Шеф не входит в список подозреваемых, но его эмоции тоже поставляются с игрой.
-  const actorIds = new Set([
-    c.victim.actorId,
-    ...c.suspects.map((a) => a.actorId),
-  ]);
+  // Жертва показывается только на брифинге — ей достаточно портрета neutral.
+  const actorIds = new Set(c.suspects.map((a) => a.actorId));
   actorIds.add('a16-chief');
+  {
+    const m = await sharp(
+      `public/troupe/${c.victim.actorId}/neutral.webp`,
+    ).metadata();
+    if (m.width !== 768 || m.height !== 1152 || m.format !== 'webp')
+      report.errors.push('actor image ' + c.victim.actorId + '/neutral');
+  }
   for (const actorId of actorIds)
     for (const emotion of [
       'neutral',
