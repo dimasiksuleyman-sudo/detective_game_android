@@ -65,7 +65,6 @@ art/pilot/h-board.png -filter -diff -merge binary
 art/pilot/h-counter.png -filter -diff -merge binary
 art/pilot/h-desk.png -filter -diff -merge binary
 art/pilot/h-door.png -filter -diff -merge binary
-art/pilot/h-dumpster.png -filter -diff -merge binary
 art/pilot/h-photos.png -filter -diff -merge binary
 art/pilot/h-puddle.png -filter -diff -merge binary
 art/pilot/h-safe.png -filter -diff -merge binary
