@@ -2,7 +2,7 @@ name: Озвучка ElevenLabs (вручную)
 
 # Платная генерация. Запускается ТОЛЬКО вручную (Actions → «Озвучка ElevenLabs» → Run workflow).
 # Одна попытка на файл: уже сгенерированные файлы скрипт не трогает (ADR-025, ADR-026).
-# Результат коммитится в отдельную ветку audio/elevenlabs-<caseId>, откуда открывается PR в main.
+# Результат коммитится в target_branch текущего PR или в отдельную audio/elevenlabs-<caseId>.
 
 on:
   workflow_dispatch:
@@ -10,8 +10,12 @@ on:
       case_id:
         description: 'Дело для подготовки озвучки'
         type: choice
-        options: [case-001-blue-owl, case-002-room-seven]
+        options: [case-001-blue-owl, case-002-room-seven, case-003-cold-room]
         default: case-001-blue-owl
+      target_branch:
+        description: 'Ветка данных и результата для одного PR; пусто — отдельная audio/elevenlabs-<caseId>'
+        type: string
+        default: ''
       mode:
         description: 'voices — список голосов и бесплатные превью; sample — одна проба на голос; all — все дорожки'
         type: choice
@@ -46,21 +50,31 @@ jobs:
         with:
           fetch-depth: 0
       - name: Ветка результатов
+        id: branch
         env:
           CASE_ID: ${{ inputs.case_id }}
+          TARGET_BRANCH: ${{ inputs.target_branch }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git lfs install
-          git fetch origin main
-          branch="audio/elevenlabs-$CASE_ID"
-          if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
+          if [ -n "$TARGET_BRANCH" ]; then
+            git check-ref-format --branch "$TARGET_BRANCH"
+            branch="$TARGET_BRANCH"
             git fetch origin "$branch"
-            git switch "$branch"
-            git merge --no-edit origin/main
+            git switch -C "$branch" "origin/$branch"
           else
-            git switch -c "$branch" origin/main
+            git fetch origin main
+            branch="audio/elevenlabs-$CASE_ID"
+            if git ls-remote --exit-code --heads origin "$branch" >/dev/null; then
+              git fetch origin "$branch"
+              git switch "$branch"
+              git merge --no-edit origin/main
+            else
+              git switch -c "$branch" origin/main
+            fi
           fi
+          echo "name=$branch" >> "$GITHUB_OUTPUT"
           git lfs pull --include="art/narration/elevenlabs/$CASE_ID/**"
       - name: ffmpeg
         run: sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg
@@ -82,14 +96,24 @@ jobs:
             all) python3 tools/generate-narration-elevenlabs.py --case "$CASE_ID" --all --allow-paid --narrator "$NARRATOR" --chief "$CHIEF" ;;
           esac
       - name: Коммит результатов
+        if: always() && steps.branch.outcome == 'success'
         env:
           CASE_ID: ${{ inputs.case_id }}
           MODE: ${{ inputs.mode }}
+          RESULT_BRANCH: ${{ steps.branch.outputs.name }}
         run: |
           git add art/narration docs/devlog/assets/narration-elevenlabs public/cases/*/audio 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "Нет новых файлов"
           else
             git commit -m "ElevenLabs narration: $MODE"
-            git push origin "audio/elevenlabs-$CASE_ID"
+            git push origin "$RESULT_BRANCH"
           fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: elevenlabs-${{ inputs.case_id }}-${{ inputs.mode }}
+          path: |
+            art/narration/elevenlabs/${{ inputs.case_id }}/
+            public/cases/${{ inputs.case_id }}/audio/
+            docs/devlog/assets/narration-elevenlabs/${{ inputs.case_id }}/

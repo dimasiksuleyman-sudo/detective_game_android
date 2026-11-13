@@ -206,6 +206,7 @@ def prepare(case_id, rows, voices):
         print("Не все дорожки готовы, манифест не меняется: " + ", ".join(missing))
         return
     out = ROOT / "public/cases" / case_id / "audio"
+    out.mkdir(parents=True, exist_ok=True)
     manifest = {"caseId": case_id, "provider": "ElevenLabs", "model": CONFIG["model"], "voices": voices, "clips": []}
     for clip in rows:
         target = out / (clip["id"] + ".mp3")

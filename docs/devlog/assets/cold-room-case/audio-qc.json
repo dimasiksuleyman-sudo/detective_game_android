@@ -1,0 +1,86 @@
+{
+  "method": "ffprobe + full ffmpeg decode; silencedetect -45dB/0.25s; no listening/transcription",
+  "clips": [
+    {
+      "id": "briefing",
+      "seconds": 39.810612,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "chief-hint-1",
+      "seconds": 5.250612,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "chief-hint-2",
+      "seconds": 4.519184,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "chief-hint-3",
+      "seconds": 4.675918,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0.262245
+    },
+    {
+      "id": "chief-hint-4",
+      "seconds": 4.362449,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "solution-explanation",
+      "seconds": 59.324082,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "reconstruction-1",
+      "seconds": 3.970612,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "reconstruction-2",
+      "seconds": 5.146122,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    },
+    {
+      "id": "reconstruction-3",
+      "seconds": 3.317551,
+      "codec": "mp3",
+      "sampleRate": 44100,
+      "channels": 1,
+      "decodedWithoutErrors": true,
+      "trailingSilenceSeconds": 0
+    }
+  ]
+}

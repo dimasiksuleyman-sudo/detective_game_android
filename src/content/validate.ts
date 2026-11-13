@@ -61,7 +61,12 @@ export function validateCase(c: CaseFile) {
           'document repeats fact ' + cl.id,
         );
 
-    check(!!cl.image || !!cl.document, 'clue has no rendering');
+    // Предмет может целиком показываться через существующий осмотр: отдельная
+    // миниатюра не нужна, если inspection уже содержит изображение.
+    check(
+      !!cl.image || !!cl.document || !!cl.inspection,
+      'clue has no rendering',
+    );
   }
   for (const l of c.locations)
     for (const h of l.hotspots) {

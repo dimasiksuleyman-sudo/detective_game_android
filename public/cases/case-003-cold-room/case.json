@@ -1,0 +1,1344 @@
+{
+  "schemaVersion": 4,
+  "id": "case-003-cold-room",
+  "version": 1,
+  "minAppVersion": "0.6.0",
+  "title": "Холодная камера",
+  "tagline": "Иней на щеколде. Целая пломба. Тихая смена.",
+  "difficulty": 2,
+  "estimatedMinutes": 40,
+  "players": {
+    "min": 1,
+    "max": 5
+  },
+  "cover": "images/cover.webp",
+  "setting": {
+    "city": "Ветрогорск",
+    "place": "Рыбзавод «Северный улов»",
+    "dateLabel": "Ночь с понедельника на вторник",
+    "weather": "Ледяной дождь"
+  },
+  "briefing": "Ветрогорск, ночь с понедельника на вторник, ледяной дождь. Рыбзавод «Северный улов» в порту работает без выходных. В 06:40 утренняя смена открыла морозильную камеру № 2 и нашла учётчика Павла Ремеза (35). Дверь камеры была закрыта снаружи на щеколду. Смерть от переохлаждения наступила между 03:00 и 05:00. Щеколда у этой камеры, говорят, иногда падает сама. В ту ночь на заводе были четверо, кто знал Павла: ветеринарный инспектор порта, грузчик, водитель рефрижератора и сторож. Несчастный случай — или кто-то помог? Найдите правду — и докажите.",
+  "victim": {
+    "name": "Павел Ремез",
+    "age": 35,
+    "occupation": "Учётчик склада",
+    "actorId": "a10-pavel",
+    "bio": "Дотошный, нервный, всё записывает в блокнот. Жалуется начальству на всех подряд — его недолюбливают.",
+    "causeOfDeath": "Смерть от переохлаждения",
+    "foundAt": "В 06:40 утренняя смена открыла морозильную камеру № 2.",
+    "timeOfDeathWindow": "Между 03:00 и 05:00"
+  },
+  "motives": [
+    {
+      "id": "m-cover-fraud",
+      "label": "Скрыть подлог с сертификатами"
+    },
+    {
+      "id": "m-theft",
+      "label": "Скрыть кражу икры"
+    },
+    {
+      "id": "m-revenge",
+      "label": "Отомстить за докладные"
+    },
+    {
+      "id": "m-side-income",
+      "label": "Сохранить левый заработок"
+    }
+  ],
+  "methods": [
+    {
+      "id": "w-locked-cold",
+      "label": "Запереть в морозильной камере"
+    },
+    {
+      "id": "w-blow",
+      "label": "Удар тяжёлым предметом"
+    },
+    {
+      "id": "w-poison",
+      "label": "Отравление"
+    },
+    {
+      "id": "w-accident",
+      "label": "Несчастный случай: дверь захлопнулась сама"
+    }
+  ],
+  "solution": {
+    "culpritId": "s-margarita",
+    "motiveId": "m-cover-fraud",
+    "methodId": "w-locked-cold",
+    "keyEvidence": [
+      "c-check-book",
+      "c-seal",
+      "c-certificate",
+      "f-door-openings",
+      "f-seal-07",
+      "f-weight-mismatch",
+      "f-latch-0215",
+      "f-margarita-confession"
+    ],
+    "proofChain": [
+      {
+        "id": "motive",
+        "label": "Мотив",
+        "evidenceIds": [
+          "c-check-book",
+          "f-weight-mismatch",
+          "c-complaint",
+          "f-draft-complaint",
+          "f-caviar-in-pollock",
+          "f-margarita-signed"
+        ]
+      },
+      {
+        "id": "opportunity",
+        "label": "Возможность",
+        "evidenceIds": [
+          "c-gate-log",
+          "f-margarita-gate",
+          "f-margarita-night",
+          "f-latch-0215"
+        ]
+      },
+      {
+        "id": "confession",
+        "label": "Признание",
+        "evidenceIds": ["f-margarita-confession"]
+      }
+    ],
+    "explanation": "Маргарита Ветлугина два года подписывала сертификаты на «минтай», под которым шла икра. Вечером Павел взвесил ящики, записал расхождение и позвонил ей: утром он шёл к прокурору. В два часа ночи она приехала на завод и попросила показать ящики в камере. Когда Павел прошёл к стеллажам, она закрыла щеколду снаружи и по привычке поставила свою пломбу — опломбированную камеру утренняя смена не откроет без инспектора. Аварийная ручка изнутри давно была сломана. Щеколда в журнале ремонтов действительно падала при хлопке, а Артём хлопнул этой дверью ещё в половине второго, — поэтому всё походило на несчастный случай. Против Артёма и Семёна тоже были улики: оба ругались с Павлом той ночью, оба отходили туда, где их никто не видел. Это правда — но щеколду закрыла не их рука. Но утром пломба была цела, а термограф показал, что после десяти минут третьего дверь не открывали: пломбу поставили уже за спиной Павла. Пломбир с номером семь — у одного человека.",
+    "reconstruction": [
+      {
+        "image": "images/reconstruction/1.webp",
+        "caption": "Ночью Маргарита попросила показать ящики в камере."
+      },
+      {
+        "image": "images/reconstruction/2.webp",
+        "caption": "Когда Павел прошёл к стеллажам, она закрыла щеколду и поставила пломбу."
+      },
+      {
+        "image": "images/reconstruction/3.webp",
+        "caption": "Утром смена срезала целую пломбу."
+      }
+    ]
+  },
+  "timelineTruth": [
+    {
+      "time": "20:00",
+      "event": "Маргарита осматривает партию «минтая» в камере № 2 и подписывает сертификат (пломбир № 07)"
+    },
+    {
+      "time": "22:05",
+      "event": "Павел взвешивает ящик «минтая»: 14,2 кг вместо 10"
+    },
+    {
+      "time": "22:30",
+      "event": "Павел записывает расхождение в тетрадь сверок, начинает заявление в прокуратуру, всё кладёт в сейф"
+    },
+    {
+      "time": "23:30",
+      "event": "Павел звонит Маргарите: утром идёт к прокурору"
+    },
+    {
+      "time": "01:00",
+      "event": "Виктор Шахов заезжает на рефрижераторе"
+    },
+    {
+      "time": "01:30",
+      "event": "Артём заходит в камеру № 2 за ящиками для фуры, выходя — хлопает дверью"
+    },
+    {
+      "time": "01:35",
+      "event": "Артём требует у Павла расписку назад: «Сдашь — пожалеешь». Павел записывает это в блокнот"
+    },
+    {
+      "time": "01:40–02:30",
+      "event": "Артём и Виктор грузят рефрижератор во дворе"
+    },
+    {
+      "time": "02:00",
+      "event": "Семён проходит цехом проверить компрессоры. Павел грозит докладной, они ругаются. Семён уходит в будку"
+    },
+    {
+      "time": "02:05",
+      "event": "Маргарита въезжает через проходную. Семён записывает её в журнал"
+    },
+    {
+      "time": "02:05–02:15",
+      "event": "Артём отходит от фуры покурить за цех, один"
+    },
+    {
+      "time": "02:10",
+      "event": "Павел заходит в камеру показать ящики. Маргарита закрывает щеколду и ставит пломбу"
+    },
+    {
+      "time": "02:12",
+      "event": "Павел пишет в блокноте: «Дверь захлопнулась. Стучу»"
+    },
+    {
+      "time": "02:15",
+      "event": "Виктор у фуры слышит, как в цехе лязгнула щеколда. Артём в этот момент ещё не вернулся"
+    },
+    {
+      "time": "02:25",
+      "event": "Маргарита выезжает"
+    },
+    {
+      "time": "02:30",
+      "event": "Семён выпивает в будке и засыпает; обход в 03:00 пропущен"
+    },
+    {
+      "time": "03:00–05:00",
+      "event": "Павел умирает от переохлаждения"
+    },
+    {
+      "time": "06:40",
+      "event": "Утренняя смена срезает целую пломбу и находит Павла"
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-latch-outside",
+      "text": "Утром щеколда двери камеры № 2 была закрыта снаружи.",
+      "importance": "key",
+      "proves": ["method"]
+    },
+    {
+      "id": "f-seal-intact",
+      "text": "На щеколде была свинцовая пломба. Утренняя смена срезала её целой в 06:40.",
+      "importance": "key",
+      "time": "06:40"
+    },
+    {
+      "id": "f-seal-07",
+      "text": "На свинце пломбы — оттиск «ВЕТ · 07».",
+      "importance": "key"
+    },
+    {
+      "id": "f-certificate",
+      "text": "Ветеринарный сертификат на «минтай», 40 ящиков: осмотрено в 20:00, инспектор М. С. Ветлугина, пломбир № 07.",
+      "importance": "key",
+      "time": "20:00"
+    },
+    {
+      "id": "f-door-openings",
+      "text": "Лента термографа камеры № 2: три коротких скачка температуры — в 20:00, в 01:30 и в 02:10. После 02:10 — ровная линия до утра.",
+      "importance": "key",
+      "time": "02:10",
+      "proves": ["opportunity"]
+    },
+    {
+      "id": "f-no-signal",
+      "text": "Рядом с контуром — телефон Павла. В камере за стальными стенами нет сети.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-two-tracks",
+      "text": "В инее у входа в камеру — следы двух пар обуви: крупные сапоги туда и обратно, ботинки поменьше — только внутрь.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-handle-broken",
+      "text": "Аварийная ручка на двери изнутри камеры отломана.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-latch-faulty",
+      "text": "Журнал ремонтов: щеколда камеры № 2 падает при хлопке двери, аварийная ручка изнутри не работает, заявка подана.",
+      "importance": "red_herring"
+    },
+    {
+      "id": "f-pavel-last-note",
+      "text": "Последняя запись в блокноте Павла: «02:12. Дверь захлопнулась. Стучу».",
+      "importance": "supporting",
+      "time": "02:12"
+    },
+    {
+      "id": "f-safe-note",
+      "text": "В блокноте Павла: «Сейф — мой табельный».",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-tab-number",
+      "text": "График смен: «Ремез П. — табельный № 0418».",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-pavel-staff-notes",
+      "text": "В блокноте Павла: «Бойко — две банки, предупредить» и «Семён опять спал. Доложить?»",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-artyom", "s-semyon"]
+    },
+    {
+      "id": "f-pavel-artyom-threat",
+      "text": "В блокноте Павла: «01:35. Бойко требовал расписку назад. Сказал: сдашь — пожалеешь».",
+      "importance": "red_herring",
+      "time": "01:35",
+      "aboutSuspectIds": ["s-artyom"]
+    },
+    {
+      "id": "f-weight-mismatch",
+      "text": "Тетрадь сверок Павла: ящик «минтая» по накладным — 10 кг, на весах — 14.",
+      "importance": "key",
+      "proves": ["motive"]
+    },
+    {
+      "id": "f-draft-complaint",
+      "text": "Черновик заявления Павла в прокуратуру порта: «Прошу проверить сертификаты инспектора Ветлугиной на минтай».",
+      "importance": "key"
+    },
+    {
+      "id": "f-caviar-in-pollock",
+      "text": "В камере вскрытый ящик с маркировкой «минтай»: под слоем рыбы — банки икры.",
+      "importance": "key"
+    },
+    {
+      "id": "f-scale-ticket",
+      "text": "Последний талон весов, 22:05: ящик «минтай» — 14,2 кг.",
+      "importance": "supporting",
+      "time": "22:05"
+    },
+    {
+      "id": "f-margarita-gate",
+      "text": "Журнал проходной: 02:05 — въезд, Ветлугина М. С.; 02:25 — выезд. После — записей нет до 06:00.",
+      "importance": "key",
+      "time": "02:05",
+      "aboutSuspectIds": ["s-semyon", "s-margarita"]
+    },
+    {
+      "id": "f-extra-boxes",
+      "text": "В кузове рефрижератора — 12 ящиков «минтая» сверх накладной.",
+      "importance": "supporting",
+      "aboutSuspectIds": ["s-viktor"]
+    },
+    {
+      "id": "f-keys-open",
+      "text": "Ключи от камер висят в будке сторожа на гвозде, без замка.",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-semyon"]
+    },
+    {
+      "id": "f-semyon-bottle",
+      "text": "В будке сторожа — початая бутылка и один стакан.",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-semyon"]
+    },
+    {
+      "id": "f-artyom-iou",
+      "text": "Расписка в сейфе Павла: «Бойко А. взял две банки икры, верну из зарплаты».",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-artyom"]
+    },
+    {
+      "id": "f-artyom-0130",
+      "text": "Артём признался: в 01:30 заходил в камеру за ящиками для фуры и хлопнул дверью. Пломбы на щеколде, по его словам, не было, Павел сидел у весов.",
+      "importance": "supporting",
+      "time": "01:30",
+      "aboutSuspectIds": ["s-artyom"]
+    },
+    {
+      "id": "f-latch-0215",
+      "text": "Виктор признался: в 02:15 у фуры слышал, как в цехе лязгнула щеколда. Во дворе ещё стояла машина инспекции.",
+      "importance": "key",
+      "time": "02:15",
+      "aboutSuspectIds": ["s-viktor", "s-margarita"]
+    },
+    {
+      "id": "f-artyom-away",
+      "text": "Виктор: Артём отходил от фуры минут на десять, около двух.",
+      "importance": "red_herring",
+      "time": "02:05",
+      "aboutSuspectIds": ["s-artyom"]
+    },
+    {
+      "id": "f-artyom-smoke",
+      "text": "Артём признался: около двух отходил покурить за цех, один. Подтвердить некому.",
+      "importance": "red_herring",
+      "time": "02:05",
+      "aboutSuspectIds": ["s-artyom"]
+    },
+    {
+      "id": "f-semyon-quarrel",
+      "text": "Семён: около двух прошёл цехом проверить компрессоры, Павел опять грозил докладной — поругались, и он ушёл в будку.",
+      "importance": "red_herring",
+      "time": "02:00",
+      "aboutSuspectIds": ["s-semyon"]
+    },
+    {
+      "id": "f-viktor-extra",
+      "text": "Виктор признался: лишние ящики грузил по звонку инспектора, за премию.",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-viktor"]
+    },
+    {
+      "id": "f-semyon-slept",
+      "text": "Семён признался: после половины третьего выпил и проспал обход в три часа.",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-semyon"]
+    },
+    {
+      "id": "f-margarita-signed",
+      "text": "Ветлугина призналась: подписывала сертификаты на «минтай» не глядя — за подарки от экспедитора.",
+      "importance": "key",
+      "aboutSuspectIds": ["s-margarita"]
+    },
+    {
+      "id": "f-margarita-night",
+      "text": "Ветлугина призналась: в 02:05 приезжала на завод, Павел показывал ей камеру. Утверждает, что пломбу поставила ещё в 20:00, а дверь при ней была открыта.",
+      "importance": "key",
+      "time": "02:05",
+      "aboutSuspectIds": ["s-margarita"]
+    },
+    {
+      "id": "f-margarita-confession",
+      "text": "Ветлугина призналась: в 02:10 закрыла за Павлом щеколду и поставила пломбу, чтобы до её «проверки» камеру никто не открыл. Говорит, что хотела только продержать его до утра.",
+      "importance": "key",
+      "aboutSuspectIds": ["s-margarita"]
+    }
+  ],
+  "suspects": [
+    {
+      "id": "s-margarita",
+      "actorId": "a05-olga",
+      "name": "Маргарита Сергеевна Ветлугина",
+      "age": 52,
+      "occupation": "Ветеринарный инспектор порта",
+      "relationToVictim": "Подписывала сертификаты на партии рыбы, которые учитывал Павел.",
+      "publicProfile": "Ветеринарный инспектор порта двадцать лет, строгая, «бумажная душа».",
+      "personality": "Собранная, холодно вежливая. Под давлением — сухая ирония. При сломе — злость на Павла, потом пустота.",
+      "speechStyle": "На «вы», канцелярит: «согласно», «в установленном порядке».",
+      "coverStory": "Партию осмотрела в восемь вечера, опломбировала камеру и уехала домой. Ночью на заводе не была.",
+      "sensitiveTopics": ["сертификаты", "пломбы", "ночь", "Павел"],
+      "shareableFactIds": ["f-certificate", "f-latch-faulty"],
+      "hiddenTruths": [
+        {
+          "id": "t-signed",
+          "topic": "сертификаты",
+          "lie": "Каждая партия осмотрена лично.",
+          "truth": "Подписывала не глядя. Экспедитор привозил подарки, я не задавала вопросов."
+        },
+        {
+          "id": "t-night",
+          "topic": "где была ночью",
+          "lie": "Дома, с восьми вечера.",
+          "truth": "Приезжала в два. Павел показал камеру, я посмотрела и уехала. Пломбу я ставила ещё в восемь — дверь при мне была открыта."
+        },
+        {
+          "id": "t-locked",
+          "topic": "что случилось у камеры",
+          "lie": "Его захлопнуло, щеколда неисправна.",
+          "truth": "Я закрыла щеколду. И поставила пломбу — по привычке… Я хотела, чтобы он посидел до утра и понял. Я не думала, что ручка внутри сломана."
+        }
+      ],
+      "breakThreshold": 6,
+      "breakpoints": [
+        {
+          "clueId": "c-check-book",
+          "requiresFactIds": ["f-certificate"],
+          "unlocksTruthIds": ["t-signed"],
+          "revealsFactIds": ["f-margarita-signed"],
+          "confession": "Подписывала не глядя. Экспедитор привозил подарки, я не задавала вопросов."
+        },
+        {
+          "clueId": "c-gate-log",
+          "requiresFactIds": ["f-door-openings", "f-margarita-signed"],
+          "unlocksTruthIds": ["t-night"],
+          "revealsFactIds": ["f-margarita-night"],
+          "confession": "Приезжала в два. Павел показал камеру, я посмотрела и уехала. Пломбу я ставила ещё в восемь — дверь при мне была открыта."
+        },
+        {
+          "clueId": "c-seal",
+          "requiresFactIds": [
+            "f-seal-07",
+            "f-seal-intact",
+            "f-margarita-night"
+          ],
+          "unlocksTruthIds": ["t-locked"],
+          "revealsFactIds": ["f-margarita-confession"],
+          "confession": "Я закрыла щеколду. И поставила пломбу — по привычке… Я хотела, чтобы он посидел до утра и понял. Я не думала, что ручка внутри сломана."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-repair-log",
+          "reaction": "Вот видите: щеколда неисправна. Трагическая случайность."
+        },
+        {
+          "clueId": "c-thermograph",
+          "reaction": "Самописцы врут. Их годами не поверяют."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-margarita-1",
+          "question": "Когда вы были на заводе?",
+          "answer": "В восемь вечера, осмотр партии. Потом — домой.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-night",
+            "answer": "И ночью, в два. Вы уже знаете."
+          }
+        },
+        {
+          "id": "q-margarita-2",
+          "question": "Вы опломбировали камеру?",
+          "answer": "Разумеется. В восемь, после осмотра, в установленном порядке.",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-margarita-3",
+          "question": "Что вы знаете о Павле?",
+          "answer": "Педант. Писал жалобы на всех, включая меня. Это его право.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-margarita-4",
+          "question": "Что не так с щеколдой?",
+          "answer": "Она падает при хлопке — это в журнале ремонтов. Я сама писала замечание.",
+          "revealsFactIds": ["f-latch-faulty"]
+        },
+        {
+          "id": "q-margarita-5",
+          "question": "Чей пломбир № 07?",
+          "answer": "Мой. И что? Я пломбирую камеры каждый день.",
+          "revealsFactIds": [],
+          "stressDelta": 2,
+          "requiresFactId": "f-seal-07"
+        },
+        {
+          "id": "q-margarita-6",
+          "question": "Почему ящики минтая тяжелее нормы?",
+          "answer": "Лёд, глазурь, вода. Спросите экспедитора.",
+          "revealsFactIds": [],
+          "stressDelta": 2,
+          "requiresFactId": "f-weight-mismatch",
+          "afterBreak": {
+            "truthId": "t-signed",
+            "answer": "Потому что там не только минтай. Я знала."
+          }
+        }
+      ],
+      "isCulprit": true
+    },
+    {
+      "id": "s-artyom",
+      "actorId": "a04-timur",
+      "name": "Артём Бойко",
+      "age": 26,
+      "occupation": "Грузчик ночной смены",
+      "relationToVictim": "Павел вёл учёт его работы и потребовал расписку за икру.",
+      "publicProfile": "Грузчик ночной смены, второй год на заводе.",
+      "personality": "Дерзкий, огрызается, быстро остывает.",
+      "speechStyle": "На «ты», коротко, сленг.",
+      "coverStory": "Всю ночь грузил фуру с Виктором. В камеру не ходил.",
+      "sensitiveTopics": ["икра", "камера № 2", "Павел"],
+      "shareableFactIds": ["f-keys-open"],
+      "hiddenTruths": [
+        {
+          "id": "t-cans",
+          "topic": "икра",
+          "lie": "Ничего я не брал.",
+          "truth": "Две банки взял, для матери. Павел поймал, заставил писать расписку."
+        },
+        {
+          "id": "t-chamber",
+          "topic": "камера ночью",
+          "lie": "В камеру не заходил.",
+          "truth": "Заходил в полвторого за ящиками, хлопнул дверью, как все хлопают. Пломбы не было. Павел сидел у весов, живой. Около двух отходил покурить за цех — один. Кто подтвердит? Никто."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-artyom-iou",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-cans"],
+          "revealsFactIds": [],
+          "confession": "Две банки взял, для матери. Павел поймал, заставил писать расписку."
+        },
+        {
+          "clueId": "c-frost-floor",
+          "requiresFactIds": ["f-two-tracks"],
+          "unlocksTruthIds": ["t-chamber"],
+          "revealsFactIds": ["f-artyom-0130", "f-artyom-smoke"],
+          "confession": "Заходил в полвторого за ящиками, хлопнул дверью, как все хлопают. Пломбы не было. Павел сидел у весов, живой. Около двух отходил покурить за цех — один."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-notebook",
+          "reaction": "Он про всех писал. Стукач, а не учётчик."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-artyom-1",
+          "question": "Где ты был ночью?",
+          "answer": "У фуры. Грузил с Виктором до половины третьего.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-chamber",
+            "answer": "У фуры. И в камере в полвторого, я сказал."
+          }
+        },
+        {
+          "id": "q-artyom-2",
+          "question": "Ты заходил в камеру?",
+          "answer": "Не-а. Ящики с поддона брал.",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-artyom-3",
+          "question": "Какие у тебя были дела с Павлом?",
+          "answer": "Никаких. Он считал, я таскал.",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-artyom-4",
+          "question": "Где ключи от камер?",
+          "answer": "В будке у деда, на гвозде. Бери кто хочешь.",
+          "revealsFactIds": ["f-keys-open"]
+        },
+        {
+          "id": "q-artyom-5",
+          "question": "Что за расписка в сейфе Павла?",
+          "answer": "Ну взял две банки. Не убивать же за это.",
+          "revealsFactIds": [],
+          "stressDelta": 2,
+          "requiresFactId": "f-artyom-iou"
+        },
+        {
+          "id": "q-artyom-6",
+          "question": "Кто ещё был ночью на заводе?",
+          "answer": "Инспекторша приезжала, машина её во дворе стояла. Чего ей ночью надо — не знаю.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-artyom-7",
+          "question": "Чем ты грозил Павлу?",
+          "answer": "Расписку хотел забрать. Ляпнул сгоряча. Щеколду я не трогал.",
+          "revealsFactIds": [],
+          "stressDelta": 2,
+          "requiresFactId": "f-pavel-artyom-threat"
+        }
+      ],
+      "isCulprit": false
+    },
+    {
+      "id": "s-viktor",
+      "actorId": "a08-ruslan",
+      "name": "Виктор Шахов",
+      "age": 38,
+      "occupation": "Водитель рефрижератора",
+      "relationToVictim": "Возил рыбу со склада, где Павел вёл учёт.",
+      "publicProfile": "Водитель рефрижератора, возит рыбу в Северск три раза в неделю.",
+      "personality": "Молчаливый, тяжёлый. Говорит, только когда прижмут.",
+      "speechStyle": "На «вы», односложно.",
+      "coverStory": "Приехал в час, грузился до полтретьего, в цех не ходил, ничего не видел.",
+      "sensitiveTopics": ["груз", "инспектор", "что слышал"],
+      "shareableFactIds": ["f-extra-boxes"],
+      "hiddenTruths": [
+        {
+          "id": "t-extra",
+          "topic": "лишние ящики и что слышал",
+          "lie": "Груз по накладной, ничего не слышал.",
+          "truth": "Лишние ящики грузил по звонку инспекторши, за премию. А в два с четвертью в цехе лязгнула щеколда. Артём как раз курить отошёл. Её машина ещё во дворе была."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-certificate",
+          "requiresFactIds": ["f-weight-mismatch"],
+          "unlocksTruthIds": ["t-extra"],
+          "revealsFactIds": ["f-viktor-extra", "f-latch-0215"],
+          "confession": "Лишние ящики грузил по звонку инспекторши, за премию. А в два с четвертью в цехе лязгнула щеколда. Артём как раз курить отошёл. Её машина ещё во дворе была."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-gate-log",
+          "reaction": "Час ровно. Как всегда."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-viktor-1",
+          "question": "Когда вы приехали?",
+          "answer": "В час. Записался у деда.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-viktor-2",
+          "question": "Сколько ящиков в кузове?",
+          "answer": "Сколько дали.",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-viktor-3",
+          "question": "Артём всю ночь был с вами?",
+          "answer": "С полвторого почти. Около двух отходил минут на десять.",
+          "revealsFactIds": ["f-artyom-away"],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-viktor-4",
+          "question": "Вы что-нибудь слышали из цеха?",
+          "answer": "Компрессоры. Шумно у них.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-extra",
+            "answer": "Щеколду. В два с четвертью. Я сказал."
+          }
+        },
+        {
+          "id": "q-viktor-5",
+          "question": "Кто вам звонил ночью?",
+          "answer": "Диспетчер. Наверное.",
+          "revealsFactIds": [],
+          "stressDelta": 2
+        },
+        {
+          "id": "q-viktor-6",
+          "question": "Почему в кузове лишние ящики?",
+          "answer": "Сколько дали, столько везу.",
+          "revealsFactIds": ["f-extra-boxes"]
+        }
+      ],
+      "isCulprit": false
+    },
+    {
+      "id": "s-semyon",
+      "actorId": "a06-semyon",
+      "name": "Семён Лукич Кравец",
+      "age": 71,
+      "occupation": "Сторож",
+      "relationToVictim": "Сторож завода. Павел писал на него докладные.",
+      "publicProfile": "Сторож, бывший боцман, на заводе пятнадцать лет. Все зовут «дед».",
+      "personality": "Ворчливый, сентиментальный, прячет вину за байками.",
+      "speechStyle": "На «ты», морские словечки: «полундра», «на вахте», «салага».",
+      "coverStory": "Всю ночь на вахте, глаз не сомкнул. В три обошёл территорию — тихо.",
+      "sensitiveTopics": ["обход", "бутылка", "Павел-«стукач»"],
+      "shareableFactIds": ["f-margarita-gate", "f-keys-open"],
+      "hiddenTruths": [
+        {
+          "id": "t-slept",
+          "topic": "обход в три",
+          "lie": "Обошёл в три, всё тихо.",
+          "truth": "Выпил после полтретьего и проспал. Если б обошёл — услышал бы, как он стучит… Это на мне."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-bottle",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-slept"],
+          "revealsFactIds": ["f-semyon-slept"],
+          "confession": "Выпил после полтретьего и проспал. Если б обошёл — услышал бы, как он стучит… Это на мне."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-notebook",
+          "reaction": "Докладывал он на меня. Ну и докладывай, салага… эх."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-semyon-1",
+          "question": "Кто въезжал ночью?",
+          "answer": "Всё в журнале: фура в час, инспекторша в два, уехала в половине третьего.",
+          "revealsFactIds": ["f-margarita-gate"]
+        },
+        {
+          "id": "q-semyon-2",
+          "question": "Вы делали обход?",
+          "answer": "Как положено, в три. Тихо было, как в штиль.",
+          "revealsFactIds": [],
+          "stressDelta": 2,
+          "afterBreak": {
+            "truthId": "t-slept",
+            "answer": "Не делал. Проспал. Каюсь."
+          }
+        },
+        {
+          "id": "q-semyon-3",
+          "question": "Где ключи от камер?",
+          "answer": "На гвозде в будке. Испокон веку так.",
+          "revealsFactIds": ["f-keys-open"]
+        },
+        {
+          "id": "q-semyon-4",
+          "question": "Что за человек был Павел?",
+          "answer": "Писучий. На меня тоже писал. Но парень честный был.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-semyon-5",
+          "question": "Щеколда правда сама падает?",
+          "answer": "Падает, зараза. Месяц прошу починить.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-semyon-6",
+          "question": "Вы заходили в цех ночью?",
+          "answer": "Около двух прошёл — компрессоры глянуть. Павел опять за свою докладную. Поругались, я ушёл в будку.",
+          "revealsFactIds": ["f-semyon-quarrel"],
+          "stressDelta": 1
+        }
+      ],
+      "isCulprit": false
+    }
+  ],
+  "locations": [
+    {
+      "id": "l-yard",
+      "name": "Двор и проходная",
+      "description": "Ледяной дождь, прожекторы, гул рефрижератора. У ворот — будка сторожа.",
+      "image": "images/locations/yard.webp",
+      "hotspots": [
+        {
+          "id": "h-booth",
+          "label": "Окно будки",
+          "rect": {
+            "x": 0.195,
+            "y": 0.55,
+            "w": 0.185,
+            "h": 0.17
+          },
+          "text": "На подоконнике открыт журнал проходной. Рядом на гвозде висят ключи.",
+          "closeup": "images/closeups/h-booth.webp",
+          "clueId": "c-gate-log",
+          "revealsFactIds": ["f-keys-open"]
+        },
+        {
+          "id": "h-booth-table",
+          "label": "Столик в будке",
+          "rect": {
+            "x": 0.015,
+            "y": 0.53,
+            "w": 0.16,
+            "h": 0.15
+          },
+          "text": "На столике термос и сложенная газета. Рядом початая бутылка и один стакан.",
+          "closeup": "images/closeups/h-booth-table.webp",
+          "clueId": "c-bottle"
+        },
+        {
+          "id": "h-truck-cab",
+          "label": "Кабина рефрижератора",
+          "rect": {
+            "x": 0.17,
+            "y": 0.29,
+            "w": 0.21,
+            "h": 0.2
+          },
+          "text": "Документы лежат на торпеде кабины. По лобовому стеклу стекает ледяной дождь.",
+          "closeup": "images/closeups/h-truck-cab.webp",
+          "clueId": "c-certificate"
+        },
+        {
+          "id": "h-truck-back",
+          "label": "Кузов рефрижератора",
+          "rect": {
+            "x": 0.775,
+            "y": 0.28,
+            "w": 0.18,
+            "h": 0.195
+          },
+          "text": "Двери кузова приоткрыты. Внутри штабеля ящиков «минтая».",
+          "closeup": "images/closeups/h-truck-back.webp",
+          "revealsFactIds": ["f-extra-boxes"]
+        },
+        {
+          "id": "h-gate",
+          "label": "Ворота",
+          "rect": {
+            "x": 0.405,
+            "y": 0.53,
+            "w": 0.58,
+            "h": 0.46
+          },
+          "text": "У ворот в ледяной каше свежие следы шин."
+        }
+      ]
+    },
+    {
+      "id": "l-shop",
+      "name": "Цех и весовая",
+      "description": "Гудят компрессоры, пахнет рыбой и хлоркой. Табло весов, стол учётчика, тяжёлая дверь камеры № 2.",
+      "image": "images/locations/shop.webp",
+      "hotspots": [
+        {
+          "id": "h-scales",
+          "label": "Платформенные весы",
+          "rect": {
+            "x": 0.02,
+            "y": 0.75,
+            "w": 0.58,
+            "h": 0.19
+          },
+          "text": "Платформенные весы. В лотке остался последний талон.",
+          "closeup": "images/closeups/h-scales.webp",
+          "revealsFactIds": ["f-scale-ticket"]
+        },
+        {
+          "id": "h-desk",
+          "label": "Стол учётчика и сейф",
+          "rect": {
+            "x": 0.205,
+            "y": 0.445,
+            "w": 0.335,
+            "h": 0.23
+          },
+          "text": "Под столом учётчика стоит небольшой стальной сейф.",
+          "closeup": "images/closeups/h-desk.webp",
+          "lock": {
+            "type": "combination",
+            "digits": 4,
+            "code": "0418",
+            "deductionFactIds": ["f-safe-note", "f-tab-number"]
+          },
+          "lockedText": "Сейф заперт на кодовый замок с четырьмя колёсиками.",
+          "container": {
+            "image": "images/closeups/h-safe-open.webp",
+            "items": [
+              {
+                "clueId": "c-check-book",
+                "rect": {
+                  "x": 0.1,
+                  "y": 0.26,
+                  "w": 0.33,
+                  "h": 0.44
+                }
+              },
+              {
+                "clueId": "c-complaint",
+                "rect": {
+                  "x": 0.435,
+                  "y": 0.31,
+                  "w": 0.24,
+                  "h": 0.2
+                }
+              },
+              {
+                "clueId": "c-artyom-iou",
+                "rect": {
+                  "x": 0.46,
+                  "y": 0.595,
+                  "w": 0.2,
+                  "h": 0.16
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-schedule",
+          "label": "График смен",
+          "rect": {
+            "x": 0.025,
+            "y": 0.218,
+            "w": 0.26,
+            "h": 0.155
+          },
+          "text": "На доске закреплён график ночной смены.",
+          "closeup": "images/closeups/h-schedule.webp",
+          "clueId": "c-schedule"
+        },
+        {
+          "id": "h-repair-board",
+          "label": "Доска механика",
+          "rect": {
+            "x": 0.3,
+            "y": 0.175,
+            "w": 0.245,
+            "h": 0.245
+          },
+          "text": "Среди инструментов на гвозде висит потёртый журнал ремонтов.",
+          "closeup": "images/closeups/h-repair-board.webp",
+          "clueId": "c-repair-log"
+        },
+        {
+          "id": "h-thermograph",
+          "label": "Термограф",
+          "rect": {
+            "x": 0.545,
+            "y": 0.235,
+            "w": 0.155,
+            "h": 0.19
+          },
+          "text": "Настенный самописец температуры камеры. Внутри бумажная лента.",
+          "closeup": "images/closeups/h-thermograph.webp",
+          "clueId": "c-thermograph"
+        },
+        {
+          "id": "h-chamber-door",
+          "label": "Дверь морозильной камеры",
+          "rect": {
+            "x": 0.705,
+            "y": 0.17,
+            "w": 0.28,
+            "h": 0.51
+          },
+          "text": "На двери снаружи щеколда. У порога лежит срезанная пломба с биркой.",
+          "closeup": "images/closeups/h-chamber-door.webp",
+          "clueId": "c-seal",
+          "revealsFactIds": ["f-latch-outside"]
+        }
+      ]
+    },
+    {
+      "id": "l-chamber",
+      "name": "Морозильная камера № 2",
+      "description": "Минус двадцать пять. Иней на всём, лампа под решёткой, стеллажи с ящиками.",
+      "image": "images/locations/chamber.webp",
+      "hotspots": [
+        {
+          "id": "h-outline",
+          "label": "Контур у стеллажа",
+          "rect": {
+            "x": 0.24,
+            "y": 0.535,
+            "w": 0.59,
+            "h": 0.245
+          },
+          "text": "Меловой контур на полу. Рядом блокнот с карандашом и телефон с тёмным экраном.",
+          "closeup": "images/closeups/h-outline.webp",
+          "clueId": "c-notebook",
+          "revealsFactIds": ["f-no-signal"]
+        },
+        {
+          "id": "h-frost-floor",
+          "label": "Иней у входа",
+          "rect": {
+            "x": 0.1,
+            "y": 0.8,
+            "w": 0.34,
+            "h": 0.195
+          },
+          "text": "Пол у входа покрыт плотным инеем.",
+          "closeup": "images/closeups/h-frost-floor.webp",
+          "clueId": "c-frost-floor"
+        },
+        {
+          "id": "h-inner-door",
+          "label": "Дверь изнутри",
+          "rect": {
+            "x": 0.04,
+            "y": 0.3,
+            "w": 0.16,
+            "h": 0.14
+          },
+          "text": "Аварийная ручка на внутренней стороне двери отломана.",
+          "closeup": "images/closeups/h-inner-door.webp",
+          "revealsFactIds": ["f-handle-broken"]
+        },
+        {
+          "id": "h-racks",
+          "label": "Стеллажи с ящиками",
+          "rect": {
+            "x": 0.7,
+            "y": 0.35,
+            "w": 0.29,
+            "h": 0.18
+          },
+          "text": "Один ящик «минтая» вскрыт. Под слоем замороженной рыбы лежат банки икры.",
+          "closeup": "images/closeups/h-racks.webp",
+          "revealsFactIds": ["f-caviar-in-pollock"]
+        },
+        {
+          "id": "h-lamp",
+          "label": "Лампа под решёткой",
+          "rect": {
+            "x": 0.415,
+            "y": 0.025,
+            "w": 0.19,
+            "h": 0.13
+          },
+          "text": "Лампа под защитной решёткой горит ровно."
+        }
+      ]
+    }
+  ],
+  "clues": [
+    {
+      "id": "c-gate-log",
+      "name": "Журнал проходной",
+      "kind": "document",
+      "document": {
+        "template": "ledger",
+        "fields": {
+          "lines": [
+            "Проходная · пн/вт",
+            "01:00 · рефрижератор, Шахов В.",
+            "02:05 · въезд · Ветлугина М. С., ветинспекция",
+            "02:25 · выезд · Ветлугина М. С."
+          ]
+        }
+      },
+      "description": "Журнал проходной.",
+      "revealsFactIds": ["f-margarita-gate"],
+      "isKey": true
+    },
+    {
+      "id": "c-bottle",
+      "name": "Бутылка в будке",
+      "kind": "object",
+      "image": "images/clues/c-bottle.webp",
+      "description": "Початая бутылка и один стакан со столика сторожа.",
+      "revealsFactIds": ["f-semyon-bottle"],
+      "isKey": false,
+      "explanationFactIds": ["f-semyon-slept"]
+    },
+    {
+      "id": "c-certificate",
+      "name": "Ветеринарный сертификат",
+      "kind": "document",
+      "document": {
+        "template": "official",
+        "fields": {
+          "lines": [
+            "Ветеринарный сертификат. Минтай мороженый, 40 ящ. Осмотрено: 20:00. Инспектор: М. С. Ветлугина. Пломбир № 07"
+          ]
+        }
+      },
+      "description": "Ветеринарный сертификат.",
+      "revealsFactIds": ["f-certificate"],
+      "isKey": true
+    },
+    {
+      "id": "c-check-book",
+      "name": "Тетрадь сверок",
+      "kind": "document",
+      "document": {
+        "template": "ledger",
+        "fields": {
+          "lines": [
+            "Минтай, партия 11 · накладная 10,0 кг/ящ · весы 14,2",
+            "Минтай, партия 12 · 10,0 · 14,1",
+            "Расхождение ≈ 4 кг на ящик. Сертификаты — Ветлугина"
+          ]
+        }
+      },
+      "description": "Тетрадь сверок.",
+      "revealsFactIds": ["f-weight-mismatch"],
+      "isKey": true
+    },
+    {
+      "id": "c-complaint",
+      "name": "Черновик заявления",
+      "kind": "document",
+      "document": {
+        "template": "note",
+        "fields": {
+          "lines": [
+            "Прокурору порта. Прошу проверить сертификаты инспектора Ветлугиной М. С. на минтай: вес не совпадает…"
+          ]
+        }
+      },
+      "description": "Черновик заявления.",
+      "revealsFactIds": ["f-draft-complaint"],
+      "isKey": true
+    },
+    {
+      "id": "c-artyom-iou",
+      "name": "Расписка грузчика",
+      "kind": "document",
+      "document": {
+        "template": "note",
+        "fields": {
+          "lines": ["Бойко А. — 2 банки икры. Верну из зарплаты. А. Б."]
+        }
+      },
+      "description": "Расписка грузчика.",
+      "revealsFactIds": ["f-artyom-iou"],
+      "isKey": false
+    },
+    {
+      "id": "c-schedule",
+      "name": "График смен",
+      "kind": "document",
+      "document": {
+        "template": "official",
+        "fields": {
+          "lines": [
+            "Ночная смена, пн/вт",
+            "Ремез П. — учёт — таб. № 0418",
+            "Бойко А. — погрузка",
+            "Кравец С. Л. — охрана"
+          ]
+        }
+      },
+      "description": "График смен.",
+      "revealsFactIds": ["f-tab-number"],
+      "isKey": false
+    },
+    {
+      "id": "c-repair-log",
+      "name": "Журнал ремонтов",
+      "kind": "document",
+      "document": {
+        "template": "ledger",
+        "fields": {
+          "lines": [
+            "Камера № 2: щеколда падает при хлопке двери. Заявка",
+            "Камера № 2: аварийная ручка изнутри — отломана. Заявка"
+          ]
+        }
+      },
+      "description": "Журнал ремонтов.",
+      "revealsFactIds": ["f-latch-faulty"],
+      "isKey": false
+    },
+    {
+      "id": "c-thermograph",
+      "name": "Термограф камеры № 2",
+      "kind": "object",
+      "description": "Настенный самописец температуры. Внутри бумажная лента.",
+      "revealsFactIds": [],
+      "isKey": true,
+      "inspection": {
+        "image": "images/closeups/h-thermograph.webp",
+        "details": [
+          {
+            "id": "d-door-spikes",
+            "rect": {
+              "x": 0.29,
+              "y": 0.32,
+              "w": 0.22,
+              "h": 0.18
+            },
+            "text": "Три коротких скачка температуры. После последнего лента ровная до утра.",
+            "revealsFactIds": ["f-door-openings"],
+            "concealedTerms": [
+              "скачки температуры",
+              "всплески",
+              "три пика",
+              "три коротких скачка"
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "c-seal",
+      "name": "Срезанная пломба",
+      "kind": "object",
+      "description": "Свинцовая шайба на перекушенной проволоке. К ней привязана бумажная бирка.",
+      "revealsFactIds": ["f-seal-intact"],
+      "isKey": true,
+      "document": {
+        "template": "note",
+        "fields": {
+          "lines": ["Срезана 06:40, утренняя смена. Была цела"]
+        }
+      },
+      "inspection": {
+        "image": "images/closeups/h-seal.webp",
+        "details": [
+          {
+            "id": "d-seal-number",
+            "rect": {
+              "x": 0.58,
+              "y": 0.33,
+              "w": 0.2,
+              "h": 0.17
+            },
+            "text": "На свинце пломбы — оттиск «ВЕТ · 07».",
+            "revealsFactIds": ["f-seal-07"],
+            "concealedTerms": ["оттиск", "оттиска", "ВЕТ · 07"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "c-notebook",
+      "name": "Блокнот Павла",
+      "kind": "object",
+      "document": {
+        "template": "diary",
+        "fields": {
+          "lines": [
+            "Сейф — мой табельный",
+            "Бойко — 2 банки, предупредить",
+            "Семён опять спал. Доложить?",
+            "01:35. Бойко требовал расписку назад. Сказал: сдашь — пожалеешь",
+            "02:12. Дверь захлопнулась. Стучу"
+          ]
+        }
+      },
+      "description": "Блокнот Павла.",
+      "revealsFactIds": [
+        "f-safe-note",
+        "f-pavel-staff-notes",
+        "f-pavel-artyom-threat",
+        "f-pavel-last-note"
+      ],
+      "isKey": false
+    },
+    {
+      "id": "c-frost-floor",
+      "name": "Иней у входа",
+      "kind": "object",
+      "description": "Иней на полу у порога морозильной камеры.",
+      "revealsFactIds": [],
+      "isKey": false,
+      "inspection": {
+        "image": "images/closeups/h-frost-floor.webp",
+        "details": [
+          {
+            "id": "d-frost-tracks",
+            "rect": {
+              "x": 0.36,
+              "y": 0.15,
+              "w": 0.47,
+              "h": 0.46
+            },
+            "text": "Две пары обуви. Крупные сапоги шли туда и обратно, ботинки поменьше — только внутрь.",
+            "revealsFactIds": ["f-two-tracks"],
+            "concealedTerms": [
+              "две пары обуви",
+              "крупные сапоги",
+              "ботинки поменьше",
+              "туда и обратно",
+              "только внутрь"
+            ]
+          }
+        ]
+      }
+    }
+  ],
+  "hints": [
+    {
+      "afterRound": 2,
+      "unlessAnyPlayerHas": "f-door-openings",
+      "text": "Двери умеют рассказывать, когда их открывали. Найдите, кто это записывает."
+    },
+    {
+      "afterRound": 3,
+      "unlessAnyPlayerHas": "c-check-book",
+      "text": "Учётчик всё считал. Где такие прячут свой счёт?"
+    },
+    {
+      "afterRound": 4,
+      "unlessAnyPlayerHas": "f-seal-07",
+      "text": "Утренняя смена что-то срезала с двери. Посмотрите поближе."
+    },
+    {
+      "afterRound": 5,
+      "unlessAnyPlayerHas": "f-latch-0215",
+      "text": "Водитель всю ночь стоял во дворе. Уши у него есть."
+    }
+  ]
+}

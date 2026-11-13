@@ -1,8 +1,9 @@
 import { test, expect } from '@playwright/test';
 import roomSeven from '../../art/case-002-room-seven/manifest.json' with { type: 'json' };
+import coldRoom from '../../art/case-003-cold-room/manifest.json' with { type: 'json' };
 import manifest from '../../art/pilot/manifest.json' with { type: 'json' };
 
-for (const art of [manifest, roomSeven]) {
+for (const art of [manifest, roomSeven, coldRoom]) {
   test(
     art.caseId +
       ': все игровые иллюстрации декодируются браузером в нужном размере',
