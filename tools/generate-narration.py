@@ -16,8 +16,10 @@ MODEL = "sonic-3.6"
 MAX_AUDIO = 16 * 1024 * 1024
 
 
-def phrases():
+def phrases(case_id=None):
     plan = json.loads((ROOT / "content/narration/plan.json").read_text(encoding="utf-8"))
+    if case_id and case_id != plan["caseId"]:
+        plan = plan["cases"][case_id]
     case = json.loads((ROOT / "public/cases" / plan["caseId"] / "case.json").read_text(encoding="utf-8"))
     result = []
     for clip in plan["clips"]:

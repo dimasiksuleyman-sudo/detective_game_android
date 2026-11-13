@@ -32,7 +32,7 @@ jobs:
         run: npm run test:coverage
       - name: Исходники ассетов в Git LFS
         run: npm run lfs:check
-      - name: Валидация пилотного дела
+      - name: Валидация всех встроенных дел
         run: npm run case:validate
       - name: Сборка web
         run: npm run build

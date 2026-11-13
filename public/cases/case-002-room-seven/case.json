@@ -1,0 +1,1363 @@
+{
+  "schemaVersion": 3,
+  "id": "case-002-room-seven",
+  "version": 1,
+  "minAppVersion": "0.4.0",
+  "title": "Номер семь",
+  "tagline": "Цепочка на двери. Остывший чай. Пропавший хронометр.",
+  "difficulty": 2,
+  "estimatedMinutes": 35,
+  "players": {
+    "min": 1,
+    "max": 5
+  },
+  "cover": "images/cover.webp",
+  "setting": {
+    "city": "Ветрогорск",
+    "place": "Гостиница «Маяк» на мысу",
+    "dateLabel": "Ночь со среды на четверг",
+    "weather": "Шторм"
+  },
+  "briefing": "Ветрогорск, ночь со среды на четверг, шторм. Гостиница «Маяк» на мысу. Утром горничная не смогла попасть в номер семь: дверь заперта изнутри на цепочку. Когда цепочку перекусили, в кресле нашли мёртвым антиквара и ростовщика Бориса Каретникова (64). Следов борьбы нет, на столике остывший чай. Смерть наступила между 00:30 и 01:30. В ту ночь в гостинице были четверо, кто знал покойного: хозяйка «Маяка», ночной портье, его племянник и тихая постоялица из соседнего номера. Найдите, кто это сделал, — и докажите.",
+  "victim": {
+    "name": "Борис Аркадьевич Каретников",
+    "age": 64,
+    "occupation": "антиквар и ростовщик",
+    "actorId": "a14-boris",
+    "bio": "Скупой, насмешливый, любит хвастаться находками. Каждый вечер — чай с двумя ложками сахара и сигара на балконе.",
+    "causeOfDeath": "Снотворное в сочетании с сердечными таблетками.",
+    "foundAt": "В кресле номера семь.",
+    "timeOfDeathWindow": "Между 00:30 и 01:30."
+  },
+  "motives": [
+    {
+      "id": "m-heirloom",
+      "label": "Вернуть семейную реликвию"
+    },
+    {
+      "id": "m-inheritance",
+      "label": "Получить наследство"
+    },
+    {
+      "id": "m-debt",
+      "label": "Избавиться от долга"
+    },
+    {
+      "id": "m-smuggling",
+      "label": "Скрыть незаконную подработку"
+    },
+    {
+      "id": "m-jealousy",
+      "label": "Ревность"
+    }
+  ],
+  "methods": [
+    {
+      "id": "w-sedative",
+      "label": "Снотворное в чае"
+    },
+    {
+      "id": "w-pillow",
+      "label": "Удушение подушкой"
+    },
+    {
+      "id": "w-blow",
+      "label": "Удар тупым предметом"
+    },
+    {
+      "id": "w-gas",
+      "label": "Отравление газом"
+    }
+  ],
+  "solution": {
+    "culpritId": "s-nadia",
+    "motiveId": "m-heirloom",
+    "methodId": "w-sedative",
+    "keyEvidence": [
+      "c-receipt",
+      "c-chronometer",
+      "f-engraving",
+      "f-tea-drugged",
+      "f-wet-footprints",
+      "f-grey-thread",
+      "f-figure-on-balcony",
+      "f-nadia-confession"
+    ],
+    "explanation": "В девяносто восьмом году смотритель маяка Степан Сорокин отдал Каретникову в залог свой именной хронометр — и так и не выкупил. Его дочь Надежда, медсестра, приехала в «Маяк», чтобы вернуть отцовскую вещь, и попросила номер рядом с антикваром. В четверть одиннадцатого она пришла к нему с деньгами. Каретников поднял цену втрое, а пока он доставал хронометр похвастаться, Надежда подлила ему в чай снотворное. Ночью она перелезла через перегородку общего балкона, оставив на гвозде серую нитку, забрала хронометр и спрятала его в бельевой тележке. Она не знала, что Каретников принимает сердечные таблетки: вместе со снотворным они остановили сердце. Цепочка на двери осталась целой — в номер вошли с балкона, и Руслан видел это с парковки.",
+    "reconstruction": [
+      {
+        "image": "images/reconstruction/1.webp",
+        "caption": "Пока Каретников хвастался хронометром, Надежда подлила снотворное в его чай."
+      },
+      {
+        "image": "images/reconstruction/2.webp",
+        "caption": "Ночью она перелезла через перегородку балкона."
+      },
+      {
+        "image": "images/reconstruction/3.webp",
+        "caption": "Отцовский хронометр она спрятала в бельевой тележке."
+      }
+    ]
+  },
+  "timelineTruth": [
+    {
+      "time": "14:20",
+      "event": "Надежда заселяется в номер 3"
+    },
+    {
+      "time": "19:00",
+      "event": "Каретников (номер 7) и племянник Дмитрий (номер 5) заселяются"
+    },
+    {
+      "time": "20:30",
+      "event": "Ужин: Каретников показывает всем хронометр и при всех отказывает племяннику в деньгах: «Ни копейки до моей смерти»"
+    },
+    {
+      "time": "21:00",
+      "event": "Каретников напоминает Зое: долг по закладной на гостиницу — до пятницы"
+    },
+    {
+      "time": "21:40",
+      "event": "Надежда просит переселить её в номер 8, рядом с Каретниковым: «давний знакомый»"
+    },
+    {
+      "time": "22:00",
+      "event": "Руслан приносит чай в номер 7. Каретников велит до утра не беспокоить"
+    },
+    {
+      "time": "22:15",
+      "event": "Надежда стучится к Каретникову, Руслан это видит. Каретников поднимает цену втрое; пока он достаёт хронометр из шкафа, она подливает снотворное в его чай"
+    },
+    {
+      "time": "22:35",
+      "event": "Надежда уходит к себе"
+    },
+    {
+      "time": "23:10",
+      "event": "Дмитрий уходит снимать шторм у маяка (до 01:50)"
+    },
+    {
+      "time": "23:30",
+      "event": "Каретников пьёт вечерние сердечные таблетки, допивает чай, засыпает в кресле"
+    },
+    {
+      "time": "00:10–01:05",
+      "event": "Зоя на ресепшене принимает звонки (00:10, 00:40, 01:05)"
+    },
+    {
+      "time": "00:40–01:00",
+      "event": "Руслан грузит фургон на парковке — подработка без документов"
+    },
+    {
+      "time": "00:50",
+      "event": "Надежда перелезает через перегородку балкона, входит в номер 7 и забирает хронометр. Руслан видит с парковки женщину в сером на балконе"
+    },
+    {
+      "time": "01:00",
+      "event": "Надежда прячет хронометр в бельевой тележке в коридоре"
+    },
+    {
+      "time": "00:30–01:30",
+      "event": "Сердце Каретникова останавливается"
+    },
+    {
+      "time": "02:00",
+      "event": "Дмитрий возвращается, оставляет камеру на кресле в холле"
+    },
+    {
+      "time": "08:00",
+      "event": "Горничная не может открыть номер 7: цепочка. Руслан перекусывает её"
+    }
+  ],
+  "facts": [
+    {
+      "id": "f-door-chain",
+      "text": "Утром дверь номера 7 была заперта изнутри на цепочку — Руслану пришлось её перекусить. Через дверь ночью никто не входил.",
+      "importance": "key",
+      "aboutSuspectIds": ["s-ruslan"]
+    },
+    {
+      "id": "f-balcony-door",
+      "text": "Балконная дверь номера 7 приоткрыта; на балконе — пепельница с окурками сигар Каретникова.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-wet-footprints",
+      "text": "На полу у балконной двери — подсохшие мокрые следы небольшой женской обуви: с балкона в номер и обратно.",
+      "importance": "key",
+      "aboutSuspectIds": ["s-ruslan"]
+    },
+    {
+      "id": "f-shared-balcony",
+      "text": "Номера 7 и 8 выходят на общий балкон, разделённый низкой перегородкой.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-grey-thread",
+      "text": "На гвозде перегородки балкона — серая шерстяная нитка.",
+      "importance": "key"
+    },
+    {
+      "id": "f-tea-drugged",
+      "text": "На блюдце чашки Каретникова — белый горький налёт: в чай что-то подмешали.",
+      "importance": "key",
+      "proves": ["method"]
+    },
+    {
+      "id": "f-empty-ampoule",
+      "text": "В урне у лестницы — пустая аптечная ампула без этикетки.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-heart-pills",
+      "text": "Каретников принимал сердечные таблетки: на таблетнице — «утро» и «вечер, 23:30».",
+      "importance": "supporting",
+      "time": "23:30"
+    },
+    {
+      "id": "f-chronometer-missing",
+      "text": "На тумбочке — пустой футляр: из номера пропал морской хронометр, который Каретников показывал за ужином.",
+      "importance": "key"
+    },
+    {
+      "id": "f-portfel-hint",
+      "text": "В блокноте Каретникова: «Код портфеля — адрес моей первой лавки».",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-first-shop",
+      "text": "В бумажнике — старая визитка: «Антиквариат Каретникова. Портовая, 214».",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-pledge-receipt",
+      "text": "Расписка 1998 года: хронометр смотрителя маяка С. Сорокина принят Каретниковым в залог за долг.",
+      "importance": "key",
+      "proves": ["motive"]
+    },
+    {
+      "id": "f-buyer-note",
+      "text": "Запись Каретникова: «Сорокина Н. хочет выкупить хронометр. Цену — втрое».",
+      "importance": "key"
+    },
+    {
+      "id": "f-zoya-mortgage",
+      "text": "Закладная: гостиница «Маяк» в залоге у Каретникова, срок возврата — пятница.",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-zoya"]
+    },
+    {
+      "id": "f-zoya-alibi",
+      "text": "Журнал ресепшена: звонки в 00:10, 00:40 и 01:05 принимала З. П. Кулик.",
+      "importance": "supporting",
+      "time": "00:10",
+      "aboutSuspectIds": ["s-zoya"]
+    },
+    {
+      "id": "f-nadia-moved",
+      "text": "Книга регистрации: в 21:40 Сорокину переселили из номера 3 в номер 8.",
+      "importance": "supporting",
+      "time": "21:40"
+    },
+    {
+      "id": "f-nadia-asked",
+      "text": "Зоя призналась: Сорокина сама попросила номер рядом с Каретниковым — «давний знакомый».",
+      "importance": "key"
+    },
+    {
+      "id": "f-dinner-quarrel",
+      "text": "За ужином Каретников при всех отказал племяннику в деньгах: «Ни копейки до моей смерти».",
+      "importance": "red_herring",
+      "time": "20:30",
+      "aboutSuspectIds": ["s-dmitry"]
+    },
+    {
+      "id": "f-dmitry-heir",
+      "text": "Дмитрий — единственный наследник Каретникова.",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-dmitry"]
+    },
+    {
+      "id": "f-dmitry-alibi",
+      "text": "На снимках Дмитрия — маяк в шторм; время съёмки с 23:10 до 01:50.",
+      "importance": "supporting",
+      "time": "23:10",
+      "aboutSuspectIds": ["s-dmitry"]
+    },
+    {
+      "id": "f-boris-bragged",
+      "text": "Дмитрий признался: дядя хвастался, что медсестра выкупит хронометр втридорога.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-ruslan-tea",
+      "text": "В 22:00 Руслан принёс чай в номер 7. Каретников велел до утра не беспокоить.",
+      "importance": "supporting",
+      "time": "22:00"
+    },
+    {
+      "id": "f-nadia-visit",
+      "text": "Руслан видел, как в 22:15 Сорокина стучалась в номер 7 и её впустили.",
+      "importance": "supporting",
+      "time": "22:15"
+    },
+    {
+      "id": "f-ruslan-outside",
+      "text": "Куртка портье промокла насквозь; в кармане — накладная без печати: «6 коробок, 00:40».",
+      "importance": "red_herring",
+      "time": "00:40",
+      "aboutSuspectIds": ["s-ruslan"]
+    },
+    {
+      "id": "f-figure-on-balcony",
+      "text": "Руслан признался: в 00:50 он грузил фургон на парковке и видел, как женщина в сером перелезала через перегородку балкона второго этажа.",
+      "importance": "key",
+      "time": "00:50",
+      "aboutSuspectIds": ["s-ruslan", "s-nadia"],
+      "proves": ["opportunity"]
+    },
+    {
+      "id": "f-keeper-photo",
+      "text": "На стене холла — фото смотрителя маяка с подписью «С. Сорокин, 1968–1998».",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-chronometer-hidden",
+      "text": "Пропавший хронометр спрятан в бельевой тележке в коридоре второго этажа.",
+      "importance": "key"
+    },
+    {
+      "id": "f-engraving",
+      "text": "Гравировка на крышке хронометра: «С. Сорокину — за тридцать лет у маяка».",
+      "importance": "key"
+    },
+    {
+      "id": "f-nadia-motive",
+      "text": "Сорокина призналась: Каретников забрал хронометр её отца за долги; она приехала выкупить его, а он поднял цену втрое.",
+      "importance": "key"
+    },
+    {
+      "id": "f-nadia-confession",
+      "text": "Сорокина призналась: подлила снотворное ему в чай ещё вечером, ночью перелезла через балкон и забрала хронометр. Про сердечные таблетки, по её словам, не знала.",
+      "importance": "key"
+    }
+  ],
+  "clues": [
+    {
+      "id": "c-register",
+      "name": "Книга регистрации",
+      "kind": "document",
+      "description": "Книга регистрации гостей за среду.",
+      "revealsFactIds": ["f-nadia-moved"],
+      "isKey": false,
+      "document": {
+        "template": "ledger",
+        "fields": {
+          "title": "Книга регистрации · среда",
+          "lines": [
+            "14:20 · Сорокина Н. — № 3",
+            "19:00 · Каретников Б. — № 7",
+            "19:00 · Каретников Д. — № 5",
+            "21:40 · Сорокина Н. — перевод № 3 → № 8"
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-call-log",
+      "name": "Журнал звонков",
+      "kind": "document",
+      "description": "Журнал телефонных вызовов ресепшена.",
+      "revealsFactIds": ["f-zoya-alibi"],
+      "isKey": false,
+      "document": {
+        "template": "ledger",
+        "fields": {
+          "title": "Журнал звонков",
+          "lines": [
+            "00:10 · такси на утро · принято: З. П.",
+            "00:40 · гость № 2, жалоба на ветер · принято: З. П.",
+            "01:05 · служба маяка, штормовое · принято: З. П."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-wet-jacket",
+      "name": "Мокрая куртка портье",
+      "kind": "object",
+      "description": "Тяжёлая от воды куртка. В кармане сложена накладная.",
+      "revealsFactIds": ["f-ruslan-outside"],
+      "isKey": false,
+      "image": "images/clues/c-wet-jacket.webp",
+      "document": {
+        "template": "note",
+        "fields": {
+          "title": "Накладная",
+          "lines": ["6 коробок. 00:40.", "Получатель — склад № 3, порт."]
+        }
+      },
+      "explanationFactIds": ["f-wet-footprints", "f-door-chain"]
+    },
+    {
+      "id": "c-camera",
+      "name": "Фотокамера Дмитрия",
+      "kind": "object",
+      "description": "Камера лежит в сумке. Снимки можно просмотреть.",
+      "revealsFactIds": ["f-dmitry-alibi"],
+      "isKey": false,
+      "image": "images/clues/c-camera.webp",
+      "document": {
+        "template": "photo-back",
+        "fields": {
+          "title": "Последние снимки",
+          "lines": ["23:10 … 01:50 · маяк, шторм."]
+        }
+      },
+      "explanationFactIds": ["f-dmitry-alibi"]
+    },
+    {
+      "id": "c-teacup",
+      "name": "Чашка на блюдце",
+      "kind": "object",
+      "description": "Фарфоровая чашка с остывшим чаем на блюдце.",
+      "revealsFactIds": [],
+      "isKey": true,
+      "image": "images/clues/c-teacup.webp",
+      "inspection": {
+        "image": "images/closeups/teacup-inspection.webp",
+        "details": [
+          {
+            "id": "d-saucer-residue",
+            "rect": {
+              "x": 0.79,
+              "y": 0.58,
+              "w": 0.16,
+              "h": 0.18
+            },
+            "text": "На краю блюдца — белый горький налёт.",
+            "revealsFactIds": ["f-tea-drugged"],
+            "concealedTerms": ["налёт", "налет"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "c-empty-case",
+      "name": "Пустой футляр",
+      "kind": "object",
+      "description": "Деревянный футляр с бархатным ложем для круглого морского прибора.",
+      "revealsFactIds": ["f-chronometer-missing"],
+      "isKey": true,
+      "image": "images/clues/c-empty-case.webp"
+    },
+    {
+      "id": "c-notebook",
+      "name": "Блокнот Каретникова",
+      "kind": "object",
+      "description": "Кожаный блокнот с короткими записями.",
+      "revealsFactIds": ["f-portfel-hint"],
+      "isKey": false,
+      "image": "images/clues/c-notebook.webp",
+      "document": {
+        "template": "diary",
+        "fields": {
+          "title": "Личные записи",
+          "lines": [
+            "Код портфеля — адрес моей первой лавки.",
+            "Пт — Кулик, срок по закладной."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-wallet",
+      "name": "Бумажник",
+      "kind": "object",
+      "description": "В бумажнике сохранилась старая визитка.",
+      "revealsFactIds": ["f-first-shop"],
+      "isKey": false,
+      "image": "images/clues/c-wallet.webp",
+      "document": {
+        "template": "note",
+        "fields": {
+          "title": "Антиквариат Каретникова",
+          "lines": ["Портовая, 214", "с 1987"]
+        }
+      }
+    },
+    {
+      "id": "c-receipt",
+      "name": "Расписка 1998 года",
+      "kind": "document",
+      "description": "Старая расписка из портфеля.",
+      "revealsFactIds": ["f-pledge-receipt"],
+      "isKey": true,
+      "document": {
+        "template": "official",
+        "fields": {
+          "title": "Расписка. 1998.",
+          "lines": [
+            "Принят в залог морской хронометр от смотрителя маяка С. Сорокина в счёт долга.",
+            "Б. Каретников."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-mortgage",
+      "name": "Закладная",
+      "kind": "document",
+      "description": "Закладная на гостиницу.",
+      "revealsFactIds": ["f-zoya-mortgage"],
+      "isKey": false,
+      "document": {
+        "template": "official",
+        "fields": {
+          "title": "Закладная",
+          "lines": [
+            "Гостиница «Маяк», владелец З. П. Кулик.",
+            "Залогодержатель — Б. Каретников.",
+            "Срок возврата — пятница."
+          ]
+        }
+      },
+      "explanationFactIds": ["f-zoya-alibi"]
+    },
+    {
+      "id": "c-buyer-note",
+      "name": "Записка о покупательнице",
+      "kind": "document",
+      "description": "Короткая запись о предстоящей сделке.",
+      "revealsFactIds": ["f-buyer-note"],
+      "isKey": true,
+      "document": {
+        "template": "note",
+        "fields": {
+          "title": "Запись о покупке",
+          "lines": [
+            "Сорокина Н. — хочет выкупить.",
+            "Цену — втрое. Не уступать."
+          ]
+        }
+      }
+    },
+    {
+      "id": "c-partition",
+      "name": "Перегородка балкона",
+      "kind": "object",
+      "description": "Низкая деревянная перегородка, потемневшая от морской сырости.",
+      "revealsFactIds": [],
+      "isKey": true,
+      "image": "images/clues/c-partition.webp",
+      "inspection": {
+        "image": "images/closeups/partition-inspection.webp",
+        "details": [
+          {
+            "id": "d-thread",
+            "rect": {
+              "x": 0.57,
+              "y": 0.4,
+              "w": 0.25,
+              "h": 0.25
+            },
+            "text": "За гвоздь зацепилась серая шерстяная нитка.",
+            "revealsFactIds": ["f-grey-thread"],
+            "concealedTerms": ["нитка", "нитки", "нитку"]
+          }
+        ]
+      }
+    },
+    {
+      "id": "c-chronometer",
+      "name": "Морской хронометр",
+      "kind": "object",
+      "description": "Старинный морской прибор в латунном корпусе с откидной крышкой.",
+      "revealsFactIds": [],
+      "isKey": true,
+      "image": "images/clues/c-chronometer.webp",
+      "inspection": {
+        "image": "images/closeups/chronometer-inspection.webp",
+        "details": [
+          {
+            "id": "d-engraving",
+            "rect": {
+              "x": 0.27,
+              "y": 0.15,
+              "w": 0.46,
+              "h": 0.31
+            },
+            "text": "На внутренней стороне крышки — гравировка: «С. Сорокину — за тридцать лет у маяка».",
+            "revealsFactIds": ["f-engraving"],
+            "concealedTerms": ["гравировка", "гравировку", "гравировке"]
+          }
+        ],
+        "overlays": [
+          {
+            "text": "С. Сорокину —\nза тридцать лет у маяка",
+            "rect": {
+              "x": 0.29,
+              "y": 0.18,
+              "w": 0.42,
+              "h": 0.19
+            },
+            "handwritten": true
+          }
+        ]
+      }
+    },
+    {
+      "id": "c-ampoule",
+      "name": "Пустая ампула",
+      "kind": "object",
+      "description": "Пустая аптечная ампула без этикетки, горлышко отломано.",
+      "revealsFactIds": ["f-empty-ampoule"],
+      "isKey": false,
+      "image": "images/clues/c-ampoule.webp"
+    }
+  ],
+  "locations": [
+    {
+      "id": "l-lobby",
+      "name": "Холл и ресепшен",
+      "description": "Скрип половиц, запах сырости и воска. За стойкой — журнал и ключи на крючках.",
+      "image": "images/locations/l-lobby.webp",
+      "hotspots": [
+        {
+          "id": "h-register",
+          "label": "Книга регистрации",
+          "rect": {
+            "x": 0.0488,
+            "y": 0.5998,
+            "w": 0.39,
+            "h": 0.16
+          },
+          "closeup": "images/closeups/h-register.webp",
+          "text": "На стойке раскрыта книга регистрации.",
+          "revealsFactIds": [],
+          "clueId": "c-register"
+        },
+        {
+          "id": "h-phone",
+          "label": "Телефон и журнал",
+          "rect": {
+            "x": 0.439,
+            "y": 0.4799,
+            "w": 0.24,
+            "h": 0.1
+          },
+          "closeup": "images/closeups/h-phone.webp",
+          "text": "Рядом с телефоном лежит журнал звонков.",
+          "revealsFactIds": [],
+          "clueId": "c-call-log"
+        },
+        {
+          "id": "h-coat-rack",
+          "label": "Куртка портье",
+          "rect": {
+            "x": 0.0579,
+            "y": 0.1892,
+            "w": 0.17,
+            "h": 0.29
+          },
+          "closeup": "images/closeups/h-coat-rack.webp",
+          "text": "С куртки портье капает вода.",
+          "revealsFactIds": [],
+          "clueId": "c-wet-jacket"
+        },
+        {
+          "id": "h-keeper-photo",
+          "label": "Фото смотрителя",
+          "rect": {
+            "x": 0.5,
+            "y": 0.0897,
+            "w": 0.26,
+            "h": 0.2
+          },
+          "closeup": "images/closeups/h-keeper-photo.webp",
+          "text": "На старом фото смотритель стоит у маяка.",
+          "revealsFactIds": ["f-keeper-photo"]
+        },
+        {
+          "id": "h-armchair",
+          "label": "Кресло у камина",
+          "rect": {
+            "x": 0.7195,
+            "y": 0.5998,
+            "w": 0.26,
+            "h": 0.21
+          },
+          "closeup": "images/closeups/h-armchair.webp",
+          "text": "В сумке на кресле — фотокамера.",
+          "revealsFactIds": [],
+          "clueId": "c-camera"
+        },
+        {
+          "id": "h-fireplace",
+          "label": "Камин",
+          "rect": {
+            "x": 0.7896,
+            "y": 0.299,
+            "w": 0.2,
+            "h": 0.21
+          },
+          "closeup": "images/closeups/h-fireplace.webp",
+          "text": "В камине лишь догоревшие угли и зола.",
+          "revealsFactIds": []
+        }
+      ]
+    },
+    {
+      "id": "l-room7",
+      "name": "Номер 7",
+      "description": "Душно, пахнет сигарами и остывшим чаем. Кровать не разобрана. В кресле — сползший плед.",
+      "image": "images/locations/l-room7.webp",
+      "hotspots": [
+        {
+          "id": "h-door-chain",
+          "label": "Цепочка на двери",
+          "rect": {
+            "x": 0.0152,
+            "y": 0.1588,
+            "w": 0.11,
+            "h": 0.2
+          },
+          "closeup": "images/closeups/h-door-chain.webp",
+          "text": "Цепочка перекушена. Её крепления целы.",
+          "revealsFactIds": ["f-door-chain"]
+        },
+        {
+          "id": "h-tea-tray",
+          "label": "Поднос с чаем",
+          "rect": {
+            "x": 0.1402,
+            "y": 0.61,
+            "w": 0.46,
+            "h": 0.18
+          },
+          "closeup": "images/closeups/h-tea-tray.webp",
+          "text": "На подносе чайник, чашка на блюдце и сахарница.",
+          "revealsFactIds": [],
+          "clueId": "c-teacup"
+        },
+        {
+          "id": "h-nightstand",
+          "label": "Тумбочка",
+          "rect": {
+            "x": 0.5579,
+            "y": 0.2787,
+            "w": 0.22,
+            "h": 0.16
+          },
+          "closeup": "images/closeups/h-nightstand.webp",
+          "text": "На тумбочке таблетница и пустой деревянный футляр. На таблетнице: «утро» и «вечер, 23:30».",
+          "revealsFactIds": ["f-heart-pills"],
+          "clueId": "c-empty-case"
+        },
+        {
+          "id": "h-desk",
+          "label": "Письменный стол",
+          "rect": {
+            "x": 0.128,
+            "y": 0.3986,
+            "w": 0.17,
+            "h": 0.1
+          },
+          "closeup": "images/closeups/h-desk.webp",
+          "text": "На письменном столе лежит кожаный блокнот.",
+          "revealsFactIds": [],
+          "clueId": "c-notebook"
+        },
+        {
+          "id": "h-jacket",
+          "label": "Пиджак на стуле",
+          "rect": {
+            "x": 0.2896,
+            "y": 0.4291,
+            "w": 0.2,
+            "h": 0.22
+          },
+          "closeup": "images/closeups/h-jacket.webp",
+          "text": "Во внутреннем кармане пиджака — бумажник.",
+          "revealsFactIds": [],
+          "clueId": "c-wallet"
+        },
+        {
+          "id": "h-portfel",
+          "label": "Портфель",
+          "rect": {
+            "x": 0.7378,
+            "y": 0.7197,
+            "w": 0.25,
+            "h": 0.18
+          },
+          "closeup": "images/closeups/h-portfel.webp",
+          "text": "У пустого кресла стоит портфель с кодовым замком.",
+          "revealsFactIds": [],
+          "lock": {
+            "type": "combination",
+            "digits": 3,
+            "code": "214",
+            "deductionFactIds": ["f-portfel-hint", "f-first-shop"]
+          },
+          "container": {
+            "image": "images/closeups/portfel-open.webp",
+            "items": [
+              {
+                "clueId": "c-receipt",
+                "rect": {
+                  "x": 0.19,
+                  "y": 0.32,
+                  "w": 0.26,
+                  "h": 0.23
+                }
+              },
+              {
+                "clueId": "c-mortgage",
+                "rect": {
+                  "x": 0.47,
+                  "y": 0.3,
+                  "w": 0.34,
+                  "h": 0.28
+                }
+              },
+              {
+                "clueId": "c-buyer-note",
+                "rect": {
+                  "x": 0.34,
+                  "y": 0.58,
+                  "w": 0.28,
+                  "h": 0.15
+                }
+              }
+            ]
+          }
+        },
+        {
+          "id": "h-balcony-door",
+          "label": "Балконная дверь",
+          "rect": {
+            "x": 0.7896,
+            "y": 0.2401,
+            "w": 0.2,
+            "h": 0.28
+          },
+          "closeup": "images/closeups/h-balcony-door.webp",
+          "text": "Балконная дверь приоткрыта. У порога видны подсохшие следы обуви.",
+          "revealsFactIds": ["f-balcony-door", "f-wet-footprints"]
+        }
+      ]
+    },
+    {
+      "id": "l-corridor",
+      "name": "Коридор и общий балкон",
+      "description": "Ветер бьёт в стёкла. Ковровая дорожка, тусклые бра. Дверь на общий балкон хлопает.",
+      "image": "images/locations/l-corridor.webp",
+      "hotspots": [
+        {
+          "id": "h-partition",
+          "label": "Перегородка",
+          "rect": {
+            "x": 0.4878,
+            "y": 0.4392,
+            "w": 0.17,
+            "h": 0.13
+          },
+          "closeup": "images/closeups/h-partition.webp",
+          "text": "Низкая перегородка разделяет общий балкон.",
+          "revealsFactIds": ["f-shared-balcony"],
+          "clueId": "c-partition"
+        },
+        {
+          "id": "h-linen-cart",
+          "label": "Бельевая тележка",
+          "rect": {
+            "x": 0,
+            "y": 0.5388,
+            "w": 0.32,
+            "h": 0.4
+          },
+          "closeup": "images/closeups/h-linen-cart.webp",
+          "text": "Под полотенцами в тележке лежит морской хронометр.",
+          "revealsFactIds": ["f-chronometer-hidden"],
+          "clueId": "c-chronometer"
+        },
+        {
+          "id": "h-bin",
+          "label": "Урна",
+          "rect": {
+            "x": 0.8384,
+            "y": 0.7787,
+            "w": 0.15,
+            "h": 0.16
+          },
+          "closeup": "images/closeups/h-bin.webp",
+          "text": "В урне у лестницы — пустая ампула.",
+          "revealsFactIds": [],
+          "clueId": "c-ampoule"
+        },
+        {
+          "id": "h-window",
+          "label": "Окно",
+          "rect": {
+            "x": 0.0152,
+            "y": 0.1201,
+            "w": 0.27,
+            "h": 0.36
+          },
+          "closeup": "images/closeups/h-window.webp",
+          "text": "За стеклом — парковка, фургон и огонь маяка.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "h-door8",
+          "label": "Дверь номера 8",
+          "rect": {
+            "x": 0.7988,
+            "y": 0.2787,
+            "w": 0.2,
+            "h": 0.21
+          },
+          "closeup": "images/closeups/h-door8.webp",
+          "text": "Дверь заперта. На ручке табличка «Не беспокоить».",
+          "revealsFactIds": []
+        }
+      ]
+    }
+  ],
+  "suspects": [
+    {
+      "id": "s-nadia",
+      "actorId": "a13-nadia",
+      "name": "Надежда Сорокина",
+      "age": 39,
+      "occupation": "медсестра",
+      "relationToVictim": "постоялица соседнего номера",
+      "publicProfile": "медсестра из Северска, приехала на два дня «отдохнуть от смен»; живёт в номере 8.",
+      "personality": "тихая, собранная, профессионально спокойная. Под давлением — холодная злость, при сломе — слёзы.",
+      "speechStyle": "на «вы», короткие точные фразы, немного медицинской лексики.",
+      "coverStory": "Приехала отдохнуть. Каретникова раньше не знала. Вечером читала, рано легла, из номера не выходила",
+      "sensitiveTopics": [
+        "Каретников",
+        "хронометр",
+        "балкон",
+        "лекарства",
+        "отец"
+      ],
+      "shareableFactIds": ["f-dinner-quarrel", "f-nadia-moved"],
+      "hiddenTruths": [
+        {
+          "id": "t-knew",
+          "topic": "знала ли Каретникова",
+          "lie": "Никогда его раньше не видела.",
+          "truth": "Он забрал у моего отца хронометр за долги. Я приехала его выкупить. Он поднял цену втрое и смеялся."
+        },
+        {
+          "id": "t-night",
+          "topic": "что делала ночью",
+          "lie": "Из номера не выходила, спала.",
+          "truth": "Да, я перелезла через балкон, когда он спал, и забрала папину вещь. Снотворное я подлила ещё вечером, при нём. Я хотела только, чтобы он не проснулся… Я не знала про его сердце!"
+        }
+      ],
+      "breakThreshold": 6,
+      "breakpoints": [
+        {
+          "clueId": "c-receipt",
+          "requiresFactIds": ["f-engraving"],
+          "unlocksTruthIds": ["t-knew"],
+          "revealsFactIds": ["f-nadia-motive"],
+          "confession": "Это почерк моего отца на гравировке… и его долг. Да, я знала Каретникова."
+        },
+        {
+          "clueId": "c-partition",
+          "requiresFactIds": ["f-grey-thread", "f-figure-on-balcony"],
+          "unlocksTruthIds": ["t-night"],
+          "revealsFactIds": ["f-nadia-confession"],
+          "confession": "Да, я перелезла через балкон, когда он спал, и забрала папину вещь. Снотворное я подлила ещё вечером, при нём. Я хотела только, чтобы он не проснулся… Я не знала про его сердце!"
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-chronometer",
+          "reaction": "Красивая старая вещь. Почему вы показываете её мне?"
+        },
+        {
+          "clueId": "c-ampoule",
+          "reaction": "Такие ампулы в любой больнице. Это ничего не значит."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-nadia-1",
+          "question": "Вы знали Каретникова?",
+          "answer": "Нет. Видела его за ужином, как все.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-knew",
+            "answer": "Знала, кто он. Он разорил моего отца."
+          }
+        },
+        {
+          "id": "q-nadia-2",
+          "question": "Где вы были ночью?",
+          "answer": "В номере. Читала, потом уснула. Шторм мешал, но я не выходила.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-night",
+            "answer": "На балконе. Вы уже знаете зачем."
+          }
+        },
+        {
+          "id": "q-nadia-3",
+          "question": "Почему вы переехали в восьмой номер?",
+          "answer": "В третьем дуло из окна. Восьмой был свободен.",
+          "revealsFactIds": [],
+          "requiresFactId": "f-nadia-moved",
+          "stressDelta": 1
+        },
+        {
+          "id": "q-nadia-4",
+          "question": "Что вы видели за ужином?",
+          "answer": "Он кричал на племянника: ни копейки до смерти. Неприятная сцена.",
+          "revealsFactIds": ["f-dinner-quarrel"]
+        },
+        {
+          "id": "q-nadia-5",
+          "question": "У вас с собой лекарства?",
+          "answer": "Обычная аптечка. Бинты, жаропонижающее. Как у всех медиков.",
+          "revealsFactIds": [],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-nadia-6",
+          "question": "Смотритель маяка Сорокин — ваш родственник?",
+          "answer": "Сорокиных в Ветрогорске много.",
+          "revealsFactIds": [],
+          "requiresFactId": "f-keeper-photo",
+          "stressDelta": 2,
+          "afterBreak": {
+            "truthId": "t-knew",
+            "answer": "Мой отец. Тридцать лет на этом маяке."
+          }
+        },
+        {
+          "id": "q-nadia-7",
+          "question": "Вы видели хронометр Каретникова?",
+          "answer": "Он показывал его за ужином всем подряд. Хвастался.",
+          "revealsFactIds": [],
+          "requiresClueId": "c-empty-case",
+          "stressDelta": 1
+        }
+      ],
+      "isCulprit": true
+    },
+    {
+      "id": "s-zoya",
+      "actorId": "a11-zoya",
+      "name": "Зоя Петровна Кулик",
+      "age": 63,
+      "occupation": "хозяйка гостиницы",
+      "relationToVictim": "хозяйка гостиницы, где остановился Каретников",
+      "publicProfile": "хозяйка гостиницы «Маяк» больше тридцати лет; всех гостей помнит по именам.",
+      "personality": "радушная, разговорчивая; колючая, когда речь о деньгах.",
+      "speechStyle": "на «вы», «голубчик», «милый мой», присказки.",
+      "coverStory": "Всю ночь была за стойкой: шторм, звонки. Каретников — гость как гость",
+      "sensitiveTopics": [
+        "деньги",
+        "гостиница",
+        "долг",
+        "почему Сорокина переехала"
+      ],
+      "shareableFactIds": [
+        "f-dinner-quarrel",
+        "f-ruslan-tea",
+        "f-keeper-photo"
+      ],
+      "hiddenTruths": [
+        {
+          "id": "t-debt",
+          "topic": "дела с Каретниковым",
+          "lie": "Кроме комнаты, никаких дел с ним не было.",
+          "truth": "Должна я ему. Гостиница в залоге до пятницы. Но я всю ночь была у стойки — звонки в журнале, проверьте."
+        },
+        {
+          "id": "t-request",
+          "topic": "почему Сорокина переехала",
+          "lie": "В третьем дуло, переселила.",
+          "truth": "Сорокина сама попросила номер рядом с Каретниковым. Сказала — давний знакомый, хочет сделать сюрприз."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-mortgage",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-debt"],
+          "revealsFactIds": ["f-zoya-alibi"],
+          "confession": "Должна я ему. Гостиница в залоге до пятницы. Но я всю ночь была у стойки — звонки в журнале, проверьте."
+        },
+        {
+          "clueId": "c-register",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-request"],
+          "revealsFactIds": ["f-nadia-asked"],
+          "confession": "Сорокина сама попросила номер рядом с Каретниковым. Сказала — давний знакомый, хочет сделать сюрприз."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-call-log",
+          "reaction": "Видите? Всю ночь трубку не выпускала."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-zoya-1",
+          "question": "Что было ночью?",
+          "answer": "Шторм, голубчик, стёкла звенели. Я всю ночь у стойки: звонки, жалобы.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-zoya-2",
+          "question": "Кто приносил Каретникову чай?",
+          "answer": "Руслан, в десять. Борис Аркадьевич без чая не засыпал.",
+          "revealsFactIds": ["f-ruslan-tea"]
+        },
+        {
+          "id": "q-zoya-3",
+          "question": "Что было за ужином?",
+          "answer": "Срам один: дядя на племянника при всех — ни копейки, говорит, до моей смерти.",
+          "revealsFactIds": ["f-dinner-quarrel"]
+        },
+        {
+          "id": "q-zoya-4",
+          "question": "У вас были дела с Каретниковым?",
+          "answer": "Комната, чай, счёт. Всё.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-debt",
+            "answer": "Были. Гостиница у него в залоге, вы уже знаете."
+          }
+        },
+        {
+          "id": "q-zoya-5",
+          "question": "Почему Сорокина переехала в восьмой?",
+          "answer": "В третьем дуло. Я старым гостям не отказываю.",
+          "revealsFactIds": [],
+          "requiresFactId": "f-nadia-moved",
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-request",
+            "answer": "Сама просила рядом с ним. Давний знакомый, сказала."
+          }
+        },
+        {
+          "id": "q-zoya-6",
+          "question": "Кто на фото в холле?",
+          "answer": "Сорокин, смотритель нашего маяка. Тридцать лет огонь держал.",
+          "revealsFactIds": ["f-keeper-photo"]
+        },
+        {
+          "id": "q-zoya-7",
+          "question": "Где был Руслан ночью?",
+          "answer": "Где ему быть — на посту в холле. Хотя дверь пару раз хлопала.",
+          "revealsFactIds": []
+        }
+      ],
+      "isCulprit": false
+    },
+    {
+      "id": "s-ruslan",
+      "actorId": "a08-ruslan",
+      "name": "Руслан Гаев",
+      "age": 38,
+      "occupation": "ночной портье и водитель",
+      "relationToVictim": "портье, обслуживал гостя",
+      "publicProfile": "ночной портье и водитель «Маяка», бывший боксёр; немногословен.",
+      "personality": "угрюмый, прямой, не любит полицию. Ломается, когда понимает, что ему грозит больше, чем за подработку.",
+      "speechStyle": "на «вы» сквозь зубы, короткие фразы, «начальник».",
+      "coverStory": "Всю ночь сидел в холле на посту. Никуда не выходил",
+      "sensitiveTopics": ["где был ночью", "фургон", "мокрая куртка"],
+      "shareableFactIds": ["f-ruslan-tea", "f-nadia-visit", "f-dinner-quarrel"],
+      "hiddenTruths": [
+        {
+          "id": "t-outside",
+          "topic": "где был ночью",
+          "lie": "Сидел в холле, никуда не выходил.",
+          "truth": "Без двадцати час грузил фургон на парковке — подработка, без бумаг. В без десяти час видел, как женщина в сером перелезала через перегородку балкона на втором этаже."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-wet-jacket",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-outside"],
+          "revealsFactIds": ["f-figure-on-balcony"],
+          "confession": "Без двадцати час грузил фургон на парковке — подработка, без бумаг. В без десяти час видел, как женщина в сером перелезала через перегородку балкона на втором этаже."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-teacup",
+          "reaction": "Чай я приносил. Чистый. Сам заваривал."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-ruslan-1",
+          "question": "Где вы были ночью?",
+          "answer": "На посту. В холле.",
+          "revealsFactIds": [],
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-outside",
+            "answer": "Грузил фургон. И видел женщину на балконе."
+          }
+        },
+        {
+          "id": "q-ruslan-2",
+          "question": "Вы приносили Каретникову чай?",
+          "answer": "В десять. Чайник, чашка, сахар. Велел до утра не беспокоить.",
+          "revealsFactIds": ["f-ruslan-tea"]
+        },
+        {
+          "id": "q-ruslan-3",
+          "question": "Кто ещё заходил к Каретникову?",
+          "answer": "Медсестра из восьмого стучалась в четверть одиннадцатого. Пустил.",
+          "revealsFactIds": ["f-nadia-visit"]
+        },
+        {
+          "id": "q-ruslan-4",
+          "question": "Что было за ужином?",
+          "answer": "Старик орал на племянника. Ни копейки, говорит.",
+          "revealsFactIds": ["f-dinner-quarrel"]
+        },
+        {
+          "id": "q-ruslan-5",
+          "question": "Почему у вас мокрая куртка?",
+          "answer": "Курить выходил. Дождь.",
+          "revealsFactIds": [],
+          "requiresClueId": "c-wet-jacket",
+          "stressDelta": 2
+        },
+        {
+          "id": "q-ruslan-6",
+          "question": "Вы ссорились с Каретниковым?",
+          "answer": "Он со всеми ссорился. Со мной — из-за чая: остыл, видите ли.",
+          "revealsFactIds": []
+        }
+      ],
+      "isCulprit": false
+    },
+    {
+      "id": "s-dmitry",
+      "actorId": "a12-dmitry",
+      "name": "Дмитрий Каретников",
+      "age": 31,
+      "occupation": "фотограф",
+      "relationToVictim": "племянник и единственный наследник",
+      "publicProfile": "племянник и единственный наследник Каретникова, фотограф; приехал вместе с дядей.",
+      "personality": "обаятельный, легкомысленный, обижен на дядю; быстро вспыхивает.",
+      "speechStyle": "быстро переходит на «ты», ирония, «слушай», «ну».",
+      "coverStory": "С дядей ладили, ссора — ерунда. Ночью снимал шторм у маяка",
+      "sensitiveTopics": ["деньги", "наследство", "ссора за ужином"],
+      "shareableFactIds": ["f-dmitry-heir", "f-dinner-quarrel"],
+      "hiddenTruths": [
+        {
+          "id": "t-money",
+          "topic": "нужны ли ему деньги дяди",
+          "lie": "Мне его деньги не нужны.",
+          "truth": "Нужны, ещё как. Он сказал: хронометр продаст медсестре втрое дороже, а мне — ни копейки. Но я был у маяка, снимки же есть."
+        }
+      ],
+      "breakThreshold": 4,
+      "breakpoints": [
+        {
+          "clueId": "c-buyer-note",
+          "requiresFactIds": [],
+          "unlocksTruthIds": ["t-money"],
+          "revealsFactIds": ["f-boris-bragged"],
+          "confession": "Нужны, ещё как. Он сказал: хронометр продаст медсестре втрое дороже, а мне — ни копейки. Но я был у маяка, снимки же есть."
+        }
+      ],
+      "clueReactions": [
+        {
+          "clueId": "c-camera",
+          "reaction": "Смотри время на снимках. Я был у маяка до двух."
+        }
+      ],
+      "offlineQA": [
+        {
+          "id": "q-dmitry-1",
+          "question": "Где вы были ночью?",
+          "answer": "У маяка, снимал шторм. До двух. Камера на кресле в холле — смотри сам.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-dmitry-2",
+          "question": "Из-за чего вы поссорились с дядей?",
+          "answer": "Деньги. Как всегда. Он умел унижать при людях.",
+          "revealsFactIds": ["f-dinner-quarrel"],
+          "stressDelta": 1
+        },
+        {
+          "id": "q-dmitry-3",
+          "question": "Вы наследник?",
+          "answer": "Единственный. Да, это мотив. Нет, я его не убивал.",
+          "revealsFactIds": ["f-dmitry-heir"]
+        },
+        {
+          "id": "q-dmitry-4",
+          "question": "Зачем дядя приехал в „Маяк“?",
+          "answer": "Продавать какую-то старую железку. Хронометр. Носился с ним, как с иконой.",
+          "revealsFactIds": []
+        },
+        {
+          "id": "q-dmitry-5",
+          "question": "Кому дядя хотел продать хронометр?",
+          "answer": "Понятия не имею, он мне не докладывал.",
+          "revealsFactIds": [],
+          "requiresClueId": "c-buyer-note",
+          "stressDelta": 1,
+          "afterBreak": {
+            "truthId": "t-money",
+            "answer": "Медсестре. Хвастался, что сдерёт втрое."
+          }
+        },
+        {
+          "id": "q-dmitry-6",
+          "question": "Что вы думаете о хозяйке?",
+          "answer": "Зоя Петровна? Она ему должна. Он весь ужин её этим шпынял.",
+          "revealsFactIds": []
+        }
+      ],
+      "isCulprit": false
+    }
+  ],
+  "hints": [
+    {
+      "afterRound": 2,
+      "unlessAnyPlayerHas": "f-wet-footprints",
+      "text": "Цепочка на двери цела. Значит, вошли не через дверь."
+    },
+    {
+      "afterRound": 3,
+      "unlessAnyPlayerHas": "c-receipt",
+      "text": "Покойный был недоверчив. Такие код держат в голове, а подсказку — в кармане."
+    },
+    {
+      "afterRound": 4,
+      "unlessAnyPlayerHas": "f-nadia-asked",
+      "text": "Хозяйка что-то знает про соседей Каретникова. Надавите."
+    },
+    {
+      "afterRound": 5,
+      "unlessAnyPlayerHas": "c-chronometer",
+      "text": "Ищите, что пропало. Ростовщики без добычи не умирают."
+    }
+  ]
+}
