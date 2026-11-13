@@ -3,14 +3,10 @@ import { createHash } from 'node:crypto';
 import manifest from '../../public/cases/case-001-blue-owl/audio/manifest.json';
 /** Содержимое записей не подменяет изменившийся текст и не озвучивает неоткрытые подсказки. */
 import { expect, it } from 'vitest';
-import {
-  briefingText as getBriefingText,
-  narrationFor,
-  hintNarration,
-} from './narration';
+import { narrationFor, hintNarration } from './narration';
 import { loadCase } from './loader';
 const pilot = loadCase('case-001-blue-owl');
-const briefingText = getBriefingText(pilot);
+const briefingText = pilot.briefing;
 it('устаревший текст/неизвестная подсказка не получают дорожку', () => {
   expect(narrationFor(pilot.id, 'briefing', briefingText)?.src).toContain(
     'briefing.mp3',
@@ -20,7 +16,8 @@ it('устаревший текст/неизвестная подсказка н
   expect(hintNarration(pilot.id, pilot.hints[0]?.text ?? '')?.id).toBe(
     'chief-hint-1',
   );
-  expect(briefingText).not.toContain('восемь раундов');
+  // Число раундов выбирает игрок — брифинг его не называет.
+  expect(briefingText).not.toMatch(/раунд/i);
 });
 
 it('встроенные MP3 соответствуют манифесту по размеру и хешу', () => {

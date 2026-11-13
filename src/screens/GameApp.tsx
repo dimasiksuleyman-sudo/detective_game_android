@@ -7,11 +7,7 @@ import { DocumentRender } from '../components/DocumentRender';
 import { watchBackButton, exitApp } from '../platform/backButton';
 import { ClueInspection } from '../components/ClueInspection';
 import { NarrationPlayer } from '../components/NarrationPlayer';
-import {
-  briefingText,
-  narrationFor,
-  hintNarration,
-} from '../content/narration';
+import { narrationFor, hintNarration } from '../content/narration';
 import { AiSettings } from '../components/AiSettings';
 import { useSettings } from '../store/settingsStore';
 import { useAi, askAi, cancelAi, resetAiUsage } from '../ai/coordinator';
@@ -79,7 +75,7 @@ export default function GameApp() {
   const c = loadCase(
     selecting ? selectedCaseId : (g?.caseId ?? selectedCaseId),
   );
-  const briefing = briefingText(c);
+  const briefing = c.briefing;
   const initSettings = useSettings((s) => s.init);
   const ai = useAi(),
     settings = useSettings();

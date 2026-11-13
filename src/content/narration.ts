@@ -1,6 +1,5 @@
 /** Дорожки выбираются только из манифеста активного дела и при совпадении текста. */
 import { z } from 'zod';
-import type { CaseFile } from './schema';
 const schema = z.object({
   caseId: z.string(),
   clips: z.array(
@@ -29,8 +28,6 @@ export interface NarrationClip {
   id: string;
   src: string;
 }
-export const briefingText = (c: CaseFile) =>
-  c.briefing.replace('Шеф дал вам восемь раундов. ', '');
 export function narrationFor(
   caseId: string,
   id: string,
