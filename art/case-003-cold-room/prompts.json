@@ -1,0 +1,405 @@
+{
+  "caseId": "case-003-cold-room",
+  "style": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+  "assets": [
+    {
+      "key": "yard",
+      "kind": "location",
+      "source": "yard.png",
+      "output": "images/locations/yard.webp",
+      "width": 1600,
+      "height": 1067,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Environment illustration, landscape 3:2, 1536x1024. Fish factory yard in a harbor at night under freezing rain, floodlights, slush and tire tracks. No people. At left a small guard booth by the entrance gate, its lit window faces the gate; see sill and keys. At right a refrigerated truck, its cab clearly visible toward viewer right, its rear cargo doors ajar oriented toward the large factory loading entrance at center back. Clearly separate the booth window, visible booth table with bottle, truck cab and truck cargo back as discoverable tap objects. Keep plausible spatial layout, industrial cold rainy atmosphere, one warm orange work lamp. No signage or readable writing.",
+      "status": "сгенерировано",
+      "refs": [],
+      "transparent": false
+    },
+    {
+      "key": "shop",
+      "kind": "location",
+      "source": "shop.png",
+      "output": "images/locations/shop.webp",
+      "width": 1600,
+      "height": 1067,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. fish processing hall at night: floor platform scale, an accountant's desk with a small safe under it, a shift schedule board, a mechanic's board with a hanging logbook, a wall thermograph chart recorder next to a heavy freezer door with a latch Landscape 3:2 1536x1024, eye-level wide view, empty hall. Separate tap areas: platform scale left foreground; accountant desk center-left with small safe UNDER the desk on chair-facing side, safe faces the chair; shift schedule board back left; mechanic tool board and hanging logbook upper center; thermograph outside on wall at center-right beside closed heavy freezer door at right, cable routed through wall into freezer, paper strip; horizontal sliding drop latch OUTSIDE on hall side of door, cut lead seal on floor under it. Door opens outward into hall. Blank papers, no numerals anywhere. All important objects visible, no people.",
+      "refs": [],
+      "transparent": false,
+      "revisions": [
+        {
+          "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Edit reference: preserve exact room architecture, all furniture and object positions, wide landscape framing, weather and ink watercolor style. Replace ONLY the weighing scale's round analog dial at left with a small rectangular industrial DIGITAL display, screen entirely black, unlit and without digits or markings; keep platform and stem. Replace ONLY the round dial lock on the little safe under the desk with a horizontal four-wheel combination lock with four entirely BLANK wheels, no characters. Remove any tiny numbers or writing anywhere. Everything else unchanged.",
+          "refs": ["shop-initial"]
+        }
+      ],
+      "status": "сгенерировано"
+    },
+    {
+      "key": "chamber",
+      "kind": "location",
+      "source": "chamber.png",
+      "output": "images/locations/chamber.webp",
+      "width": 1600,
+      "height": 1067,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. inside a walk-in freezer: frost on everything, metal racks with cardboard boxes, a caged lamp, a chalk outline on the floor by a rack (no body), the inside of the door with a broken emergency handle Landscape 3:2 1536x1024. Interior eye-level wide view. At left see the INSIDE face of outward-opening steel freezer door with ONLY a broken emergency release handle stump, NO external latch inside. Footprints in floor frost at entrance left foreground: large boots returning and small shoes only entering. Center floor a CHALK OUTLINE, absolutely NO BODY and NO PEOPLE, small notebook and pencil and black-screen mobile phone beside it. At right separated metal racks with cardboard boxes, one open box with frozen fish over tins. Ceiling caged lamp visibly on, one weak warm amber light. Clear tap targets.",
+      "refs": [],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-booth",
+      "kind": "closeup",
+      "source": "h-booth.png",
+      "output": "images/closeups/h-booth.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. guard booth window: an open logbook on the sill (no readable text), keys hanging on a nail. Square 1:1 1024x1024 close-up, match the attached yard reference material, architecture and lighting. No people, no hands, no writing, all paper entirely blank or blank ruled. One burnt-orange lamp accent. Keys MUST HANG ON A NAIL above sill, logbook open below.",
+      "refs": ["yard"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-booth-table",
+      "kind": "closeup",
+      "source": "h-booth-table.png",
+      "output": "images/closeups/h-booth-table.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. small table in a guard booth: a thermos, a folded newspaper, a half-empty bottle and one glass. Square 1:1 1024x1024 close-up, match the attached yard reference material, architecture and lighting. No people, no hands, no writing, all paper entirely blank or blank ruled. One burnt-orange lamp accent. Half-empty clear glass bottle unlabelled, liquor level halfway, one tumbler, thermos, folded newspaper sheets entirely blank.",
+      "refs": ["yard"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-truck-cab",
+      "kind": "closeup",
+      "source": "h-truck-cab.png",
+      "output": "images/closeups/h-truck-cab.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. refrigerated truck cab dashboard with a clipboard of papers (no readable text), rain on the windshield. Square 1:1 1024x1024 close-up, match the attached yard reference material, architecture and lighting. No people, no hands, no writing, all paper entirely blank or blank ruled. One burnt-orange lamp accent. Cab papers blank, gauges have no digits, no vehicle logos.",
+      "refs": ["yard"],
+      "transparent": false,
+      "revisions": [
+        {
+          "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Edit the reference truck-cab image. Keep the square framing, exact dashboard, steering wheel, clipboard, blank papers and rain. Through the windshield REMOVE THE ENTIRE TRUCK visible outside on the right, replace it with an empty wet loading forecourt and dark blank factory wall. We are INSIDE that truck, so it cannot also appear outside. Preserve rain, booth and background factory geometry, no readable text or digits anywhere.",
+          "refs": ["h-truck-cab-initial"]
+        }
+      ],
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-truck-back",
+      "kind": "closeup",
+      "source": "h-truck-back.png",
+      "output": "images/closeups/h-truck-back.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. open back of a refrigerated truck: stacked cardboard fish boxes, cold mist. Square 1:1 1024x1024 close-up, match the attached yard reference material, architecture and lighting. No people, no hands, no writing, all paper entirely blank or blank ruled. One burnt-orange lamp accent. View from loading hall into rear of truck, twin REAR barn doors with hinges at back corners, stacked CLOSED brown cardboard boxes, no fish out of boxes.",
+      "refs": ["yard"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-scales",
+      "kind": "closeup",
+      "source": "h-scales.png",
+      "output": "images/closeups/h-scales.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. industrial platform scale with a digital display (no digits readable) and a printed ticket in the tray. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Match scale from factory reference: stainless platform on floor and upright rectangular digital display entirely BLACK with NO digits. A blank white ticket rests in tray. Not an analog dial. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-desk",
+      "kind": "closeup",
+      "source": "h-desk.png",
+      "output": "images/closeups/h-desk.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. accountant's desk in a factory, a small steel safe with a four-wheel combination lock underneath. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Safe must be under desk on chair side facing seated user, horizontal FOUR blank metal combination wheels, no digits. Match desk and small safe proportions and design from reference. Chair moved slightly aside so safe is visible. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-safe-open",
+      "kind": "closeup",
+      "source": "h-safe-open.png",
+      "output": "images/closeups/h-safe-open.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. the same small safe open: a thick ledger notebook, a folded handwritten letter draft, a small torn note — in three separate areas. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Tight framing of same dark steel safe now open, four-wheel lock visible on swung-open door. Interior shelf holds a thick ledger on left, folded letter draft at upper right, small torn note at lower right: three separate non-overlapping blank paper objects, all findable. No other contents. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-schedule",
+      "kind": "closeup",
+      "source": "h-schedule.png",
+      "output": "images/closeups/h-schedule.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. cork board with a shift schedule sheet pinned (no readable text). Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Large blank cream sheet ruled in rows and columns, on cork board with pins, slight water stains, no text, no letters, NO symbols or writing. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-repair-board",
+      "kind": "closeup",
+      "source": "h-repair-board.png",
+      "output": "images/closeups/h-repair-board.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. mechanic's board with tools and a worn logbook hanging on a nail. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Mechanic's pegboard of believable wrenches pliers and hammer, worn closed brown logbook hanging from nail below tools. No lettering. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-thermograph",
+      "kind": "closeup",
+      "source": "h-thermograph.png",
+      "output": "images/closeups/h-thermograph.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. wall-mounted chart recorder with a paper strip showing a mostly flat line with three sharp spikes (detail must be findable, not highlighted). Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. The paper strip is entirely without words, axes or numbers. Draw one thin continuous muted graphite temperature line across strip: mostly flat, EXACTLY THREE brief sharp upward spikes at separated positions, then a long flat tail. The entire line must be easily visible on inspection and not accent-colored, circled, pointed at, glowing or spotlighted. Close view recorder with ordinary surrounding wall context, cable exits toward freezer. No other waveform. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-chamber-door",
+      "kind": "closeup",
+      "source": "h-chamber-door.png",
+      "output": "images/closeups/h-chamber-door.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. freezer door latch from outside, frost on the latch, on the floor a cut lead seal on twisted wire with a small paper tag. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Hall side of freezer door ONLY. Heavy horizontal latch slides into keeper fixed to jamb, frost. On concrete immediately below is ONE cut lead disc seal with TWISTED wire whose two ends visibly cut, small BLANK paper tag. No digits. NO inside release handle here. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-seal",
+      "kind": "closeup",
+      "source": "h-seal.png",
+      "output": "images/closeups/h-seal.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. close view of a cut lead seal in a palm-sized frame on concrete: the lead disc shows a pressed stamp (letters not readable), wire ends cut. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Seal is one small dull lead disc, cut twisted wire ends and a blank paper tag on concrete, natural contact shadow. Frame about a palm-width of concrete, no palm or hands shown. Disc has a shallow pressed abstract two-loop tooling impression, ambiguous and NOT any legible letter/digit. Stamp visible but small; no spotlight, no halo, no arrow, no orange accent on detail. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-outline",
+      "kind": "closeup",
+      "source": "h-outline.png",
+      "output": "images/closeups/h-outline.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. frosted freezer floor by a rack: chalk outline (no body), a small notebook with a pencil and a mobile phone with a dark screen lying nearby. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Absolutely NO BODY or PERSON. White chalk contour drawn on floor by metal rack. Small closed brown pocket notebook with yellow pencil and dark-screen phone beside contour, separated. No writing on notebook, phone screen black. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["chamber"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-frost-floor",
+      "kind": "closeup",
+      "source": "h-frost-floor.png",
+      "output": "images/closeups/h-frost-floor.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. frost on the floor at a freezer entrance with two sets of footprints: large boots going in and out, smaller shoes going only in (subtle, findable). Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. Top-down oblique square close view threshold left/bottom leading into freezer upper right, natural undisturbed frost. EXACTLY TWO TRAILS: large deep boot prints: an inbound trail AND returning outbound trail (same large tread size); smaller shallow smooth-soled shoe prints: inbound ONLY ending into interior, no smaller outward trail. Clear differing sizes/directions, physically plausible alternating left/right footsteps. Subtle gray impressions in blue-gray frost, findable with eyes, no glow or warm spotlight or arrows or dotted overlays. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["chamber"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-inner-door",
+      "kind": "closeup",
+      "source": "h-inner-door.png",
+      "output": "images/closeups/h-inner-door.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. inside of a freezer door: an emergency release handle snapped off, frost on the stump. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. ONLY INSIDE face of freezer door, broken emergency release lever stump attached to red-brown rectangular escutcheon, severed rough end. No exterior latch or locking bar on this side. Frost and condensation. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["chamber"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "h-racks",
+      "kind": "closeup",
+      "source": "h-racks.png",
+      "output": "images/closeups/h-racks.webp",
+      "width": 1024,
+      "height": 1024,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. freezer rack with one cardboard fish box opened: under a layer of frozen fish — small tins of caviar. Square 1:1 1024x1024 detective close-up, confident ink and watercolor, fully recompose to show this object closely and clearly, not the whole room. One open BROWN CARDBOARD fish box on galvanized rack. Frozen whole fish form top layer pushed aside at front, underneath small unlabelled closed round caviar tins visible, physically inside SAME box. No tins on shelf beside box. Tins blank, not open. No readable letters, numbers, markings or words anywhere. No people, no hands, no body. Natural ordinary scene lighting, detail not highlighted.",
+      "refs": ["chamber"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "c-bottle",
+      "kind": "clue",
+      "source": "c-bottle.png",
+      "output": "images/clues/c-bottle.webp",
+      "width": 512,
+      "height": 512,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Extract and re-illustrate ONLY the half-empty unlabelled clear glass bottle and single small tumbler from the attached guard-booth table reference, as one centered clue object group. Square 1:1 1024x1024, three-quarter top-down view, bottle fully visible with margins, identical bottle shape and amber liquor level halfway, glass at right. Isolated on fully TRANSPARENT BACKGROUND with alpha, no table, no scene, no floor, no checkerboard, no words, no labels. Noir ink and loose watercolor glass edges, subtle contact shadow on transparency.",
+      "refs": ["h-booth-table"],
+      "transparent": true,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "reconstruction-1",
+      "kind": "reconstruction",
+      "source": "reconstruction-1.png",
+      "output": "images/reconstruction/1.webp",
+      "width": 1200,
+      "height": 800,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Cinematic comic panel, landscape 3:2 1536x1024. At night a woman in a beige trench coat talks to a nervous thin man in glasses by a freezer door in a fish factory. Match the FIRST attached woman portrait exactly: woman around fifty, ash-blonde short bob, thin rimless glasses, sharp cheekbones, beige trench over gray turtleneck; she is Margarita played by a05-olga. Man is Pavel: a nervous thin PALE man early thirties, ROUND glasses, messy medium-brown hair, clean shaven, narrow face and long nose, wearing wrinkled CHECKERED shirt with a LOOSE KNITTED TIE, no coat. Both living, standing, normal conversation; she gestures toward freezer, he holds notebook. Match second room reference: heavy OUTWARD-OPENING freezer door, exterior horizontal latch and thermograph mounted on factory wall beside it, scale and accountant desk in background. Freezer door open into hall, cold interior racks behind. Dramatic shadows, one warm burnt-orange worklamp. No body, no injury, no readable writing or digits on anything.",
+      "refs": ["public/troupe/a05-olga/neutral.webp", "shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "reconstruction-2",
+      "kind": "reconstruction",
+      "source": "reconstruction-2.png",
+      "output": "images/reconstruction/2.webp",
+      "width": 1200,
+      "height": 800,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Cinematic horizontal 3:2 1536x1024 comic reconstruction. Match the first attached scene: Margarita is the SAME woman, ash-blonde bob, rimless glasses, beige trench coat gray turtleneck; Pavel same pale thin young man messy brown hair round glasses checkered shirt knitted tie. MAIN VIEW: from hall outside freezer, woman has closed solid heavy steel door OUTWARD INTO HALL and slid horizontal latch into keeper on jamb, she presses a small dull LEAD DISC SEAL using authentic hand pliers onto TWISTED WIRE threaded THROUGH THE LATCH EYELET so the door cannot open without cutting wire. Show practical latch and sealing action clearly, hands anatomically plausible. Thermograph on outside factory wall at left. Opaque steel door is closed, no window. SMALL SEPARATE BORDERED COMIC INSET at upper right about one fifth of frame: Pavel a dim LIVING standing figure INSIDE among racks under caged lamp, no corpse, no injury, no chalk outline yet. This editorial inset shows the interior simultaneously, never see him through the opaque door. No text, no speech balloons, no digits, no readable seal characters. Warm exterior lamp, cold blue interior. Entire frame landscape.",
+      "refs": ["reconstruction-1", "shop"],
+      "transparent": false,
+      "revisions": [
+        {
+          "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Edit this reference precisely. REMOVE THE MAN at the far LEFT in the main exterior scene entirely; restore empty wet floor, window and accountant desk there. There is ONLY ONE Pavel and he exists ONLY INSIDE THE SMALL UPPER-RIGHT INSET. Keep that inset unchanged, keep the woman and her sealing action and closed opaque door. Correct door hardware: ALL door hinges must be on the far RIGHT vertical edge, REMOVE the erroneous hinge at upper-left door edge beside woman's head. Door bolt on outside, wire threaded through keeper. No second man or extra people outside. Do not alter woman's identity, outfit, drawing style, landscape framing or inset content.",
+          "refs": ["reconstruction-2-initial"]
+        },
+        {
+          "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Create corrected reconstruction based on FIRST IMAGE for exact architecture and door hardware. Landscape 3:2. Keep the door, hinges on RIGHT, latch at LEFT EDGE reaching into jamb, thermograph beside door and factory of FIRST image. REMOVE BOTH MALE WORKERS. Replace foreground worker with the SAME WOMAN from SECOND IMAGE (ash-blonde bob, rimless glasses, beige trench gray turtleneck), standing in SAME place as foreground worker at center, hands at SAME LATCH LOCATION from first image. She uses SEALING PLIERS to crimp a small lead disc onto TWISTED WIRE passed THROUGH keeper eyelet and latch at LEFT OPENING EDGE. NO wire on hinge side. Keep closed opaque steel door. Copy ONLY small upper-right bordered comic inset from SECOND image: Pavel alone living inside among racks, dim. Only ONE woman outside; ONLY Pavel in inset, no other people anywhere. Avoid extra door hinges or locks. Lighting nighttime blue with orange lamp. No text or numbers. Door physics is crucial: bolt bridges door edge and fixed jamb on left; door hinges only on right.",
+          "refs": ["reconstruction-3", "reconstruction-2-intermediate"]
+        },
+        {
+          "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Surgical edit ONLY the tool and seal in woman's hands. She is INSTALLING A SEAL, not cutting it. Replace orange cutting pliers with heavy dark steel SEALING PRESS PLIERS: two broad ROUND FLAT DIE JAWS, one small LEAD DISC sandwiched directly BETWEEN the round jaws at tool nose. No cutting blades. Her lower hand guides the TWISTED WIRE loop through the disc, upper hand squeezes long handles of seal press. Wire loop stays ENTIRE and INTACT through latch eyelet at left jamb, absolutely NO CUTTING action. Move lead disc upward into tool jaws. Preserve ALL other pixels as closely as possible: woman face and outfit, correct closed door latch and right hinges, factory, small upper-right inset of Pavel. Landscape. No text or numbers.",
+          "refs": ["reconstruction-2-before-tool-fix"]
+        }
+      ],
+      "status": "сгенерировано"
+    },
+    {
+      "key": "reconstruction-3",
+      "kind": "reconstruction",
+      "source": "reconstruction-3.png",
+      "output": "images/reconstruction/3.webp",
+      "width": 1200,
+      "height": 800,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Cinematic comic panel, horizontal 3:2 1536x1024. Morning shift workers cut a lead seal off heavy freezer door, cold mist. Match factory and OUTSIDE horizontal latch from reference. A worker in blue factory work jacket and waterproof apron, seen over shoulder, holds side-cutters severing the TWISTED WIRE of an INTACT SMALL LEAD DISC seal threaded THROUGH latch eyelet on hall side. Another worker waits at left. Correct hinge side right, door remains shut or only a hairline cracked at left edge as wire is cut, cold mist seeps from lower edge. Pale morning blue light through factory window and one weak warm lamp. The inside of freezer and any victim are NOT visible. No body, no chalk outline, no injury, no gore. Gloves with natural hands, no text, no numbers anywhere. Workers are generic staff, not any cast suspect.",
+      "refs": ["reconstruction-1", "shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "cover",
+      "kind": "cover",
+      "source": "cover.png",
+      "output": "images/cover.webp",
+      "width": 1024,
+      "height": 1536,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Book-cover style key art for detective case 'Cold Room' DO NOT RENDER TITLE. A heavy steel freezer door in a fish factory at night, frost creeping from the seal, a cut lead seal dangling on twisted wire at OUTSIDE horizontal latch, cold blue light and ONE warm orange work lamp. Match reference steel door, hinges on RIGHT, latch bridges LEFT opening edge and jamb, cut lead disc suspended from ONE remaining wire end, the severed wire visibly open so the door could now be opened. No people, no body. Portrait VERTICAL 2:3 1024x1536. Strong central steel door silhouette, empty DARK TOP QUARTER for later title overlay, a little wet concrete foreground, watercolor paper texture and strong ink shapes, no words, no letters, no numbers, no signage, no logos.",
+      "refs": ["shop"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a06-semyon-neutral",
+      "kind": "portrait",
+      "source": "a06-semyon-neutral.png",
+      "output": "troupe/a06-semyon/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Chest-up portrait of an elderly man in his seventies, white unkempt hair, deep wrinkles, bushy eyebrows, former boatswain from a northern port, wearing a faded navy fisherman's wool sweater and a dark weathered flat cap (not a beanie). Seated across an interrogation table, facing viewer at slight three-quarter angle, eye level. Expression calm, guarded, mouth closed, looking straight at viewer. Lighting warm burnt-orange key from above RIGHT like single desk lamp, cool blue rim from LEFT, deep shadows. Background plain dark slate-blue gradient #1E2A33, NO objects. Vertical 2:3 1024x1536, head upper third, shoulders fill lower part, hands OUT OF FRAME. Strong confident ink linework, watercolor on cold-press paper, not photorealistic, no text or markings on clothes. Distinctive consistent design: long broad nose, square worn jaw, sparse short WHITE STUBBLE, weatherbeaten kind tired pale blue eyes.",
+      "refs": [],
+      "transparent": false,
+      "selectionNotes": "Выбран вариант 3 из трёх мастер-портретов: спокойный настороженный взгляд, узнаваемый широкий нос, глубокие морщины, светлые глаза; остальные варианты не коммитятся.",
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a06-semyon-nervous",
+      "kind": "portrait",
+      "source": "a06-semyon-nervous.png",
+      "output": "troupe/a06-semyon/nervous.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Edit the attached reference portrait. Keep EXACTLY the same person: identical face, age, hairstyle, clothing, lighting, background, framing and art style. Change ONLY the facial expression and head/shoulder posture to: eyes glancing to the side, faint sweat on the forehead, lips pressed tight, shoulders slightly raised, tense. Keep the face identical to the reference image. Preserve flat cap, white unkempt hair, bushy eyebrows, broad nose, sparse white stubble, worn navy fisherman sweater. Same vertical 2:3 1024x1536 crop. Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+      "refs": ["a06-semyon-neutral"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a06-semyon-angry",
+      "kind": "portrait",
+      "source": "a06-semyon-angry.png",
+      "output": "troupe/a06-semyon/angry.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Edit the attached reference portrait. Keep EXACTLY the same person: identical face, age, hairstyle, clothing, lighting, background, framing and art style. Change ONLY the facial expression and head/shoulder posture to: brows furrowed, jaw clenched, leaning slightly forward, glaring at viewer, nostrils flared. Keep the face identical to the reference image, SAME facial proportions, broad nose, short white stubble, flat cap, white unkempt hair, navy fisherman's sweater. Do not zoom, same chest-up vertical 2:3 1024x1536 crop. Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+      "refs": ["a06-semyon-neutral"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a06-semyon-sad",
+      "kind": "portrait",
+      "source": "a06-semyon-sad.png",
+      "output": "troupe/a06-semyon/sad.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Edit the attached reference portrait. Keep EXACTLY the same person: identical face, age, hairstyle, clothing, lighting, background, framing and art style. Change ONLY the facial expression and head/shoulder posture to: eyes glistening, gaze lowered, corners of mouth down, shoulders dropped, quiet sadness. Keep the face identical to the reference image, same broad long nose and square worn jaw, sparse short white stubble, white hair, flat cap and navy fisherman's sweater. No zoom, preserve chest-up framing, vertical 2:3 1024x1536. Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+      "refs": ["a06-semyon-neutral"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a06-semyon-smug",
+      "kind": "portrait",
+      "source": "a06-semyon-smug.png",
+      "output": "troupe/a06-semyon/smug.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Edit the attached reference portrait. Keep EXACTLY the same person: identical face, age, hairstyle, clothing, lighting, background, framing and art style. Change ONLY the facial expression and head/shoulder posture to: one eyebrow raised, a thin half-smile, chin slightly lifted, confident relaxed shoulders. Keep the face identical to the reference image, same broad long nose and square worn jaw, sparse short white stubble, white hair, flat cap and navy fisherman's sweater. No zoom, preserve chest-up framing, vertical 2:3 1024x1536. Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+      "refs": ["a06-semyon-neutral"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a06-semyon-broken",
+      "kind": "portrait",
+      "source": "a06-semyon-broken.png",
+      "output": "troupe/a06-semyon/broken.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Edit the attached reference portrait. Keep EXACTLY the same person: identical face, age, hairstyle, clothing, lighting, background, framing and art style. Change ONLY the facial expression and head/shoulder posture to: head lowered, eyes red and exhausted, looking down at the table, slumped shoulders, defeated with guilt. NO visible injury or tears of blood, just tired reddened eyes. Keep the face identical to reference image, same broad long nose and square worn jaw, sparse short white stubble, white hair, flat cap and navy fisherman's sweater. No zoom, preserve chest-up framing, vertical 2:3 1024x1536. Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+      "refs": ["a06-semyon-neutral"],
+      "transparent": false,
+      "status": "сгенерировано"
+    },
+    {
+      "key": "a10-pavel-neutral",
+      "kind": "portrait",
+      "source": "a10-pavel-neutral.png",
+      "output": "troupe/a10-pavel/neutral.webp",
+      "width": 768,
+      "height": 1152,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Create solo master neutral portrait of PAVEL, the YOUNG MAN from attached scene. Keep SAME person and clothing: thin nervous pale man early thirties, messy brown hair, round glasses, clean shaven, narrow face long nose, wrinkled checkered shirt and loose KNITTED TIE. Chest-up seated across interrogation table, facing viewer at slight three-quarter angle, eye level, mouth closed, calm guarded neutral expression. ONLY ONE MAN, NO woman or other people. Warm burnt-orange key light from above RIGHT, cool blue rim LEFT, deep shadows. Plain dark slate-blue gradient #1E2A33 with NO objects. Vertical 2:3 1024x1536, head upper third, shoulders lower part, hands out of frame. Ink watercolor paper texture, no words, no letters or numbers.",
+      "refs": ["reconstruction-1"],
+      "transparent": false,
+      "status": "сгенерировано"
+    }
+  ]
+}
