@@ -361,3 +361,7 @@ npm.cmd run android:sync
 ## «Номер семь» на цепочке (0.4.3 / code 13)
 
 Обновление — те же команды, что в разделе 0.4.1 (`git switch main`, `git pull --ff-only origin main`, `npm.cmd ci`, `npm.cmd run android:sync`, Run). Новых плагинов нет. Проверка — MT-027.
+
+## Финал без спойлера (0.4.4 / code 14)
+
+Обновление — те же команды, что в разделе 0.4.1. Проверка — MT-028.

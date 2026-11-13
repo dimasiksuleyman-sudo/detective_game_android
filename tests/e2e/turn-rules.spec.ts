@@ -126,3 +126,50 @@ test('верная версия без улик: объяснение, игро�
   await click(page, 'Понятно');
   await expect(page.getByRole('heading', { name: 'Хаб хода' })).toBeVisible();
 });
+
+async function wrongAccusation(page: Page) {
+  await click(page, 'Обвинить');
+  await page.getByLabel('Виновный').selectOption('s-vera');
+  await click(page, 'Далее');
+  await page
+    .getByRole('combobox', { name: 'Мотив', exact: true })
+    .selectOption('m-embezzlement');
+  await click(page, 'Далее');
+  await page
+    .getByRole('combobox', { name: 'Способ', exact: true })
+    .selectOption('w-statuette');
+  await click(page, 'Далее');
+  await click(page, 'Предъявить обвинение');
+}
+
+test('нераскрытое дело: разгадка не показывается без спроса; «нет» — новая партия того же дела', async ({
+  page,
+}) => {
+  page.on('dialog', (d) => void d.accept());
+  await start(page);
+  await wrongAccusation(page);
+  await expect(
+    page.getByRole('heading', { name: 'Дело не раскрыто', exact: true }),
+  ).toBeVisible();
+  // Ни объяснения, ни реконструкции до явного согласия.
+  await expect(
+    page.getByRole('heading', { name: 'Как всё было', exact: true }),
+  ).toHaveCount(0);
+  await expect(page.locator('main')).not.toContainText('Глеб Соколов два года');
+  await click(page, 'Нет, сыграть ещё раз');
+  await expect(
+    page.getByRole('heading', { name: 'Настройка игроков' }),
+  ).toBeVisible();
+  await click(page, 'К брифингу');
+  await expect(page.locator('main')).toContainText('Синяя сова');
+});
+
+test('нераскрытое дело: «да» показывает, как всё было', async ({ page }) => {
+  await start(page);
+  await wrongAccusation(page);
+  await click(page, 'Да, показать разгадку');
+  await expect(
+    page.getByRole('heading', { name: 'Как всё было', exact: true }),
+  ).toBeVisible();
+  await expect(page.locator('main')).toContainText('Глеб Соколов два года');
+});
