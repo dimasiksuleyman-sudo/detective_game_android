@@ -167,11 +167,12 @@ test.describe('Номер семь', () => {
     await grantProof(page, ROOM_SEVEN_PROOF);
     await accuse(page, 's-nadia', [...chain, 'f-wet-footprints']);
     await expect(
-      page.getByRole('heading', { name: 'Как всё было', exact: true }),
+      page.getByRole('heading', { name: 'Итоги', exact: true }),
     ).toBeVisible();
     const results = page.getByRole('region', { name: 'Итоги' });
     await expect(results).toContainText('× 2 за признание');
     expect((await saved(page)).winners).toEqual([0]);
+    await click(page, 'Как всё было');
     await expect(page.locator('main')).toContainText(
       'Она не знала, что Каретников принимает сердечные таблетки',
     );

@@ -111,10 +111,24 @@ test('одиночная партия офлайн до победы; сохра
   await grantPilotProof(page);
   await context.setOffline(true);
   await accusation(page, 's-gleb', true);
+  // ADR-037: сначала отдельная страница «Итоги», разгадка — по кнопке.
   await expect(
-    page.getByRole('heading', { name: 'Как всё было' }),
+    page.getByRole('heading', { name: 'Итоги', exact: true }),
   ).toBeVisible();
   await expect(page.getByText('Победители: Детектив 1')).toBeVisible();
+  for (const name of ['Как всё было', 'Сыграть ещё', 'В меню'])
+    await expect(page.getByRole('button', { name, exact: true })).toBeVisible();
+  await expect(page.locator('main')).not.toContainText('Глеб Соколов два года');
+  await page.screenshot({
+    path: `test-results/screens/classic/${info.project.name}-results.png`,
+    fullPage: true,
+  });
+  await click(page, 'Как всё было');
+  await expect(
+    page.getByRole('heading', { name: 'Как всё было', exact: true }),
+  ).toBeVisible();
+  await expect(page.locator('main')).toContainText('Глеб Соколов два года');
+  await expect(page.getByRole('button', { name: 'К итогам' })).toBeVisible();
   await page.screenshot({
     path: `test-results/screens/classic/${info.project.name}-final.png`,
     fullPage: true,
@@ -145,6 +159,7 @@ test('два игрока: защита передачи, ошибочное о�
   await grantPilotProof(page, 1);
   await accusation(page, 's-gleb', true);
   await expect(page.getByText('Победители: Детектив 2')).toBeVisible();
+  await click(page, 'Как всё было');
   const panels = page.locator('figure img');
   await expect(panels).toHaveCount(3);
   // Финальные панели проверяем в доступном web-сервере: web не является PWA.
