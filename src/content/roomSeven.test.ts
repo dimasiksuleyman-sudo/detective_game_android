@@ -1,3 +1,5 @@
+import { createHash } from 'node:crypto';
+import { hintNarration, narrationFor } from './narration';
 /** Контроль утверждённого канона, AND-дедукции и достижимости второго дела. */
 import { readFileSync } from 'node:fs';
 import { expect, it } from 'vitest';
@@ -235,4 +237,31 @@ it('факты и хронология совпадают с утверждён�
       ['f-nadia-confession'],
     ],
   ]);
+});
+
+it('озвучка «Номера семь»: девять дорожек, текст совпадает с экраном, файлы целы', () => {
+  const manifest = JSON.parse(
+    readFileSync(`public/cases/${c.id}/audio/manifest.json`, 'utf8'),
+  ) as {
+    caseId: string;
+    clips: { id: string; file: string; bytes: number; sha256: string }[];
+  };
+  expect(manifest.caseId).toBe(c.id);
+  expect(manifest.clips).toHaveLength(9);
+  for (const clip of manifest.clips) {
+    const audio = readFileSync(`public/cases/${c.id}/audio/${clip.file}`);
+    expect(audio.length).toBe(clip.bytes);
+    expect(createHash('sha256').update(audio).digest('hex')).toBe(clip.sha256);
+  }
+  expect(narrationFor(c.id, 'briefing', c.briefing)).toBeDefined();
+  for (const hint of c.hints)
+    expect(hintNarration(c.id, hint.text)).toBeDefined();
+  expect(
+    narrationFor(c.id, 'solution-explanation', c.solution.explanation),
+  ).toBeDefined();
+  c.solution.reconstruction.forEach((r, i) =>
+    expect(
+      narrationFor(c.id, 'reconstruction-' + (i + 1), r.caption),
+    ).toBeDefined(),
+  );
 });
