@@ -28,13 +28,15 @@
 
 `npx tsx tools/build-pack.ts --art-only --case case-002-room-seven` — все 68 WebP. `npm run case:validate` — оба дела зелёные, граф достижимости выводится CLI. `npm run typecheck`, `npm run lint`, `npm run test:coverage` — успешно: 19 файлов, 130 тестов, statements 94,98%, branches 89,89%, functions 97,95%, lines 97,3%. `npm run android:sync` — build, verify:production и cap sync android прошли; Gradle/APK не запускались.
 
-Итог e2e/LFS будет записан после завершения текущего полного прогона; незавершённые проверки не засчитываются.
+`npm run e2e -- --workers=2` — **108/108 за 3,1 мин**, без повторов: пилот, выбор/миграция и 14 сценариев второго дела на 360×800/412×915. Все иллюстрации обоих дел декодированы браузером с проверкой размеров. `npm run lfs:check` — **155 исходников проверено**, все 68 новых PNG находятся в LFS.
+
+[PR 30](https://github.com/dimasiksuleyman-sudo/detective_game_android/pull/30). Проверки GitHub Actions запускаются отдельно; локальные результаты выше не выдаются за результат CI.
 
 ## Контакт-листы и экраны
 
 [Локации](assets/room-seven/locations.jpg) · [крупные планы](assets/room-seven/closeups.jpg) · [предметы/детали/портфель](assets/room-seven/items.jpg) · [пять мастеров](assets/room-seven/masters.jpg) · [все 30 портретов](assets/room-seven/portraits.jpg) · [реконструкция и обложка](assets/room-seven/ending.jpg).
 
-[Выбор дела S03](assets/room-seven/s03.png) · [номер 7](assets/room-seven/room7.png) · [редактор S17](assets/room-seven/s17.png).
+[Выбор дела S03](assets/room-seven/s03.png) · [номер 7](assets/room-seven/room7.png) · [редактор S17](assets/room-seven/s17.png) · [открытый портфель](assets/room-seven/briefcase.png) · [финал](assets/room-seven/ending.png).
 
 ## Проблемы и решения
 
