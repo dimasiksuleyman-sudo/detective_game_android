@@ -74,6 +74,8 @@ export default function GameApp() {
     nav = useNavigate(),
     path = useLocation().pathname;
   const [setupAllowed, setSetupAllowed] = useState(false);
+  // Нераскрытое дело не показывает разгадку без спроса: игроки могут захотеть сыграть ещё раз.
+  const [revealed, setRevealed] = useState(false);
   const [turnSeconds, setTurnSeconds] =
     useState<(typeof TURN_SECONDS)[number]>(0);
   const [verdict, setVerdict] = useState<AccusationOutcome | null>(null);
@@ -498,6 +500,7 @@ export default function GameApp() {
                 () => {
                   if (g && !setupAllowed && !confirm(t.overwrite)) return;
                   resetAiUsage();
+                  setRevealed(false);
                   void dispatch({
                     type: 'START_GAME',
                     caseId: c.id,
@@ -1257,67 +1260,88 @@ export default function GameApp() {
               {!g.finalMode && button(t.hub, back)}
             </>
           )}
-          {effective === 's14' && g?.phase === 'finished' && (
-            <>
-              <h2>{t.ending}</h2>
-              <p>
-                {g.winners.length
-                  ? t.winners +
-                    ': ' +
-                    g.winners.map((i) => g.players[i]?.name).join(', ')
-                  : t.unsolved}
-              </p>
-              <p>{c.solution.explanation}</p>
-              <NarrationPlayer
-                clip={narrationFor(
-                  c.id,
-                  'solution-explanation',
-                  c.solution.explanation,
-                )}
-              />
-              {c.solution.reconstruction.map((r, index) => (
-                <div key={r.image}>
-                  <Art caseId={c.id} src={r.image} label={r.caption} />
-                  <NarrationPlayer
-                    clip={narrationFor(
-                      c.id,
-                      'reconstruction-' + (index + 1),
-                      r.caption,
-                    )}
-                  />
-                </div>
-              ))}
-              {c.timelineTruth.map((e, i) => (
-                <p key={i}>
-                  {e.time} — {e.event}
-                </p>
-              ))}
-              <section>
-                <h3>{ru.safe.explanations}</h3>
-                {c.clues
-                  .filter((cl) => cl.explanationFactIds?.length)
-                  .map((cl) => (
-                    <article key={cl.id}>
-                      <h4>{cl.name}</h4>
-                      {cl.explanationFactIds?.map((id) => (
-                        <p key={id}>{c.facts.find((f) => f.id === id)?.text}</p>
-                      ))}
-                    </article>
-                  ))}
+          {effective === 's14' &&
+            g?.phase === 'finished' &&
+            !g.winners.length &&
+            !revealed && (
+              <section aria-label={t.unsolved}>
+                <h2>{t.unsolved}</h2>
+                <p>{t.spoilerQuestion}</p>
+                {button(t.revealYes, () => setRevealed(true))}
+                {button(t.revealNo, () => {
+                  if (confirm(t.overwrite)) {
+                    setSelectedCaseId(c.id);
+                    setSetupAllowed(true);
+                    go('s04');
+                  }
+                })}
               </section>
-              {g.players.map((v, i) => (
-                <article key={i}>
-                  {v.name}: {t.score} {v.score}
-                  <p>
-                    {c.clues
-                      .filter((cl) => cl.isKey && v.clues.includes(cl.id))
-                      .map((cl) => cl.name)
-                      .join(', ')}
+            )}
+          {effective === 's14' &&
+            g?.phase === 'finished' &&
+            (g.winners.length > 0 || revealed) && (
+              <>
+                <h2>{t.ending}</h2>
+                <p>
+                  {g.winners.length
+                    ? t.winners +
+                      ': ' +
+                      g.winners.map((i) => g.players[i]?.name).join(', ')
+                    : t.unsolved}
+                </p>
+                <p>{c.solution.explanation}</p>
+                <NarrationPlayer
+                  clip={narrationFor(
+                    c.id,
+                    'solution-explanation',
+                    c.solution.explanation,
+                  )}
+                />
+                {c.solution.reconstruction.map((r, index) => (
+                  <div key={r.image}>
+                    <Art caseId={c.id} src={r.image} label={r.caption} />
+                    <NarrationPlayer
+                      clip={narrationFor(
+                        c.id,
+                        'reconstruction-' + (index + 1),
+                        r.caption,
+                      )}
+                    />
+                  </div>
+                ))}
+                {c.timelineTruth.map((e, i) => (
+                  <p key={i}>
+                    {e.time} — {e.event}
                   </p>
-                </article>
-              ))}
-            </>
-          )}
+                ))}
+                <section>
+                  <h3>{ru.safe.explanations}</h3>
+                  {c.clues
+                    .filter((cl) => cl.explanationFactIds?.length)
+                    .map((cl) => (
+                      <article key={cl.id}>
+                        <h4>{cl.name}</h4>
+                        {cl.explanationFactIds?.map((id) => (
+                          <p key={id}>
+                            {c.facts.find((f) => f.id === id)?.text}
+                          </p>
+                        ))}
+                      </article>
+                    ))}
+                </section>
+                {g.players.map((v, i) => (
+                  <article key={i}>
+                    {v.name}: {t.score} {v.score}
+                    <p>
+                      {c.clues
+                        .filter((cl) => cl.isKey && v.clues.includes(cl.id))
+                        .map((cl) => cl.name)
+                        .join(', ')}
+                    </p>
+                  </article>
+                ))}
+              </>
+            )}
           {effective === 's14' &&
             button(ru.qa.replay, () => {
               if (confirm(t.overwrite)) {
