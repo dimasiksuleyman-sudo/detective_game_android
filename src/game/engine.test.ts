@@ -5,6 +5,7 @@ import { describe, it, expect } from 'vitest';
 import { loadCase } from '../content/loader';
 const c = loadCase('case-001-blue-owl');
 import { reduce, type GameState, type Action } from './engine';
+import { turnBudget } from './rules/turn';
 function game(n = 1) {
   const s = reduce(c, null, {
     type: 'START_GAME',
@@ -90,7 +91,7 @@ describe('правила партии', () => {
     s = search(s, 'h-desk');
     expect(run(s, { type: 'BEGIN_TURN' }).action).toEqual(s.action);
   });
-  it('обыск: сейф, выдача фактов, повтор, чужая локация и лимит 2', () => {
+  it('обыск: сейф, выдача фактов, повтор, чужая локация, вся локация за ход (ADR-034)', () => {
     let s = active();
     expect(search(s, 'missing')).toEqual(s);
     s = search(s, 'h-safe');
@@ -112,7 +113,25 @@ describe('правила партии', () => {
       clueId: 'c-ledger',
     });
     expect(player(s).score).toBe(4);
-    expect(search(s, 'h-floor')).toEqual(s);
+    expect(turnBudget(c, s)).toMatchObject({
+      kind: 'search',
+      exhausted: false,
+    });
+    // Вся локация за один ход: оставшиеся зоны кабинета доступны, другие локации и допрос — нет.
+    for (const id of ['h-floor', 'h-sofa', 'h-window']) {
+      const before = s;
+      s = search(s, id);
+      expect(s).not.toEqual(before);
+    }
+    expect(player(s).visited).toEqual(
+      expect.arrayContaining(['h-desk', 'h-floor', 'h-sofa', 'h-window']),
+    );
+    expect(turnBudget(c, s)).toMatchObject({
+      kind: 'search',
+      target: 'l-office',
+      exhausted: true,
+    });
+    expect(search(s, 'h-photos', 'l-hall')).toEqual(s);
     expect(ask(s)).toEqual(s);
   });
   it('осмотр без улики; независимость блокнотов, пропуск выбывших, номер раунда', () => {

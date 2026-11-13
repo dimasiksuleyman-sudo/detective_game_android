@@ -126,6 +126,13 @@ test('два игрока: защита передачи, ошибочное о�
 }, info) => {
   await start(page, 2);
   await accusation(page, 's-vera');
+  // Итог обвинения не прячется: игрок видит, что выбыл, но не что именно было неверно.
+  const verdict = page.getByRole('alertdialog');
+  await expect(verdict).toContainText('Обвинение не подтвердилось');
+  await expect(verdict).toContainText('выбываете');
+  await expect(verdict).not.toContainText('Вера');
+  await click(page, 'Понятно');
+  await expect(verdict).toHaveCount(0);
   await expect(
     page.getByRole('heading', { name: 'Передайте телефон: Детектив 2' }),
   ).toBeVisible();

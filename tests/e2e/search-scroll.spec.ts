@@ -68,7 +68,6 @@ test('свайп по каждой локации прокручивает к н
     await page.getByRole('button', { name: 'Назад', exact: true }).click();
   }
   await page.getByRole('button', { name: 'Назад', exact: true }).click();
-  await expect(
-    page.getByText('Использовано действий: 0', { exact: true }),
-  ).toBeVisible();
+  // Свайпы не потратили действие: в хабе всё ещё «одно действие за ход», а не «Обыск: …».
+  await expect(page.getByText(/^Одно действие за ход/)).toBeVisible();
 });

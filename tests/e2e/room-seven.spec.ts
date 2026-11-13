@@ -374,6 +374,10 @@ test.describe('Номер семь', () => {
   }) => {
     await start(page, 2);
     await accuse(page, 's-dmitry', '');
+    await expect(page.getByRole('alertdialog')).toContainText(
+      'Обвинение не подтвердилось',
+    );
+    await click(page, 'Понятно');
     await handover(page, 2);
     expect((await saved(page)).players[0]?.eliminated).toBe(true);
     await room(page, 'Номер 7');
