@@ -173,3 +173,19 @@ test('нераскрытое дело: «да» показывает, как в�
   ).toBeVisible();
   await expect(page.locator('main')).toContainText('Глеб Соколов два года');
 });
+
+test('находка без улики подписана: название зоны, описание и что ушло в блокнот', async ({
+  page,
+}) => {
+  await start(page);
+  await click(page, 'Обыск');
+  await click(page, 'Переулок у чёрного хода');
+  await click(page, 'Чёрный ход');
+  await expect(
+    page.getByRole('heading', { name: 'Чёрный ход', exact: true }),
+  ).toBeVisible();
+  await expect(page.getByText('В блокнот добавлено:')).toBeVisible();
+  await expect(page.getByRole('listitem')).toContainText(
+    'Замок чёрного хода не взломан',
+  );
+});

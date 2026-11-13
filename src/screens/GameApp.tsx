@@ -133,6 +133,8 @@ export default function GameApp() {
     [suspect, setSuspect] = useState(''),
     [clue, setClue] = useState(''),
     [closeup, setCloseup] = useState(''),
+    // Зона обыска, с которой пришли на экран находки: её название и описание подписывают кадр.
+    [spot, setSpot] = useState(''),
     [tab, setTab] = useState('clues'),
     [note, setNote] = useState(''),
     [tone, setTone] = useState<Tone>('neutral'),
@@ -272,6 +274,9 @@ export default function GameApp() {
     setLocation(id);
   };
   const back = () => go('s07');
+  const foundSpot = spot
+    ? c.locations.flatMap((l) => l.hotspots).find((h) => h.id === spot)
+    : undefined;
   // В одиночной партии передачи нет: после конца хода возвращаемся в хаб, а не остаёмся на экране действия.
   const endTurn = () => {
     setLocation('');
@@ -662,6 +667,7 @@ export default function GameApp() {
                                   setSafeId(h.id);
                                   setClue('');
                                   setCloseup('');
+                                  setSpot('');
                                   setClueReturn('s08');
                                   go('s09');
                                   return;
@@ -679,6 +685,7 @@ export default function GameApp() {
                                   setClueReturn('s08');
                                   setClue(h.clueId ?? '');
                                   setCloseup(h.closeup ?? '');
+                                  setSpot(h.id);
                                   go('s09');
                                 }
                               }}
@@ -723,7 +730,9 @@ export default function GameApp() {
                   ? p.openedLocks.includes(safeId)
                     ? containerInside
                     : ru.safe.title
-                  : t.found}
+                  : foundSpot && !clue
+                    ? foundSpot.label
+                    : t.found}
               </h2>
               {safeHotspot && !clue && (
                 <SafePuzzle
@@ -767,6 +776,25 @@ export default function GameApp() {
               )}
               {closeup && !selectedClue?.inspection && (
                 <Art caseId={c.id} src={closeup} label="" />
+              )}
+              {foundSpot && !safeId && (
+                <section aria-label={foundSpot.label}>
+                  {!selectedClue?.inspection && <p>{foundSpot.text}</p>}
+                  {!!foundSpot.revealsFactIds?.length && (
+                    <>
+                      <p>{ru.search.addedToNotebook}</p>
+                      <ul>
+                        {foundSpot.revealsFactIds
+                          .filter((id) => p.facts.includes(id))
+                          .map((id) => (
+                            <li key={id}>
+                              {c.facts.find((f) => f.id === id)?.text}
+                            </li>
+                          ))}
+                      </ul>
+                    </>
+                  )}
+                </section>
               )}
               {c.clues
                 .filter((x) => x.id === clue && p.clues.includes(x.id))
@@ -1060,6 +1088,7 @@ export default function GameApp() {
                         onClick={() => {
                           setSafeId('');
                           setCloseup('');
+                          setSpot('');
                           setClueReturn('s11');
                           setClue(cl.id);
                           go('s09');
