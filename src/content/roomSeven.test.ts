@@ -58,7 +58,7 @@ it.each(['f-portfel-hint', 'f-first-shop'])(
     expect(report.errors).toContain('unreachable c-receipt');
   },
 );
-it('ADR-035: одна балконная дверь больше не закрывает дело — нужен мотив, возможность и признание', () => {
+it('ADR-036: одной балконной двери хватает, чтобы дело приняли, но очков меньше, чем с признанием', () => {
   let s = search(start(), 'l-room7', 'h-balcony-door');
   expect(player(s).facts).toContain('f-wet-footprints');
   s = action(s, {
@@ -68,9 +68,10 @@ it('ADR-035: одна балконная дверь больше не закры
     methodId: 'w-sedative',
     evidence: ['f-wet-footprints'],
   });
-  expect(s.phase).not.toBe('finished');
-  expect(player(s).grace).toBe(true);
-  expect(player(s).eliminated).toBe(false);
+  expect(s.phase).toBe('finished');
+  expect(player(s).accusation?.accepted).toBe(true);
+  // 10 + способ 5 + скорость (8 − 1); без признания — без удвоения.
+  expect(player(s).score).toBe(22);
 });
 it('полная цепочка с признанием Надежды раскрывает дело', () => {
   let s = start();

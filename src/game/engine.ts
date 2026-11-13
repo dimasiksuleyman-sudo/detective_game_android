@@ -2,7 +2,13 @@
 import { hiddenInspectionFactIds } from '../content/inspectionKnowledge';
 import { ru } from '../i18n/ru';
 import type { CaseFile } from '../content/schema';
-import { evidenceLimit, judgeAccusation } from './rules/accusation';
+import { judgeAccusation } from './rules/accusation';
+import {
+  EVIDENCE_LIMIT,
+  PRESSURE_STRESS,
+  scoreAccusation,
+  type ScoreBreakdown,
+} from './rules/scoring';
 import { TALK_LIMIT, TURN_SECONDS, type TurnSeconds } from './rules/turn';
 export type Emotion =
   'neutral' | 'nervous' | 'angry' | 'sad' | 'smug' | 'broken';
@@ -39,7 +45,24 @@ export type Player = {
   turns: number;
   eliminated: boolean;
   grace: boolean;
+  /** Очки — только за обвинение (ADR-036). */
   score: number;
+  /** Дело принято прокурором: игрок закончил расследование и больше не ходит. */
+  solved: boolean;
+  /** Итог обвинения игрока — для итоговой таблицы. */
+  accusation?:
+    | {
+        suspectId: string;
+        motiveId: string;
+        methodId: string;
+        evidence: string[];
+        accepted: boolean;
+        round: number;
+        order: number;
+        final: boolean;
+        breakdown?: ScoreBreakdown | undefined;
+      }
+    | undefined;
   history: { suspect: string; question: string; answer: string }[];
 };
 export type GameState = {
@@ -56,6 +79,8 @@ export type GameState = {
   finalMode: boolean;
   finalDone: number[];
   winners: number[];
+  /** Сколько обвинений уже сделано — для порядка при равенстве очков. */
+  accusationCount: number;
   action: { kind: 'search' | 'talk'; target: string; used: number } | null;
   board: { id: string; by: number }[];
   message: string;
@@ -118,10 +143,6 @@ export type Action =
 const unique = (a: string[]) => [...new Set(a)];
 const colors = ['#D2691E', '#52b6b6', '#bc6575', '#d6b644', '#a58cdb'];
 function grant(c: CaseFile, p: Player, clues: string[], facts: string[]) {
-  for (const id of clues) {
-    if (!p.clues.includes(id) && c.clues.find((x) => x.id === id)?.isKey)
-      p.score += 2;
-  }
   p.clues = unique([...p.clues, ...clues]);
   const hiddenFacts = hiddenInspectionFactIds(c, p);
   p.facts = unique([
@@ -166,17 +187,18 @@ function begin(c: CaseFile, s: GameState) {
     s.players.length === 1 ? (s.finalMode ? 'final' : 'turn') : 'handover';
 }
 function next(c: CaseFile, s: GameState) {
+  // Ходят только те, кто ещё расследует: не выбыл и не сдал дело (ADR-036).
   const active = s.players
-    .map((p, i) => (p.eliminated ? -1 : i))
+    .map((p, i) => (p.eliminated || p.solved ? -1 : i))
     .filter((i) => i >= 0);
   if (!active.length) {
-    s.phase = 'finished';
+    finish(s);
     return;
   }
   if (s.finalMode) {
     const n = active.find((i) => !s.finalDone.includes(i));
     if (n === undefined) {
-      s.phase = 'finished';
+      finish(s);
       return;
     }
     s.current = n;
@@ -185,7 +207,7 @@ function next(c: CaseFile, s: GameState) {
   }
   let n = (s.current + 1) % s.players.length;
   if (n === 0) s.round++;
-  while (s.players[n]?.eliminated) {
+  while (s.players[n]?.eliminated || s.players[n]?.solved) {
     n = (n + 1) % s.players.length;
     if (n === 0) s.round++;
   }
@@ -195,6 +217,19 @@ function next(c: CaseFile, s: GameState) {
     s.current = active[0] ?? 0;
   }
   begin(c, s);
+}
+/** Конец партии: побеждают набравшие больше всех; при равенстве — кто обвинил раньше. */
+function finish(s: GameState) {
+  s.phase = 'finished';
+  const solved = s.players
+    .map((p, i) => ({ p, i }))
+    .filter(({ p }) => p.accusation?.accepted);
+  const best = Math.max(0, ...solved.map(({ p }) => p.score));
+  const top = solved.filter(({ p }) => p.score === best);
+  const first = Math.min(...top.map(({ p }) => p.accusation?.order ?? 0));
+  s.winners = top
+    .filter(({ p }) => (p.accusation?.order ?? 0) === first)
+    .map(({ i }) => i);
 }
 function canUse(
   s: GameState,
@@ -259,6 +294,7 @@ export function reduce(
         eliminated: false,
         grace: false,
         score: 0,
+        solved: false,
         history: [],
       })),
       current: 0,
@@ -269,6 +305,7 @@ export function reduce(
       finalMode: false,
       finalDone: [],
       winners: [],
+      accusationCount: 0,
       action: null,
       board: [],
       message: '',
@@ -327,7 +364,6 @@ export function reduce(
       !s.board.some((x) => x.id === a.id)
     ) {
       s.board.push({ id: a.id, by: s.current });
-      p.score++;
     }
     return s;
   }
@@ -442,11 +478,19 @@ export function reduce(
     } else if (a.type === 'PRESENT_CLUE') {
       if (!p.clues.includes(a.clueId)) return state;
       question = c.clues.find((x) => x.id === a.clueId)?.name ?? '';
-      const bp = suspect.breakpoints.find(
-        (x) =>
-          x.clueId === a.clueId &&
-          (x.requiresFactIds ?? []).every((id) => p.facts.includes(id)),
-      );
+      const stressNow = p.stress[suspect.id] ?? 0;
+      const met = (x: (typeof suspect.breakpoints)[number]) =>
+        (x.requiresFactIds ?? []).every((id) => p.facts.includes(id));
+      // Слом под давлением (ADR-036): виновный при стрессе от 9 ломается, если показана
+      // улика ступени и есть хотя бы одна из нужных находок — не обязательно все.
+      const pressured = (x: (typeof suspect.breakpoints)[number]) =>
+        !!suspect.isCulprit &&
+        stressNow >= PRESSURE_STRESS &&
+        ((x.requiresFactIds ?? []).length === 0 ||
+          (x.requiresFactIds ?? []).some((id) => p.facts.includes(id)));
+      const bp =
+        suspect.breakpoints.find((x) => x.clueId === a.clueId && met(x)) ??
+        suspect.breakpoints.find((x) => x.clueId === a.clueId && pressured(x));
       // Порог проверяем до изменения стресса этой репликой; иначе тон менял бы исход задним числом.
       if (bp && !bp.unlocksTruthIds.every((id) => p.truths.includes(id))) {
         if (
@@ -456,10 +500,7 @@ export function reduce(
           p.truths = unique([...p.truths, ...bp.unlocksTruthIds]);
           grant(c, p, [], bp.revealsFactIds);
           answer = bp.confession;
-          if (!p.broken.includes(suspect.id)) {
-            p.broken.push(suspect.id);
-            p.score++;
-          }
+          if (!p.broken.includes(suspect.id)) p.broken.push(suspect.id);
         } else {
           delta += 2;
           answer = ru.game.nervous;
@@ -515,24 +556,33 @@ export function reduce(
       !c.suspects.some((x) => x.id === a.suspectId) ||
       !c.motives.some((x) => x.id === a.motiveId) ||
       !c.methods.some((x) => x.id === a.methodId) ||
-      a.evidence.length > evidenceLimit(c) ||
+      a.evidence.length > EVIDENCE_LIMIT ||
       unique(a.evidence).length !== a.evidence.length ||
       !a.evidence.every((id) => p.clues.includes(id) || p.facts.includes(id))
     )
       return state;
-    const { correct, proven } = judgeAccusation(c, a);
-    if (correct && proven) {
-      p.score += 10;
-      s.winners.push(s.current);
-      if (!s.finalMode) {
-        s.phase = 'finished';
-        return s;
-      }
-    } else if (!s.finalMode && correct && !p.grace) {
+    const j = judgeAccusation(c, a);
+    if (!j.accepted && !s.finalMode && j.culpritAndMotive && !p.grace) {
       p.grace = true;
       s.message = ru.game.noEvidence;
       return s;
-    } else if (!s.finalMode) p.eliminated = true;
+    }
+    const breakdown = j.accepted ? scoreAccusation(c, a, s) : undefined;
+    p.accusation = {
+      suspectId: a.suspectId,
+      motiveId: a.motiveId,
+      methodId: a.methodId,
+      evidence: [...a.evidence],
+      accepted: j.accepted,
+      round: s.round,
+      order: s.accusationCount++,
+      final: s.finalMode,
+      ...(breakdown ? { breakdown } : {}),
+    };
+    p.score = breakdown?.total ?? 0;
+    // Принятое дело не заканчивает партию: игрок «сдаёт дело», остальные продолжают.
+    if (j.accepted) p.solved = true;
+    else if (!s.finalMode) p.eliminated = true;
     if (s.finalMode) s.finalDone.push(s.current);
     next(c, s);
     return s;
