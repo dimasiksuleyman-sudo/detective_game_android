@@ -170,6 +170,45 @@ test('подпись открывает факт, только затем бух
   await click(page, 'Назад');
   await click(page, 'Блокнот');
   await click(page, 'Тайная бухгалтерия');
+  const image = page.getByRole('img', {
+    name: 'Тайная бухгалтерия',
+    exact: true,
+  });
+  await image.evaluate((el: HTMLImageElement) => el.decode());
+  await image.screenshot({
+    path: `test-results/screens/${test.info().project.name}-ledger-paper.png`,
+  });
+  // Регрессия замечания владельца: строки остаются на бумаге и не обрезаются при масштабировании.
+  for (const scale of [1, 1.5, 2, 2.5, 3]) {
+    const paper = await image.boundingBox();
+    const table = page.locator('[data-inspection-overlay="0"]');
+    const area = await table.boundingBox();
+    if (!paper || !area) throw new Error('Missing ledger geometry');
+    expect(area.y).toBeGreaterThanOrEqual(paper.y + paper.height * 0.24);
+    expect(area.y + area.height).toBeLessThanOrEqual(
+      paper.y + paper.height * 0.84,
+    );
+    expect(area.x).toBeGreaterThanOrEqual(paper.x + paper.width * 0.07);
+    expect(area.x + area.width).toBeLessThanOrEqual(
+      paper.x + paper.width * 0.49,
+    );
+    for (const overlay of await page
+      .locator('[data-inspection-overlay]')
+      .all()) {
+      const overflow = await overlay.evaluate((el) => ({
+        x: el.scrollWidth - el.clientWidth,
+        y: el.scrollHeight - el.clientHeight,
+      }));
+      expect(overflow.x).toBeLessThanOrEqual(1);
+      expect(overflow.y).toBeLessThanOrEqual(1);
+    }
+    if (scale < 3) await click(page, 'Увеличить');
+  }
+  await page.screenshot({
+    path: `test-results/screens/${test.info().project.name}-ledger-page.png`,
+    fullPage: true,
+  });
+  for (let i = 0; i < 4; i++) await click(page, 'Уменьшить');
   const writing = page.getByText('Г. Соколов', { exact: true });
   const baseSize = await writing.evaluate((el) =>
     parseFloat(getComputedStyle(el).fontSize),

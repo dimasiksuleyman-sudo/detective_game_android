@@ -76,15 +76,26 @@ export function ClueInspection({
           {inspection.overlays?.map((o, i) => (
             <span
               key={i}
+              data-inspection-overlay={i}
               style={{
                 position: 'absolute',
                 left: o.rect.x * 100 + '%',
                 top: o.rect.y * 100 + '%',
                 width: o.rect.w * 100 + '%',
                 height: o.rect.h * 100 + '%',
-                whiteSpace: 'pre-line',
+                whiteSpace: 'pre',
+                overflow: 'hidden',
                 color: '#29231c',
-                fontSize: `calc(${zoom} * ${o.handwritten ? 'clamp(10px, 4vw, 24px)' : 'clamp(7px, 2.1vw, 15px)'})`,
+                // Размер зависит от листа и длины строк, а не от ширины экрана.
+                fontSize: `${Math.min(
+                  o.handwritten ? 4.5 : 2.1,
+                  (o.rect.w * 100) /
+                    (Math.max(
+                      ...o.text.split('\n').map((line) => line.length),
+                    ) *
+                      0.65),
+                  (o.rect.h * 100) / (o.text.split('\n').length * 1.6),
+                )}cqw`,
                 fontFamily: o.handwritten ? 'cursive' : 'monospace',
                 lineHeight: 1.6,
                 pointerEvents: 'none',
