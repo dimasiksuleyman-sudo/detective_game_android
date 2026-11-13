@@ -21,12 +21,17 @@
     {
       "id": "chief-hint-2",
       "role": "chief",
-      "source": ["hints", 1, "text"]
+      "source": ["hints", 2, "text"]
     },
     {
       "id": "chief-hint-3",
       "role": "chief",
-      "source": ["hints", 2, "text"]
+      "source": ["hints", 3, "text"]
+    },
+    {
+      "id": "chief-hint-4",
+      "role": "chief",
+      "source": ["hints", 1, "text"]
     },
     {
       "id": "reconstruction-1",

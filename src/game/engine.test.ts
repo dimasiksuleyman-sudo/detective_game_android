@@ -94,12 +94,22 @@ describe('правила партии', () => {
     expect(search(s, 'missing')).toEqual(s);
     s = search(s, 'h-safe');
     expect(s.action).toBeNull();
-    expect(s.message).toContain('Код');
+    expect(player(s).openedLocks).toEqual([]);
     s = search(s, 'h-desk');
-    expect(player(s).facts).toContain('f-safe-code');
+    expect(player(s).facts).toContain('f-safe-hint');
     expect(search(s, 'h-desk')).toEqual(s);
     expect(search(s, 'h-photos', 'l-hall')).toEqual(s);
-    s = search(s, 'h-safe');
+    s = run(s, {
+      type: 'OPEN_LOCK',
+      locationId: 'l-office',
+      hotspotId: 'h-safe',
+      code: '1408',
+    });
+    s = run(s, {
+      type: 'TAKE_CONTAINER_ITEM',
+      hotspotId: 'h-safe',
+      clueId: 'c-ledger',
+    });
     expect(player(s).score).toBe(4);
     expect(search(s, 'h-floor')).toEqual(s);
     expect(ask(s)).toEqual(s);
@@ -361,7 +371,7 @@ describe('осмотр найденной улики', () => {
     expect(player(s).inspectedDetails).toEqual(['d-statuette-chip']);
     expect(s.action?.used).toBe(1);
   });
-  it('старое сохранение сохраняет уже открытый факт и помечает деталь, новое roundtrip читает v2', () => {
+  it('старое сохранение сохраняет уже открытый факт и помечает деталь, новое roundtrip читает v3', () => {
     const state = search(active(), 'h-floor');
     const legacy = JSON.parse(JSON.stringify(state));
     delete legacy.players[0].inspectedDetails;
@@ -375,7 +385,7 @@ describe('осмотр найденной улики', () => {
       parseStoredGame({ version: 2, state: inspect(state) })?.players[0]
         ?.inspectedDetails,
     ).toEqual(['d-statuette-chip']);
-    expect(() => parseStoredGame({ version: 3, state })).toThrow();
+    expect(() => parseStoredGame({ version: 4, state })).toThrow();
   });
   it('ИИ не может открыть факт детали до осмотра даже при ошибочной shareable-конфигурации', () => {
     const altered = structuredClone(c);
@@ -427,4 +437,89 @@ it('после раскрытия темы все помеченные вопр�
         expect(next.action?.used).toBe(1);
       }
     }
+});
+
+const unlock = (s: GameState, code = '1408') =>
+  run(s, {
+    type: 'OPEN_LOCK',
+    locationId: 'l-office',
+    hotspotId: 'h-safe',
+    code,
+  });
+const takeSafe = (s: GameState, clueId = 'c-ledger') =>
+  run(s, { type: 'TAKE_CONTAINER_ITEM', hotspotId: 'h-safe', clueId });
+const signature = (s: GameState) =>
+  run(s, { type: 'INSPECT_CLUE', clueId: 'c-ledger', x: 0.7, y: 0.75 });
+it('ручной код: ошибка бесплатна, факты не нужны, один расход, предметы и детали отдельно и личные', () => {
+  let s = active(2);
+  expect(takeSafe(s)).toBe(s);
+  s = unlock(s, '0000');
+  expect(s.action).toBeNull();
+  expect(player(s).openedLocks).toEqual([]);
+  expect(player(s).clues).toEqual([]);
+  s = unlock(s);
+  expect(s.action?.used).toBe(1);
+  expect(player(s).facts).toEqual([]);
+  expect(player(s).openedLocks).toEqual(['h-safe']);
+  expect(player(s).clues).toEqual([]);
+  expect(unlock(s)).toBe(s);
+  expect(takeSafe(s, 'c-statuette')).toBe(s);
+  for (const id of ['c-ledger', 'c-envelope', 'c-will', 'c-lawyer-card'])
+    s = takeSafe(s, id);
+  expect(s.action?.used).toBe(1);
+  expect(player(s).clues).toHaveLength(4);
+  expect(player(s).facts).not.toContain('f-ledger-signature');
+  s = signature(s);
+  expect(player(s).facts).toContain('f-ledger-signature');
+  expect(s.action?.used).toBe(1);
+  expect(s.players[1]?.openedLocks).toEqual([]);
+  expect(s.players[1]?.clues).toEqual([]);
+  expect(
+    takeSafe({ ...s, phase: 'final', finalMode: true }, 'c-envelope'),
+  ).toEqual({ ...s, phase: 'final', finalMode: true });
+});
+it('подпись обязательна для денежного слома Глеба даже при достаточном стрессе', () => {
+  let s = takeSafe(unlock(active()));
+  s = run(s, { type: 'END_TURN' });
+  player(s).stress['s-gleb'] = 6;
+  s = present(s, 'c-ledger');
+  expect(player(s).truths).not.toContain('t-money');
+  s = signature(s);
+  s = present(s, 'c-ledger');
+  expect(player(s).truths).toContain('t-money');
+  expect(player(s).facts).toContain('f-gleb-took-money');
+});
+it('миграция v2 сохраняет сейф, факты, доску, записки и старую раскрытую денежную тему', () => {
+  const old = active();
+  const p = player(old);
+  p.visited.push('h-safe');
+  p.clues.push('c-ledger', 'c-photo');
+  p.facts.push('f-safe-code', 'f-double-books');
+  p.truths.push('t-money');
+  p.notes = 'Моя заметка';
+  old.board.push({ id: 'f-safe-code', by: 0 });
+  const migrated = parseStoredGame({ version: 2, state: old });
+  expect(migrated?.players[0]?.openedLocks).toContain('h-safe');
+  expect(migrated?.players[0]?.facts).toEqual(
+    expect.arrayContaining([
+      'f-safe-hint',
+      'f-opening-date',
+      'f-ledger-signature',
+    ]),
+  );
+  expect(migrated?.players[0]?.inspectedDetails).toContain(
+    'd-ledger-signature',
+  );
+  expect(migrated?.players[0]?.notes).toBe('Моя заметка');
+  expect(migrated?.board[0]?.id).toBe('f-safe-hint');
+});
+
+it('старая бухгалтерия сохраняет известную подпись, новая не раскрывает её при загрузке', () => {
+  const old = takeSafe(unlock(active()));
+  expect(
+    parseStoredGame({ version: 2, state: old })?.players[0]?.facts,
+  ).toContain('f-ledger-signature');
+  expect(
+    parseStoredGame({ version: 3, state: old })?.players[0]?.facts,
+  ).not.toContain('f-ledger-signature');
 });

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import manifest from '../../art/pilot/manifest.json' with { type: 'json' };
 
-test('все 58 игровых иллюстраций декодируются браузером в нужном размере', async ({
+test('все игровые иллюстрации декодируются браузером в нужном размере', async ({
   page,
 }) => {
   await page.goto('/');

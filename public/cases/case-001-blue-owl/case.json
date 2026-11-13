@@ -1,8 +1,8 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "id": "case-001-blue-owl",
-  "version": 3,
-  "minAppVersion": "0.3.2",
+  "version": 4,
+  "minAppVersion": "0.3.3",
   "title": "Синяя сова",
   "tagline": "Последний сет отыгран. Последний счёт закрыт.",
   "difficulty": 1,
@@ -79,7 +79,8 @@
       "f-timur-saw",
       "f-arkady-said-gleb-steals",
       "f-gleb-returned",
-      "f-keys-holders"
+      "f-keys-holders",
+      "f-ledger-signature"
     ],
     "explanation": "Глеб Соколов два года выводил деньги «Синей совы» на свою фирму. Аркадий нашёл тайную бухгалтерию, спрятал её в сейф и назначил встречу с юристом. В 23:00 Глеб показательно уехал — но Аркадий позвонил и потребовал вернуться. В 23:31 машина Глеба встала на парковке на Портовой; через чёрный ход, ключ от которого был только у партнёров, Глеб вошёл в кабинет. Тимур, вернувшийся за украденным виски, видел его машину и слышал ссору. В 23:45 Глеб ударил Аркадия бронзовой статуэткой, стёр её и ушёл переулком, обронив в луже парковочный талон. Сейф он открыть не смог — и тайная бухгалтерия его выдала.",
     "reconstruction": [
@@ -168,8 +169,8 @@
       "importance": "key"
     },
     {
-      "id": "f-safe-code",
-      "text": "В ежедневнике записан код сейфа: 1408 («день рождения Совы»).",
+      "id": "f-safe-hint",
+      "text": "В ежедневнике записано: «Сейф — день рождения Совы».",
       "importance": "supporting"
     },
     {
@@ -179,7 +180,7 @@
     },
     {
       "id": "f-double-books",
-      "text": "В сейфе — вторая, тайная бухгалтерия: переводы на фирму «Норд-Транзит» за подписью Г. Соколова.",
+      "text": "В сейфе найдена вторая бухгалтерия: переводы денег бара на фирму «Норд-Транзит».",
       "importance": "key",
       "proves": ["motive"]
     },
@@ -291,6 +292,37 @@
       "id": "f-gleb-took-money",
       "text": "Глеб признал, что «брал в долг» из кассы бара через свою фирму.",
       "importance": "supporting"
+    },
+    {
+      "id": "f-opening-date",
+      "text": "Бар открылся 14.08.2014.",
+      "importance": "supporting"
+    },
+    {
+      "id": "f-ledger-signature",
+      "text": "Переводы в бухгалтерии подписывал Г. Соколов.",
+      "importance": "key",
+      "aboutSuspectIds": ["s-gleb"],
+      "proves": ["motive"]
+    },
+    {
+      "id": "f-vera-envelope",
+      "text": "В сейфе лежали наличные и записка «Вере — НЕТ».",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-vera"]
+    },
+    {
+      "id": "f-will-draft",
+      "text": "В черновике завещания Ольга указана наследницей, на полях пометка «переписать?».",
+      "importance": "red_herring",
+      "aboutSuspectIds": ["s-olga"]
+    },
+    {
+      "id": "f-lawyer-card",
+      "text": "Визитка юриста подтверждает назначенную на понедельник в 10:00 встречу, записанную в ежедневнике.",
+      "importance": "supporting",
+      "aboutSuspectIds": ["s-gleb"],
+      "proves": ["motive"]
     }
   ],
   "suspects": [
@@ -342,7 +374,7 @@
         },
         {
           "clueId": "c-ledger",
-          "requiresFactIds": [],
+          "requiresFactIds": ["f-ledger-signature"],
           "unlocksTruthIds": ["t-money"],
           "revealsFactIds": ["f-gleb-took-money"],
           "confession": "Брал в долг через свою фирму. Собирался вернуть."
@@ -702,7 +734,7 @@
         {
           "id": "q-olga-5",
           "question": "Где Аркадий хранил важное?",
-          "answer": "В сейфе, в кабинете. А всё, что боялся забыть, — в ежедневнике",
+          "answer": "В сейфе, в кабинете. А всё, что боялся забыть, — в ежедневнике. Коды он всегда ставил на памятные даты.",
           "revealsFactIds": []
         },
         {
@@ -814,17 +846,62 @@
         {
           "id": "h-safe",
           "label": "Сейф",
-          "text": "Сейф открыт кодом из ежедневника. Внутри — тайная бухгалтерия.",
+          "text": "Сейф открыт.",
           "rect": {
             "x": 0.79,
             "y": 0.25,
             "w": 0.2,
             "h": 0.18
           },
-          "clueId": "c-ledger",
-          "requiresFactId": "f-safe-code",
           "lockedText": "Кодовый замок, четыре цифры",
-          "closeup": "images/closeups/h-safe.webp"
+          "closeup": "images/closeups/h-safe.webp",
+          "lock": {
+            "type": "combination",
+            "digits": 4,
+            "code": "1408",
+            "deductionFactIds": ["f-safe-hint", "f-opening-date"]
+          },
+          "container": {
+            "image": "images/closeups/h-safe-open.webp",
+            "items": [
+              {
+                "clueId": "c-ledger",
+                "rect": {
+                  "x": 0.08,
+                  "y": 0.28,
+                  "w": 0.4,
+                  "h": 0.19
+                }
+              },
+              {
+                "clueId": "c-envelope",
+                "rect": {
+                  "x": 0.51,
+                  "y": 0.19,
+                  "w": 0.37,
+                  "h": 0.26
+                }
+              },
+              {
+                "clueId": "c-will",
+                "rect": {
+                  "x": 0.08,
+                  "y": 0.58,
+                  "w": 0.46,
+                  "h": 0.29
+                }
+              },
+              {
+                "clueId": "c-lawyer-card",
+                "rect": {
+                  "x": 0.61,
+                  "y": 0.67,
+                  "w": 0.26,
+                  "h": 0.16
+                }
+              }
+            ]
+          }
         },
         {
           "id": "h-sofa",
@@ -959,8 +1036,8 @@
       "id": "c-diary",
       "name": "Ежедневник Аркадия",
       "kind": "object",
-      "description": "В ежедневнике Аркадия: «Пн, 10:00 — юрист. По Г. — вскрыть всё». В ежедневнике записан код сейфа: 1408 («день рождения Совы»). В ежедневнике: «Вера — аванс? НЕТ».",
-      "revealsFactIds": ["f-lawyer-meeting", "f-safe-code", "f-vera-advance"],
+      "description": "Потрёпанный ежедневник с короткими записями хозяина.",
+      "revealsFactIds": ["f-lawyer-meeting", "f-safe-hint", "f-vera-advance"],
       "isKey": true,
       "image": "images/clues/c-diary.webp",
       "document": {
@@ -968,7 +1045,7 @@
         "fields": {
           "entries": [
             "Пн 10:00 — юрист. По Г. — вскрыть всё",
-            "Сейф: 1408 (д.р. Совы)",
+            "Сейф — день рождения Совы",
             "Вера — аванс? НЕТ"
           ]
         }
@@ -978,7 +1055,7 @@
       "id": "c-ledger",
       "name": "Тайная бухгалтерия",
       "kind": "object",
-      "description": "В сейфе — вторая, тайная бухгалтерия: переводы на фирму «Норд-Транзит» за подписью Г. Соколова.",
+      "description": "Две тонкие бухгалтерские тетради.",
       "revealsFactIds": ["f-double-books"],
       "isKey": true,
       "image": "images/clues/c-ledger.webp",
@@ -986,13 +1063,51 @@
         "template": "ledger",
         "fields": {
           "entries": [
-            "02.09 · Норд-Транзит · 48 000 ₽ · Г. Соколов",
-            "16.09 · Норд-Транзит · 52 000 ₽ · Г. Соколов",
-            "30.09 · Норд-Транзит · 46 000 ₽ · Г. Соколов",
-            "14.10 · Норд-Транзит · 55 000 ₽ · Г. Соколов",
-            "28.10 · Норд-Транзит · 49 000 ₽ · Г. Соколов"
+            "02.09 · Норд-Транзит · 48 000 ₽",
+            "16.09 · Норд-Транзит · 52 000 ₽",
+            "30.09 · Норд-Транзит · 46 000 ₽",
+            "14.10 · Норд-Транзит · 55 000 ₽",
+            "28.10 · Норд-Транзит · 49 000 ₽"
           ]
         }
+      },
+      "inspection": {
+        "image": "images/closeups/h-ledger-spread.webp",
+        "overlays": [
+          {
+            "rect": {
+              "x": 0.09,
+              "y": 0.27,
+              "w": 0.34,
+              "h": 0.42
+            },
+            "text": "02.09 · Норд-Транзит · 48 000 ₽\n16.09 · Норд-Транзит · 52 000 ₽\n30.09 · Норд-Транзит · 46 000 ₽\n14.10 · Норд-Транзит · 55 000 ₽\n28.10 · Норд-Транзит · 49 000 ₽"
+          },
+          {
+            "rect": {
+              "x": 0.59,
+              "y": 0.7,
+              "w": 0.28,
+              "h": 0.1
+            },
+            "text": "Г. Соколов",
+            "handwritten": true
+          }
+        ],
+        "details": [
+          {
+            "id": "d-ledger-signature",
+            "rect": {
+              "x": 0.57,
+              "y": 0.68,
+              "w": 0.32,
+              "h": 0.15
+            },
+            "text": "Переводы подписывал Г. Соколов. Наблюдение добавлено в блокнот.",
+            "revealsFactIds": ["f-ledger-signature"],
+            "concealedTerms": ["подписывал", "подпись Соколова"]
+          }
+        ]
       }
     },
     {
@@ -1000,7 +1115,7 @@
       "name": "Фото с открытия",
       "kind": "photo",
       "description": "На обороте фото с открытия бара: «Глеб и его ласточка. В742КС. 14.08.2014».",
-      "revealsFactIds": ["f-gleb-car-plate"],
+      "revealsFactIds": ["f-gleb-car-plate", "f-opening-date"],
       "isKey": false,
       "image": "images/clues/c-photo.webp",
       "document": {
@@ -1081,6 +1196,56 @@
           "arrival": "Въезд 23:31"
         }
       }
+    },
+    {
+      "id": "c-envelope",
+      "name": "Конверт с наличными",
+      "kind": "document",
+      "image": "images/clues/c-envelope.webp",
+      "document": {
+        "template": "note",
+        "fields": {
+          "note": "Вере — НЕТ"
+        }
+      },
+      "description": "Конверт с наличными и небольшой запиской.",
+      "revealsFactIds": ["f-vera-envelope"],
+      "isKey": false,
+      "explanationFactIds": ["f-vera-debt", "f-vera-alibi"]
+    },
+    {
+      "id": "c-will",
+      "name": "Черновик завещания",
+      "kind": "document",
+      "image": "images/clues/c-will.webp",
+      "document": {
+        "template": "official",
+        "fields": {
+          "title": "Черновик завещания",
+          "text": "Наследница — Ольга Лебедева.",
+          "margin": "переписать?"
+        }
+      },
+      "description": "Сложенные листы черновика с пометкой на полях.",
+      "revealsFactIds": ["f-will-draft"],
+      "isKey": false,
+      "explanationFactIds": ["f-olga-heir", "f-olga-hotel"]
+    },
+    {
+      "id": "c-lawyer-card",
+      "name": "Визитка юриста",
+      "kind": "document",
+      "image": "images/clues/c-lawyer-card.webp",
+      "document": {
+        "template": "note",
+        "fields": {
+          "title": "Юрист",
+          "appointment": "Пн, 10:00"
+        }
+      },
+      "description": "Визитка с записью о встрече.",
+      "revealsFactIds": ["f-lawyer-card"],
+      "isKey": false
     }
   ],
   "hints": [
@@ -1088,6 +1253,11 @@
       "afterRound": 3,
       "unlessAnyPlayerHas": "c-diary",
       "text": "Покойный всё записывал. Его стол кто-нибудь смотрел?"
+    },
+    {
+      "afterRound": 4,
+      "unlessAnyPlayerHas": "c-ledger",
+      "text": "У покойного коды — всегда памятные даты. Когда открылась „Сова“?"
     },
     {
       "afterRound": 4,

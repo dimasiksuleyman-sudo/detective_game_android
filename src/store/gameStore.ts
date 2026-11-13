@@ -47,6 +47,8 @@ export const useGame = create<Store>((set, get) => ({
         const oldPlayer = before?.players[before.current];
         const nextPlayer = before ? game?.players[before.current] : undefined;
         if (oldPlayer && nextPlayer) {
+          if (nextPlayer.openedLocks.length > oldPlayer.openedLocks.length)
+            playEffect('safe-open');
           if (nextPlayer.broken.length > oldPlayer.broken.length)
             playEffect('sting-break');
           else if (

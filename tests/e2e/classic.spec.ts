@@ -1,3 +1,4 @@
+import { collectLedger, backFromSafeItem } from './safeHelpers';
 import { test, expect, type Page } from '@playwright/test';
 test.beforeEach(async ({ page }) => {
   page.on('dialog', (d) => {
@@ -25,9 +26,19 @@ async function capture(p: Page, name: string) {
   });
 }
 async function click(p: Page, name: string) {
+  if (
+    name === 'Назад' &&
+    (await p
+      .getByRole('button', { name: 'К содержимому сейфа', exact: true })
+      .count())
+  ) {
+    await backFromSafeItem(p);
+    return;
+  }
   const b = p.getByRole('button', { name, exact: true });
   await expect(b).toBeEnabled();
   await b.click();
+  if (name === 'Сейф') await collectLedger(p);
 }
 async function handover(p: Page) {
   await expect(

@@ -89,7 +89,8 @@ test('4,6,7: Назад комнаты и документа, описание �
   await click(page, 'Обыск');
   await click(page, 'Кабинет');
   await page.getByRole('button', { name: /^Сейф/ }).click();
-  await expect(page.getByRole('status')).toHaveCount(1);
+  await expect(page.getByRole('spinbutton')).toHaveCount(4);
+  await click(page, 'Назад');
   await click(page, 'Назад');
   await expect(page.getByRole('status')).toHaveCount(0);
   await click(page, 'Кабинет');

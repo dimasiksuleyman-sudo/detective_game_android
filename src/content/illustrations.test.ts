@@ -15,6 +15,14 @@ describe('готовый арт пилота', () => {
         ...l.hotspots.flatMap((h) => ('closeup' in h ? [h.closeup] : [])),
       ]),
       ...pilot.clues.flatMap((c) => ('image' in c ? [c.image] : [])),
+      ...pilot.clues.flatMap((c) =>
+        'inspection' in c && c.inspection ? [c.inspection.image] : [],
+      ),
+      ...pilot.locations.flatMap((l) =>
+        l.hotspots.flatMap((h) =>
+          'container' in h && h.container ? [h.container.image] : [],
+        ),
+      ),
       ...pilot.solution.reconstruction.map((r) => r.image),
     ]);
     for (const actor of [
@@ -31,7 +39,7 @@ describe('готовый арт пилота', () => {
         'broken',
       ])
         required.add(`troupe/${actor.actorId}/${emotion}.webp`);
-    expect(required.size).toBe(58);
+    expect(required.size).toBe(63);
     expect(new Set(manifest.files.map((f) => f.output))).toEqual(required);
     for (const file of required) {
       if (!file) throw new Error('Пустой путь ресурса в деле');

@@ -241,3 +241,23 @@ E2E сохраняют снимки в `test-results/screens/` (игнориру
 Для обновления в Windows: `git switch main`, `git pull --ff-only`, `npm.cmd ci`, `npm.cmd run android:sync`, затем Run в Android Studio. Для S17 по-прежнему используется подготовка `vite build --mode debug` из раздела выше. APK 0.3.2 / code 6 владелец собирает в Android Studio. CI APK не собирает вовсе, даже вручную (ADR-024).
 
 Документы — исходные записи, выводы остаются во вкладке «Факты». Вопрос с afterBreak даёт правду только по уже раскрытому truthId текущего игрока. Старую историю реплик это не переписывает.
+
+## Сейф: обновление в Android Studio (0.3.3)
+
+APK агент и автоматический CI этого PR не собирают. В PowerShell:
+
+```powershell
+Set-Location 'D:\Projects\detective_game_android'
+git fetch origin
+git switch feature/safe-puzzle
+git pull --ff-only origin feature/safe-puzzle
+npm.cmd ci
+npm.cmd run android:sync
+& 'C:\Program Files\Android\Android Studio1\bin\studio64.exe' 'D:\Projects\detective_game_android\android'
+```
+
+Если локальной ветки ещё нет, `git switch feature/safe-puzzle` создаст её с отслеживанием одноимённой ветки origin. При конфликте локальных изменений остановиться и сохранить их, не делать reset/clean. После слияния PR можно вместо ветки задачи использовать `git switch main` и `git pull --ff-only origin main`. Не удалять приложение/его данные: миграция старой партии проверяется сохранением данных. Дождаться Gradle Sync (JVM 21), выбрать телефон и нажать Run ▶. Это устанавливает приложение с прежним appId поверх текущего; при несовместимой подписи понадобится тот же локальный debug-ключ, а не стирание партии.
+
+Новый сейф: Обыск → Кабинет → Сейф. В новом деле колёсики начинаются с 0000. Дедукция: фото в зале и ежедневник в кабинете; подробная проверка — MT-019. Старое сохранение может уже содержать открытый сейф/известную подпись — это ожидаемая миграция. Для чистой проверки создать новое дело с подтверждением перезаписи.
+
+Для пересборки только эффекта открытия (не APK): `python3 tools/generate-safe-open.py`, нужен ffmpeg. Для пересборки арта сначала получить оригиналы: `git lfs pull --include="art/pilot/**"`, затем `npx tsx tools/build-pack.ts --art-only` и `npm run case:validate`. Для обычной сборки приложения PNG-оригиналы скачивать не нужно.

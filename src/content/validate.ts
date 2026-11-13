@@ -46,6 +46,7 @@ export function validateCase(c: CaseFile) {
   for (const f of c.facts) refs(f.aboutSuspectIds ?? [], suspects);
   for (const cl of c.clues) {
     refs(cl.revealsFactIds, facts);
+    refs(cl.explanationFactIds ?? [], facts);
     const normalizeDocument = (text: string) =>
       text.normalize('NFKC').replace(/\s+/g, ' ').trim().toLowerCase();
     const factTexts = new Set(c.facts.map((f) => normalizeDocument(f.text)));
@@ -63,6 +64,38 @@ export function validateCase(c: CaseFile) {
       refs(h.revealsFactIds ?? [], facts);
       refs(h.clueId ? [h.clueId] : [], clues);
       refs(h.requiresFactId ? [h.requiresFactId] : [], facts);
+      if (h.lock) {
+        refs(h.lock.deductionFactIds, facts);
+        check(
+          !h.requiresFactId && !h.clueId && !!h.container,
+          'lock requires explicit container ' + h.id,
+        );
+        check(
+          new Set(h.lock.deductionFactIds).size ===
+            h.lock.deductionFactIds.length,
+          'duplicate lock deduction ' + h.id,
+        );
+        if (c.id === 'case-001-blue-owl' && h.id === 'h-safe')
+          check(
+            ['f-safe-hint', 'f-opening-date'].every((id) =>
+              h.lock?.deductionFactIds.includes(id),
+            ),
+            'safe deduction requires hint and date',
+          );
+      }
+      if (h.container) {
+        check(!!h.lock, 'container requires lock ' + h.id);
+        refs(
+          h.container.items.map((i) => i.clueId),
+          clues,
+        );
+        check(
+          new Set(h.container.items.map((i) => i.clueId)).size ===
+            h.container.items.length,
+          'duplicate container item ' + h.id,
+        );
+      }
+
       check(
         h.rect.x + h.rect.w <= 1 && h.rect.y + h.rect.h <= 1,
         'hotspot outside image',
@@ -166,8 +199,12 @@ export function validateCase(c: CaseFile) {
     changed = false;
     for (const l of c.locations)
       for (const h of l.hotspots)
-        if (!h.requiresFactId || reached.has(h.requiresFactId))
+        if (
+          (!h.requiresFactId || reached.has(h.requiresFactId)) &&
+          (!h.lock || h.lock.deductionFactIds.every((id) => reached.has(id)))
+        )
           add(h.id, [
+            ...(h.container?.items.map((i) => i.clueId) ?? []),
             ...(h.clueId ? [h.clueId] : []),
             ...(h.revealsFactIds ?? []),
           ]);
@@ -199,6 +236,9 @@ export function validateCase(c: CaseFile) {
     ...c.solution.keyEvidence,
   ])
     check(reached.has(id), 'unreachable ' + id);
+  for (const cl of c.clues)
+    for (const id of cl.explanationFactIds ?? [])
+      check(reached.has(id), 'unreachable explanation ' + id);
   for (const s of c.suspects.filter((s) => !s.isCulprit))
     check(
       c.facts.some(

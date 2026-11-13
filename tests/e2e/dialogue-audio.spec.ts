@@ -74,7 +74,7 @@ test('чат без внутренней прокрутки, история от
   });
 });
 
-test('все семь документов содержат исходные реквизиты и записи, а не тексты фактов', async ({
+test('все десять документов содержат исходные реквизиты и записи, а не тексты фактов', async ({
   page,
   request,
 }) => {
@@ -82,7 +82,7 @@ test('все семь документов содержат исходные р�
     await request.get('/cases/case-001-blue-owl/case.json')
   ).json();
   const documents = c.clues.filter((x: { document?: unknown }) => x.document);
-  expect(documents).toHaveLength(7);
+  expect(documents).toHaveLength(10);
   const facts = new Set(c.facts.map((f: { text: string }) => f.text));
   for (const d of documents)
     for (const v of Object.values(d.document.fields))
@@ -97,7 +97,7 @@ test('все семь документов содержат исходные р�
   await click(page, 'Кабинет');
   await click(page, 'Письменный стол');
   const doc = page.getByRole('region', { name: 'Документ', exact: true });
-  await expect(doc).toContainText('Сейф: 1408 (д.р. Совы)');
+  await expect(doc).toContainText('Сейф — день рождения Совы');
   await expect(doc).not.toContainText('В ежедневнике записан код');
 });
 

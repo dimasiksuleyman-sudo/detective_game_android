@@ -24,8 +24,10 @@ textarea {
   max-width: 100%;
 }
 button {
-  display: inline-block;
-  margin: 0.3rem;
+  display: block;
+  width: 100%;
+  margin: 0.55rem 0;
+  text-align: center;
   min-height: 48px;
   cursor: pointer;
 }
@@ -211,4 +213,8 @@ audio {
 }
 .interrogation :global(.questionComposer) details {
   font-size: 0.75rem;
+}
+
+.game[data-screen='s02'] main > button {
+  margin-block: 1rem;
 }

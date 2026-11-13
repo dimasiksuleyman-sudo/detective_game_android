@@ -6,9 +6,11 @@ import { useAudioSettings } from '../store/audioSettingsStore';
 export function Soundscape({
   screen,
   solved,
+  paper = true,
 }: {
   screen: string;
   solved: boolean;
+  paper?: boolean;
 }) {
   const aiError = useAi((s) => s.error);
   const settingsError = useSettings((s) => s.error);
@@ -40,9 +42,9 @@ export function Soundscape({
     if (screen === 's06') ref.current?.prepare('hold-confirm');
     if (previous.current !== screen) {
       if (screen === 's06') playEffect('handover');
-      if (screen === 's09') playEffect('paper');
+      if (screen === 's09' && paper) playEffect('paper');
     }
     previous.current = screen;
-  }, [screen, solved]);
+  }, [screen, solved, paper]);
   return null;
 }

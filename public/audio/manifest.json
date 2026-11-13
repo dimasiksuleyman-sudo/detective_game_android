@@ -41,13 +41,42 @@
   ],
   "planned": [],
   "sfx": [
-    { "id": "ui-tap", "file": "sfx/ui-tap.mp3" },
-    { "id": "new-fact", "file": "sfx/new-fact.mp3" },
-    { "id": "handover", "file": "sfx/handover.mp3" },
-    { "id": "hold-confirm", "file": "sfx/hold-confirm.mp3" },
-    { "id": "error", "file": "sfx/error.mp3" },
-    { "id": "rain-loop", "file": "sfx/rain-loop.mp3", "loop": true },
-    { "id": "sting-break", "file": "sfx/sting-break.mp3" },
-    { "id": "paper", "file": "sfx/paper.mp3" }
+    {
+      "id": "ui-tap",
+      "file": "sfx/ui-tap.mp3"
+    },
+    {
+      "id": "new-fact",
+      "file": "sfx/new-fact.mp3"
+    },
+    {
+      "id": "handover",
+      "file": "sfx/handover.mp3"
+    },
+    {
+      "id": "hold-confirm",
+      "file": "sfx/hold-confirm.mp3"
+    },
+    {
+      "id": "error",
+      "file": "sfx/error.mp3"
+    },
+    {
+      "id": "rain-loop",
+      "file": "sfx/rain-loop.mp3",
+      "loop": true
+    },
+    {
+      "id": "sting-break",
+      "file": "sfx/sting-break.mp3"
+    },
+    {
+      "id": "paper",
+      "file": "sfx/paper.mp3"
+    },
+    {
+      "id": "safe-open",
+      "file": "sfx/safe-open.mp3"
+    }
   ]
 }

@@ -1,0 +1,60 @@
+{
+  "styleCore": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature.",
+  "entries": [
+    {
+      "id": "h-safe-open",
+      "type": "closeups",
+      "source": "h-safe-open.png",
+      "output": "images/closeups/h-safe-open.webp",
+      "width": 1024,
+      "height": 1024,
+      "references": ["h-safe.png"],
+      "transparent": false,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Square 1:1 close-up, straight-on first person view INSIDE this same antique wall safe with its door swung completely out of view. Interior steel cavity fills almost the whole frame. Exactly four separated groups easy to examine: two thin black accounting notebooks stacked together on upper left, a brown envelope with a few plain blank banknotes and a small blank note on upper right, folded aged off-white will papers on lower left, one small blank cream lawyer business card on lower right. Two shelves with natural dark separation, believable small office safe. Keep every group distinct, no arrows, no callouts, no added detective, hands or people. All paper is wordless, text rendered later by code. Ink and watercolor, warm lamp from right, cool blue from left. No numbers, words or currency markings."
+    },
+    {
+      "id": "h-ledger-spread",
+      "type": "closeups",
+      "source": "h-ledger-spread.png",
+      "output": "images/closeups/h-ledger-spread.webp",
+      "width": 1024,
+      "height": 1024,
+      "references": ["c-ledger.png"],
+      "transparent": false,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. Square 1:1 top-down close-up of ONE of these same worn black accounting notebooks, now lying open on a dark wooden desk. Open two-page cream paper spread occupies 90 percent of square image, straight and almost flat to viewer, spine at center. Fine ruled accounting table lines only, all cells empty. Leave lower right quarter of right page blank for a signature that will be rendered by game code. No writing at all, no handwriting, no letters, no digits. Black cover edges and orange cloth ribbon are visible. Warm desk lamp and blue noir shadows, realistic paper texture, no objects covering pages, no person or hands."
+    },
+    {
+      "id": "c-envelope",
+      "type": "clues",
+      "source": "c-envelope.png",
+      "output": "images/clues/c-envelope.webp",
+      "width": 512,
+      "height": 512,
+      "references": [],
+      "transparent": true,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. A single evidence object, centered square 1:1: an opened old brown paper envelope containing a few plain unmarked folded banknotes and a small blank cream note tucked visibly into its front. Three-quarter top-down view, soft contact shadow, isolated on transparent background. No printed text, no currency signs, no letters, no numbers, no stamps. Noir ink and loose watercolor, muted sepia paper with burnt orange light."
+    },
+    {
+      "id": "c-will",
+      "type": "clues",
+      "source": "c-will.png",
+      "output": "images/clues/c-will.webp",
+      "width": 512,
+      "height": 512,
+      "references": [],
+      "transparent": true,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. A single evidence object, centered square 1:1: a slightly creased draft legal will on two off-white blank sheets, the corner folded, held with a small plain metal paperclip. The sheets must remain completely wordless because text is rendered by code. Three-quarter top-down view, soft contact shadow, isolated on transparent background. Noir ink and watercolor, muted warm paper and cool slate shadows. No letters, no numbers, no handwriting, no visible words or emblem."
+    },
+    {
+      "id": "c-lawyer-card",
+      "type": "clues",
+      "source": "c-lawyer-card.png",
+      "output": "images/clues/c-lawyer-card.webp",
+      "width": 512,
+      "height": 512,
+      "references": [],
+      "transparent": true,
+      "prompt": "Noir graphic novel illustration, confident ink linework with loose watercolor washes, muted palette of deep slate blue, desaturated teal and warm sepia, a single accent color of burnt orange, dramatic chiaroscuro lighting, visible cold-press paper texture, subtle film grain, contemporary rainy northern port city atmosphere. No text, no letters, no numbers, no watermark, no logo, no signature. A single evidence object, centered square 1:1: one small thick cream business card with a subtle embossed rectangular border and a small folded appointment slip behind it. Entire card and slip are blank for game text overlay. Three-quarter top-down view, soft contact shadow, isolated on transparent background, paper fibers and worn corners, restrained ink and watercolor. No printed words, no text, no handwriting, no logos, no symbols or scales of justice."
+    }
+  ]
+}
