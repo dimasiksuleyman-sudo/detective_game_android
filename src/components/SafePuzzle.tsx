@@ -28,6 +28,9 @@ function CombinationLock({
   submit: (code: string) => Promise<boolean>;
   take: (id: string) => void;
 }) {
+  const isBriefcase = hotspot.label.toLocaleLowerCase('ru') === 'портфель';
+  const inside = isBriefcase ? ru.safe.insideBriefcase : ru.safe.inside;
+  const open = isBriefcase ? ru.safe.openBriefcase : ru.safe.open;
   const [digits, setDigits] = useState(() =>
     Array.from({ length: hotspot.lock?.digits ?? 0 }, () => 0),
   );
@@ -46,11 +49,11 @@ function CombinationLock({
   if (!hotspot.lock || !hotspot.container) return null;
   if (opened)
     return (
-      <section aria-label={ru.safe.inside}>
+      <section aria-label={inside}>
         <div className="safeInterior">
           <img
             src={`/cases/${caseId}/${hotspot.container.image}`}
-            alt={ru.safe.inside}
+            alt={inside}
           />
           {hotspot.container.items.map((item, i) => (
             <button
@@ -166,7 +169,7 @@ function CombinationLock({
             .finally(() => setPending(false));
         }}
       >
-        {ru.safe.open}
+        {open}
       </button>
     </section>
   );

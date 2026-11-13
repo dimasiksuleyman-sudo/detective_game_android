@@ -27,6 +27,7 @@ import urllib.request
 ROOT = Path(__file__).resolve().parent.parent
 API = "https://api.elevenlabs.io"
 CONFIG = json.loads((ROOT / "content/narration/elevenlabs.json").read_text(encoding="utf-8"))
+CASE_ID = "case-001-blue-owl"
 ORIGINALS = ROOT / "art/narration/elevenlabs"
 REPORTS = ROOT / "docs/devlog/assets/narration-elevenlabs"
 MAX_AUDIO = 16 * 1024 * 1024
@@ -39,7 +40,7 @@ _spec.loader.exec_module(_module)
 def clips():
     """Тексты дела (как видит игрок) + произносимая версия с тегами ElevenLabs."""
     rows = []
-    for clip in _module.phrases():
+    for clip in _module.phrases(CASE_ID):
         speech = CONFIG["speech"].get(clip["id"])
         stale = speech is not None and speech["text"] != clip["text"]
         say = speech["say"] if speech and not stale else clip["text"]
@@ -180,7 +181,7 @@ def cmd_all(key, narrator, chief):
     if digits:
         raise SystemExit("В произносимом тексте цифры, перепишите словами: " + ", ".join(digits))
     voices = {"narrator": voice_id(narrator), "chief": voice_id(chief)}
-    case_id = json.loads((ROOT / "content/narration/plan.json").read_text(encoding="utf-8"))["caseId"]
+    case_id = CASE_ID
     folder = ORIGINALS / case_id
     report = []
     for clip in rows:
@@ -221,6 +222,7 @@ def prepare(case_id, rows, voices):
 
 
 def main():
+    global CASE_ID, CONFIG, REPORTS
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--list", action="store_true")
@@ -232,7 +234,13 @@ def main():
     parser.add_argument("--narrator")
     parser.add_argument("--chief")
     parser.add_argument("--allow-paid", action="store_true")
+    parser.add_argument("--case", default="case-001-blue-owl", help="ID встроенного дела")
     args = parser.parse_args()
+    CASE_ID = args.case
+    if CASE_ID != "case-001-blue-owl":
+        selected = CONFIG["cases"][CASE_ID]
+        CONFIG = {**CONFIG, "speech": selected["speech"]}
+        REPORTS = REPORTS / CASE_ID
     if args.list or not (args.voices or args.sample or args.all):
         for c in clips():
             flag = " [УСТАРЕЛО: текст дела изменился]" if c["stale"] else (" [ЦИФРЫ: перепишите словами]" if c["digits"] else "")

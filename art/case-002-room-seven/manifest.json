@@ -1,0 +1,311 @@
+{
+  "caseId": "case-002-room-seven",
+  "files": [
+    {
+      "source": "l-lobby.png",
+      "output": "images/locations/l-lobby.webp",
+      "width": 1080,
+      "height": 1620,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "l-room7.png",
+      "output": "images/locations/l-room7.webp",
+      "width": 1080,
+      "height": 1620,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "l-corridor.png",
+      "output": "images/locations/l-corridor.webp",
+      "width": 1080,
+      "height": 1620,
+      "sourceWidth": 1024,
+      "sourceHeight": 1536,
+      "quality": 80
+    },
+    {
+      "source": "h-register.png",
+      "output": "images/closeups/h-register.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-phone.png",
+      "output": "images/closeups/h-phone.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-coat-rack.png",
+      "output": "images/closeups/h-coat-rack.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-keeper-photo.png",
+      "output": "images/closeups/h-keeper-photo.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-armchair.png",
+      "output": "images/closeups/h-armchair.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-fireplace.png",
+      "output": "images/closeups/h-fireplace.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-door-chain.png",
+      "output": "images/closeups/h-door-chain.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-tea-tray.png",
+      "output": "images/closeups/h-tea-tray.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-nightstand.png",
+      "output": "images/closeups/h-nightstand.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-desk.png",
+      "output": "images/closeups/h-desk.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-jacket.png",
+      "output": "images/closeups/h-jacket.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-portfel.png",
+      "output": "images/closeups/h-portfel.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-balcony-door.png",
+      "output": "images/closeups/h-balcony-door.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-partition.png",
+      "output": "images/closeups/h-partition.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-linen-cart.png",
+      "output": "images/closeups/h-linen-cart.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-bin.png",
+      "output": "images/closeups/h-bin.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-window.png",
+      "output": "images/closeups/h-window.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "h-door8.png",
+      "output": "images/closeups/h-door8.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "c-teacup.png",
+      "output": "images/clues/c-teacup.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-empty-case.png",
+      "output": "images/clues/c-empty-case.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-notebook.png",
+      "output": "images/clues/c-notebook.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-wallet.png",
+      "output": "images/clues/c-wallet.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-wet-jacket.png",
+      "output": "images/clues/c-wet-jacket.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-camera.png",
+      "output": "images/clues/c-camera.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-ampoule.png",
+      "output": "images/clues/c-ampoule.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-chronometer.png",
+      "output": "images/clues/c-chronometer.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "c-partition.png",
+      "output": "images/clues/c-partition.webp",
+      "width": 512,
+      "height": 512,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 85
+    },
+    {
+      "source": "portfel-open.png",
+      "output": "images/closeups/portfel-open.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "teacup-inspection.png",
+      "output": "images/closeups/teacup-inspection.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "partition-inspection.png",
+      "output": "images/closeups/partition-inspection.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    },
+    {
+      "source": "chronometer-inspection.png",
+      "output": "images/closeups/chronometer-inspection.webp",
+      "width": 1024,
+      "height": 1024,
+      "sourceWidth": 1254,
+      "sourceHeight": 1254,
+      "quality": 80
+    }
+  ]
+}

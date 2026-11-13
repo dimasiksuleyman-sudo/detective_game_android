@@ -173,7 +173,7 @@ export const caseSchema = z
             }),
           )
           .min(3)
-          .max(6),
+          .max(7),
       }),
     ),
     clues: z.array(

@@ -97,3 +97,78 @@
 | art/store/feature-1024x500.png | магазин 1024×500       | STYLE_CORE: пустой джаз-бар, дождь за окном, лампа и сова в центре, без текста | сгенерировано |
 
 Контакт-лист: [три маски, три размера, два фона](../docs/devlog/assets/app-icon/contact-sheet.jpg). Графика магазина не включается в APK.
+
+## Дело № 2 — «Номер семь»
+
+Полный план до генерации: **68 оригиналов**. Источник канона — `docs/cases/case-002-room-seven.md`. Точные STYLE_CORE-промпты и референсы: [case-002-room-seven/prompts.json](case-002-room-seven/prompts.json). Порядок: локации → крупные планы → предметы/портфель/детали → портреты (neutral → отдельные правки эмоций) → реконструкция и обложка. Текста на картинках нет. Надежда в сером кардигане, нитка серая; кресло пустое, только сползший плед. Оригиналы PNG — Git LFS. Музыка общая, голос не генерируется.
+
+| Игровой файл                                  | Тип            | Размер    | Оригинал PNG                                          | Промпт / ключ            | Статус        |
+| --------------------------------------------- | -------------- | --------- | ----------------------------------------------------- | ------------------------ | ------------- |
+| `images/locations/l-lobby.webp`               | location       | 1080×1620 | [PNG](case-002-room-seven/l-lobby.png)                | `l-lobby`                | сгенерировано |
+| `images/locations/l-room7.webp`               | location       | 1080×1620 | [PNG](case-002-room-seven/l-room7.png)                | `l-room7`                | сгенерировано |
+| `images/locations/l-corridor.webp`            | location       | 1080×1620 | [PNG](case-002-room-seven/l-corridor.png)             | `l-corridor`             | сгенерировано |
+| `images/closeups/h-register.webp`             | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-register.png)             | `h-register`             | сгенерировано |
+| `images/closeups/h-phone.webp`                | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-phone.png)                | `h-phone`                | сгенерировано |
+| `images/closeups/h-coat-rack.webp`            | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-coat-rack.png)            | `h-coat-rack`            | сгенерировано |
+| `images/closeups/h-keeper-photo.webp`         | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-keeper-photo.png)         | `h-keeper-photo`         | сгенерировано |
+| `images/closeups/h-armchair.webp`             | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-armchair.png)             | `h-armchair`             | сгенерировано |
+| `images/closeups/h-fireplace.webp`            | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-fireplace.png)            | `h-fireplace`            | сгенерировано |
+| `images/closeups/h-door-chain.webp`           | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-door-chain.png)           | `h-door-chain`           | сгенерировано |
+| `images/closeups/h-tea-tray.webp`             | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-tea-tray.png)             | `h-tea-tray`             | сгенерировано |
+| `images/closeups/h-nightstand.webp`           | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-nightstand.png)           | `h-nightstand`           | сгенерировано |
+| `images/closeups/h-desk.webp`                 | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-desk.png)                 | `h-desk`                 | сгенерировано |
+| `images/closeups/h-jacket.webp`               | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-jacket.png)               | `h-jacket`               | сгенерировано |
+| `images/closeups/h-portfel.webp`              | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-portfel.png)              | `h-portfel`              | сгенерировано |
+| `images/closeups/h-balcony-door.webp`         | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-balcony-door.png)         | `h-balcony-door`         | сгенерировано |
+| `images/closeups/h-partition.webp`            | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-partition.png)            | `h-partition`            | сгенерировано |
+| `images/closeups/h-linen-cart.webp`           | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-linen-cart.png)           | `h-linen-cart`           | сгенерировано |
+| `images/closeups/h-bin.webp`                  | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-bin.png)                  | `h-bin`                  | сгенерировано |
+| `images/closeups/h-window.webp`               | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-window.png)               | `h-window`               | сгенерировано |
+| `images/closeups/h-door8.webp`                | closeup        | 1024×1024 | [PNG](case-002-room-seven/h-door8.png)                | `h-door8`                | сгенерировано |
+| `images/clues/c-teacup.webp`                  | clue           | 512×512   | [PNG](case-002-room-seven/c-teacup.png)               | `c-teacup`               | сгенерировано |
+| `images/clues/c-empty-case.webp`              | clue           | 512×512   | [PNG](case-002-room-seven/c-empty-case.png)           | `c-empty-case`           | сгенерировано |
+| `images/clues/c-notebook.webp`                | clue           | 512×512   | [PNG](case-002-room-seven/c-notebook.png)             | `c-notebook`             | сгенерировано |
+| `images/clues/c-wallet.webp`                  | clue           | 512×512   | [PNG](case-002-room-seven/c-wallet.png)               | `c-wallet`               | сгенерировано |
+| `images/clues/c-wet-jacket.webp`              | clue           | 512×512   | [PNG](case-002-room-seven/c-wet-jacket.png)           | `c-wet-jacket`           | сгенерировано |
+| `images/clues/c-camera.webp`                  | clue           | 512×512   | [PNG](case-002-room-seven/c-camera.png)               | `c-camera`               | сгенерировано |
+| `images/clues/c-ampoule.webp`                 | clue           | 512×512   | [PNG](case-002-room-seven/c-ampoule.png)              | `c-ampoule`              | сгенерировано |
+| `images/clues/c-chronometer.webp`             | clue           | 512×512   | [PNG](case-002-room-seven/c-chronometer.png)          | `c-chronometer`          | сгенерировано |
+| `images/clues/c-partition.webp`               | clue           | 512×512   | [PNG](case-002-room-seven/c-partition.png)            | `c-partition`            | сгенерировано |
+| `images/closeups/portfel-open.webp`           | container      | 1024×1024 | [PNG](case-002-room-seven/portfel-open.png)           | `portfel-open`           | сгенерировано |
+| `images/closeups/teacup-inspection.webp`      | inspection     | 1024×1024 | [PNG](case-002-room-seven/teacup-inspection.png)      | `teacup-inspection`      | сгенерировано |
+| `images/closeups/partition-inspection.webp`   | inspection     | 1024×1024 | [PNG](case-002-room-seven/partition-inspection.png)   | `partition-inspection`   | сгенерировано |
+| `images/closeups/chronometer-inspection.webp` | inspection     | 1024×1024 | [PNG](case-002-room-seven/chronometer-inspection.png) | `chronometer-inspection` | сгенерировано |
+| `troupe/a14-boris/neutral.webp`               | portrait       | 768×1152  | [PNG](case-002-room-seven/a14-boris-neutral.png)      | `a14-boris-neutral`      | сгенерировано |
+| `troupe/a14-boris/nervous.webp`               | portrait       | 768×1152  | [PNG](case-002-room-seven/a14-boris-nervous.png)      | `a14-boris-nervous`      | сгенерировано |
+| `troupe/a14-boris/angry.webp`                 | portrait       | 768×1152  | [PNG](case-002-room-seven/a14-boris-angry.png)        | `a14-boris-angry`        | сгенерировано |
+| `troupe/a14-boris/sad.webp`                   | portrait       | 768×1152  | [PNG](case-002-room-seven/a14-boris-sad.png)          | `a14-boris-sad`          | сгенерировано |
+| `troupe/a14-boris/smug.webp`                  | portrait       | 768×1152  | [PNG](case-002-room-seven/a14-boris-smug.png)         | `a14-boris-smug`         | сгенерировано |
+| `troupe/a14-boris/broken.webp`                | portrait       | 768×1152  | [PNG](case-002-room-seven/a14-boris-broken.png)       | `a14-boris-broken`       | сгенерировано |
+| `troupe/a11-zoya/neutral.webp`                | portrait       | 768×1152  | [PNG](case-002-room-seven/a11-zoya-neutral.png)       | `a11-zoya-neutral`       | сгенерировано |
+| `troupe/a11-zoya/nervous.webp`                | portrait       | 768×1152  | [PNG](case-002-room-seven/a11-zoya-nervous.png)       | `a11-zoya-nervous`       | сгенерировано |
+| `troupe/a11-zoya/angry.webp`                  | portrait       | 768×1152  | [PNG](case-002-room-seven/a11-zoya-angry.png)         | `a11-zoya-angry`         | сгенерировано |
+| `troupe/a11-zoya/sad.webp`                    | portrait       | 768×1152  | [PNG](case-002-room-seven/a11-zoya-sad.png)           | `a11-zoya-sad`           | сгенерировано |
+| `troupe/a11-zoya/smug.webp`                   | portrait       | 768×1152  | [PNG](case-002-room-seven/a11-zoya-smug.png)          | `a11-zoya-smug`          | сгенерировано |
+| `troupe/a11-zoya/broken.webp`                 | portrait       | 768×1152  | [PNG](case-002-room-seven/a11-zoya-broken.png)        | `a11-zoya-broken`        | заглушка      |
+| `troupe/a08-ruslan/neutral.webp`              | portrait       | 768×1152  | [PNG](case-002-room-seven/a08-ruslan-neutral.png)     | `a08-ruslan-neutral`     | сгенерировано |
+| `troupe/a08-ruslan/nervous.webp`              | portrait       | 768×1152  | [PNG](case-002-room-seven/a08-ruslan-nervous.png)     | `a08-ruslan-nervous`     | сгенерировано |
+| `troupe/a08-ruslan/angry.webp`                | portrait       | 768×1152  | [PNG](case-002-room-seven/a08-ruslan-angry.png)       | `a08-ruslan-angry`       | заглушка      |
+| `troupe/a08-ruslan/sad.webp`                  | portrait       | 768×1152  | [PNG](case-002-room-seven/a08-ruslan-sad.png)         | `a08-ruslan-sad`         | заглушка      |
+| `troupe/a08-ruslan/smug.webp`                 | portrait       | 768×1152  | [PNG](case-002-room-seven/a08-ruslan-smug.png)        | `a08-ruslan-smug`        | заглушка      |
+| `troupe/a08-ruslan/broken.webp`               | portrait       | 768×1152  | [PNG](case-002-room-seven/a08-ruslan-broken.png)      | `a08-ruslan-broken`      | заглушка      |
+| `troupe/a13-nadia/neutral.webp`               | portrait       | 768×1152  | [PNG](case-002-room-seven/a13-nadia-neutral.png)      | `a13-nadia-neutral`      | сгенерировано |
+| `troupe/a13-nadia/nervous.webp`               | portrait       | 768×1152  | [PNG](case-002-room-seven/a13-nadia-nervous.png)      | `a13-nadia-nervous`      | заглушка      |
+| `troupe/a13-nadia/angry.webp`                 | portrait       | 768×1152  | [PNG](case-002-room-seven/a13-nadia-angry.png)        | `a13-nadia-angry`        | заглушка      |
+| `troupe/a13-nadia/sad.webp`                   | portrait       | 768×1152  | [PNG](case-002-room-seven/a13-nadia-sad.png)          | `a13-nadia-sad`          | заглушка      |
+| `troupe/a13-nadia/smug.webp`                  | portrait       | 768×1152  | [PNG](case-002-room-seven/a13-nadia-smug.png)         | `a13-nadia-smug`         | заглушка      |
+| `troupe/a13-nadia/broken.webp`                | portrait       | 768×1152  | [PNG](case-002-room-seven/a13-nadia-broken.png)       | `a13-nadia-broken`       | заглушка      |
+| `troupe/a12-dmitry/neutral.webp`              | portrait       | 768×1152  | [PNG](case-002-room-seven/a12-dmitry-neutral.png)     | `a12-dmitry-neutral`     | сгенерировано |
+| `troupe/a12-dmitry/nervous.webp`              | portrait       | 768×1152  | [PNG](case-002-room-seven/a12-dmitry-nervous.png)     | `a12-dmitry-nervous`     | заглушка      |
+| `troupe/a12-dmitry/angry.webp`                | portrait       | 768×1152  | [PNG](case-002-room-seven/a12-dmitry-angry.png)       | `a12-dmitry-angry`       | заглушка      |
+| `troupe/a12-dmitry/sad.webp`                  | portrait       | 768×1152  | [PNG](case-002-room-seven/a12-dmitry-sad.png)         | `a12-dmitry-sad`         | заглушка      |
+| `troupe/a12-dmitry/smug.webp`                 | portrait       | 768×1152  | [PNG](case-002-room-seven/a12-dmitry-smug.png)        | `a12-dmitry-smug`        | заглушка      |
+| `troupe/a12-dmitry/broken.webp`               | portrait       | 768×1152  | [PNG](case-002-room-seven/a12-dmitry-broken.png)      | `a12-dmitry-broken`      | заглушка      |
+| `images/reconstruction/1.webp`                | reconstruction | 1200×800  | [PNG](case-002-room-seven/reconstruction-1.png)       | `reconstruction-1`       | заглушка      |
+| `images/reconstruction/2.webp`                | reconstruction | 1200×800  | [PNG](case-002-room-seven/reconstruction-2.png)       | `reconstruction-2`       | заглушка      |
+| `images/reconstruction/3.webp`                | reconstruction | 1200×800  | [PNG](case-002-room-seven/reconstruction-3.png)       | `reconstruction-3`       | заглушка      |
+| `images/cover.webp`                           | cover          | 720×1080  | [PNG](case-002-room-seven/cover.png)                  | `cover`                  | заглушка      |

@@ -1,0 +1,189 @@
+{
+  "tool": "S17",
+  "viewport": {
+    "width": 360,
+    "height": 800
+  },
+  "rectangles": [
+    {
+      "locationId": "l-lobby",
+      "hotspotId": "h-register",
+      "rect": {
+        "x": 0.0488,
+        "y": 0.5998,
+        "w": 0.39,
+        "h": 0.16
+      }
+    },
+    {
+      "locationId": "l-lobby",
+      "hotspotId": "h-phone",
+      "rect": {
+        "x": 0.439,
+        "y": 0.4799,
+        "w": 0.24,
+        "h": 0.1
+      }
+    },
+    {
+      "locationId": "l-lobby",
+      "hotspotId": "h-coat-rack",
+      "rect": {
+        "x": 0.0579,
+        "y": 0.1892,
+        "w": 0.17,
+        "h": 0.29
+      }
+    },
+    {
+      "locationId": "l-lobby",
+      "hotspotId": "h-keeper-photo",
+      "rect": {
+        "x": 0.5,
+        "y": 0.0897,
+        "w": 0.26,
+        "h": 0.2
+      }
+    },
+    {
+      "locationId": "l-lobby",
+      "hotspotId": "h-armchair",
+      "rect": {
+        "x": 0.7195,
+        "y": 0.5998,
+        "w": 0.26,
+        "h": 0.21
+      }
+    },
+    {
+      "locationId": "l-lobby",
+      "hotspotId": "h-fireplace",
+      "rect": {
+        "x": 0.7896,
+        "y": 0.299,
+        "w": 0.2,
+        "h": 0.21
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-door-chain",
+      "rect": {
+        "x": 0.0152,
+        "y": 0.1588,
+        "w": 0.11,
+        "h": 0.2
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-tea-tray",
+      "rect": {
+        "x": 0.1402,
+        "y": 0.61,
+        "w": 0.46,
+        "h": 0.18
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-nightstand",
+      "rect": {
+        "x": 0.5579,
+        "y": 0.2787,
+        "w": 0.22,
+        "h": 0.16
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-desk",
+      "rect": {
+        "x": 0.128,
+        "y": 0.3986,
+        "w": 0.17,
+        "h": 0.1
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-jacket",
+      "rect": {
+        "x": 0.2896,
+        "y": 0.4291,
+        "w": 0.2,
+        "h": 0.22
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-portfel",
+      "rect": {
+        "x": 0.7378,
+        "y": 0.7197,
+        "w": 0.25,
+        "h": 0.18
+      }
+    },
+    {
+      "locationId": "l-room7",
+      "hotspotId": "h-balcony-door",
+      "rect": {
+        "x": 0.7896,
+        "y": 0.2401,
+        "w": 0.2,
+        "h": 0.28
+      }
+    },
+    {
+      "locationId": "l-corridor",
+      "hotspotId": "h-partition",
+      "rect": {
+        "x": 0.4878,
+        "y": 0.4392,
+        "w": 0.17,
+        "h": 0.13
+      }
+    },
+    {
+      "locationId": "l-corridor",
+      "hotspotId": "h-linen-cart",
+      "rect": {
+        "x": 0,
+        "y": 0.5388,
+        "w": 0.32,
+        "h": 0.4
+      }
+    },
+    {
+      "locationId": "l-corridor",
+      "hotspotId": "h-bin",
+      "rect": {
+        "x": 0.8384,
+        "y": 0.7787,
+        "w": 0.15,
+        "h": 0.16
+      }
+    },
+    {
+      "locationId": "l-corridor",
+      "hotspotId": "h-window",
+      "rect": {
+        "x": 0.0152,
+        "y": 0.1201,
+        "w": 0.27,
+        "h": 0.36
+      }
+    },
+    {
+      "locationId": "l-corridor",
+      "hotspotId": "h-door8",
+      "rect": {
+        "x": 0.7988,
+        "y": 0.2787,
+        "w": 0.2,
+        "h": 0.21
+      }
+    }
+  ]
+}

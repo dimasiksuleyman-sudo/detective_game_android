@@ -88,6 +88,9 @@ export default function GameApp() {
   const safeHotspot = c.locations
     .flatMap((l) => l.hotspots)
     .find((h) => h.id === safeId);
+  const briefcase = safeHotspot?.label.toLocaleLowerCase('ru') === 'портфель';
+  const containerInside = briefcase ? ru.safe.insideBriefcase : ru.safe.inside;
+  const containerBack = briefcase ? ru.safe.backBriefcase : ru.safe.back;
   const [narrateClues, setNarrateClues] = useState(true);
   const [mode, setMode] = useState<'classic' | 'ai'>('classic'),
     [freeQuestion, setFreeQuestion] = useState('');
@@ -593,7 +596,7 @@ export default function GameApp() {
               <h2>
                 {safeId && !clue
                   ? p.openedLocks.includes(safeId)
-                    ? ru.safe.inside
+                    ? containerInside
                     : ru.safe.title
                   : t.found}
               </h2>
@@ -673,7 +676,7 @@ export default function GameApp() {
               {selectedClue?.inspection && g.message && (
                 <p role="status">{g.message}</p>
               )}
-              {button(clueReturn === 'safe' ? ru.safe.back : t.back, () => {
+              {button(clueReturn === 'safe' ? containerBack : t.back, () => {
                 if (clueReturn === 'safe') {
                   setClue('');
                   setClueReturn('s08');

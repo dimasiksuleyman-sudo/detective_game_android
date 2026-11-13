@@ -3,14 +3,24 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 import { z } from 'zod';
-if (process.argv.slice(2).join(' ') !== '--art-only') {
-  throw new Error(
-    'Доступна только подготовка арта: npx tsx tools/build-pack.ts --art-only. ZIP ещё не реализован.',
-  );
-}
+import { parseArgs } from 'node:util';
+const { values } = parseArgs({
+  options: {
+    'art-only': { type: 'boolean' },
+    case: { type: 'string', default: 'case-001-blue-owl' },
+  },
+});
+if (!values['art-only'])
+  throw new Error('Требуется --art-only; ZIP ещё не реализован.');
+const caseId = z
+  .string()
+  .regex(/^case-[a-z0-9-]+$/)
+  .parse(values.case);
+const artDirectory =
+  caseId === 'case-001-blue-owl' ? 'art/pilot' : `art/${caseId}`;
 const manifest = z
   .object({
-    caseId: z.literal('case-001-blue-owl'),
+    caseId: z.literal(caseId),
     files: z
       .array(
         z.object({
@@ -29,14 +39,18 @@ const manifest = z
       )
       .min(1),
   })
-  .parse(JSON.parse(await readFile('art/pilot/manifest.json', 'utf8')));
+  .parse(
+    JSON.parse(
+      await readFile(path.join(artDirectory, 'manifest.json'), 'utf8'),
+    ),
+  );
 if (new Set(manifest.files.map((f) => f.output)).size !== manifest.files.length)
   throw new Error('Повторяющиеся выходные пути');
 // Сначала готовим и проверяем весь набор: повреждённый исходник не оставит половину новых ресурсов.
 const prepared: { file: (typeof manifest.files)[number]; buffer: Buffer }[] =
   [];
 for (const file of manifest.files) {
-  const source = path.join('art/pilot', file.source);
+  const source = path.join(artDirectory, file.source);
   const meta = await sharp(source).metadata();
   if (
     meta.format !== 'png' ||
